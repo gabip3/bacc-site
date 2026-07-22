@@ -716,6 +716,48 @@
       window.addEventListener('scroll', onScroll, { passive: true });
     }
 
+    // Mouse trail sutil nas cores do logo da BACC (verde, vermelho, navy, dourado)
+    if (!reduce && window.matchMedia && window.matchMedia('(pointer:fine)').matches) {
+      var cv = document.createElement('canvas');
+      cv.setAttribute('aria-hidden', 'true');
+      cv.style.cssText = 'position:fixed;inset:0;pointer-events:none;z-index:9999;';
+      document.body.appendChild(cv);
+      var ctx = cv.getContext('2d'), tw, th;
+      var tResize = function () { tw = cv.width = window.innerWidth; th = cv.height = window.innerHeight; };
+      tResize();
+      window.addEventListener('resize', tResize);
+      var tColors = ['#159A47', '#DA2E3A', '#1E4C93', '#F4A521'];
+      var tParts = [], tci = 0, tLast = 0;
+      window.addEventListener('pointermove', function (e) {
+        var now = performance.now();
+        if (now - tLast < 26) return;
+        tLast = now;
+        tParts.push({
+          x: e.clientX, y: e.clientY,
+          vx: (Math.random() - .5) * .6, vy: (Math.random() - .5) * .6 + .35,
+          r: 1.6 + Math.random() * 1.8,
+          c: tColors[tci++ % 4], l: 1
+        });
+        if (tParts.length > 48) tParts.shift();
+      }, { passive: true });
+      (function tLoop() {
+        ctx.clearRect(0, 0, tw, th);
+        for (var i = tParts.length - 1; i >= 0; i--) {
+          var p = tParts[i];
+          p.l -= .028;
+          if (p.l <= 0) { tParts.splice(i, 1); continue; }
+          p.x += p.vx; p.y += p.vy;
+          ctx.globalAlpha = Math.max(0, p.l * .55);
+          ctx.fillStyle = p.c;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, Math.max(.4, p.r * p.l), 0, 6.2832);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(tLoop);
+      })();
+    }
+
     // Contagem regressiva ao vivo na miniatura do convite (30 de julho, 5:30 PM em Atlanta = 21:30 UTC)
     var mkd = document.getElementById('mk-d');
     if (mkd) {
