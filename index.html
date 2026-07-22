@@ -209,6 +209,11 @@
   .offer-note{margin-top:26px; padding-top:22px; border-top:1px solid rgba(234,240,250,.16); color:var(--gold); font-weight:700; font-size:.96rem;}
   @media (max-width:600px){ .offer{padding:32px 24px; margin-top:44px;} }
 
+  /* filme */
+  .filme{background:var(--surface); border-top:1px solid var(--line);}
+  .film-frame{margin:52px auto 0; max-width:920px; border-radius:16px; overflow:hidden; border:1px solid var(--line); background:#000; box-shadow:0 44px 90px -44px rgba(9,18,38,.65);}
+  .film-frame video{display:block; width:100%; height:auto;}
+
   /* events */
   .stagemark{font-family:var(--sans); font-weight:800; letter-spacing:-.02em; font-size:1.7rem;}
   .stagemark .s1{color:var(--navy);} .stagemark .s2{color:var(--green);}
@@ -606,6 +611,22 @@
 
 
 
+<!-- FILME -->
+<section class="filme" id="filme">
+  <div class="wrap">
+    <div class="sec-head center">
+      <p class="eyebrow">The Dreamer</p>
+      <h2>Todo grande projeto começa com um sonho.</h2>
+    </div>
+    <div class="film-frame">
+      <video controls preload="none" poster="media/dreamer-poster.jpg" playsinline>
+        <source src="media/dreamer.mp4" type="video/mp4">
+        Seu navegador não suporta vídeo HTML5.
+      </video>
+    </div>
+  </div>
+</section>
+
 <!-- FINAL -->
 <section class="final" id="associe">
   <div class="wrap">
@@ -777,7 +798,7 @@
     }
 
     var groupSel = '.pillars, .journey, .tiers, .event-feature, .case-grid, .final .wrap';
-    var soloSel  = '.quote, .sec-head, .season, .tier-cta, .offer';
+    var soloSel  = '.quote, .sec-head, .season, .tier-cta, .offer, .film-frame';
     var mark = function (el) { el.classList.add('reveal'); };
 
     // Herói: entrada escalonada ao carregar
