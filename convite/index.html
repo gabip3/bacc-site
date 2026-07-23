@@ -183,7 +183,8 @@
     .unit .n{font-size:1.8rem;}
   }
   /* ---------- CONFIRMAÇÃO / RSVP ---------- */
-  .rsvp{background:linear-gradient(180deg,#0B1830,#0A1526); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .rsvp{background:radial-gradient(720px 400px at 50% -4%, rgba(244,165,33,.13), transparent 62%), linear-gradient(180deg,#12223F,#0E1D38); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .rsvp .sec-head p{color:var(--soft);}
   .rsvp .sec-head{text-align:center; max-width:52ch; margin:0 auto;}
   .rsvp-choices{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:40px;}
   .rsvp-btn{cursor:pointer; font-family:var(--sans); font-weight:700; font-size:1rem; padding:16px 30px; border-radius:999px; border:1.5px solid transparent; transition:transform .2s, background .2s, border-color .2s, color .2s;}
@@ -326,34 +327,6 @@
       </div>
     </div>
     <button type="button" class="rsvp-reset" id="rsvp-reset" onclick="rsvpReset()" hidden>Trocar minha resposta</button>
-  </div>
-</section>
-
-<!-- ===================== UPDATES ===================== -->
-<section class="updates" id="fique-por-dentro">
-  <div class="wrap">
-    <div class="head reveal">
-      <p class="eyebrow" style="text-align:center;">Fique por dentro</p>
-      <h2 style="margin-top:14px;">Muito além de uma noite.</h2>
-      <p>O BACCstage é o ponto de encontro de uma comunidade que se movimenta o ano inteiro.</p>
-    </div>
-    <div class="cards">
-      <article class="card reveal">
-        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="m9 16 2 2 4-4"/></svg></span>
-        <h3>Calendário BACC-SE</h3>
-        <p>Confira os próximos eventos, iniciativas e oportunidades da Câmara.</p>
-      </article>
-      <article class="card reveal">
-        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2 20a7 7 0 0 1 14 0"/><path d="M16 5.5a3.2 3.2 0 0 1 0 6M22 20a7 7 0 0 0-5-6.7"/></svg></span>
-        <h3>Novos membros</h3>
-        <p>Novos membros, conexões e histórias que inspiram a comunidade.</p>
-      </article>
-      <article class="card reveal">
-        <span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 4v4h-4"/></svg></span>
-        <h3>Atualizações BACC-SE</h3>
-        <p>Novidades, projetos e ações da Câmara para manter você sempre conectado.</p>
-      </article>
-    </div>
   </div>
 </section>
 
