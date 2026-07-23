@@ -341,7 +341,7 @@
     try {
       var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
       var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
-      if (hex === 'f5703ed5e6955b57612ebb6c683b3e011976fdda0080c3171d841e0057be0c72') {
+      if (hex === '65d0f6b1d5be766f2c3c4fcfecc8a0d4505a5721ea1e22c1f9a048e70bdf1f05') {
         sessionStorage.setItem('bacc_gate', 'ok');
         document.documentElement.classList.remove('locked');
         document.documentElement.classList.add('unlocked');
