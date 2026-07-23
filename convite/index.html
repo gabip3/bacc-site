@@ -182,6 +182,28 @@
     .mark .word{font-size:2.6rem;}
     .unit .n{font-size:1.8rem;}
   }
+  /* ---------- CONFIRMAÇÃO / RSVP ---------- */
+  .rsvp{background:linear-gradient(180deg,#0B1830,#0A1526); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .rsvp .sec-head{text-align:center; max-width:52ch; margin:0 auto;}
+  .rsvp-choices{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:40px;}
+  .rsvp-btn{cursor:pointer; font-family:var(--sans); font-weight:700; font-size:1rem; padding:16px 30px; border-radius:999px; border:1.5px solid transparent; transition:transform .2s, background .2s, border-color .2s, color .2s;}
+  .rsvp-btn:hover{transform:translateY(-2px);}
+  .rsvp-btn.yes{background:var(--gold); color:#231704; box-shadow:0 12px 34px -12px rgba(244,165,33,.7);}
+  .rsvp-btn.maybe{background:transparent; color:var(--ink); border-color:rgba(237,242,251,.32);}
+  .rsvp-btn.maybe:hover{border-color:var(--gold); color:var(--gold);}
+  .rsvp-btn.no{background:transparent; color:var(--muted); border-color:rgba(237,242,251,.16);}
+  .rsvp-btn.no:hover{color:var(--soft); border-color:rgba(237,242,251,.4);}
+  .rsvp-panel{max-width:680px; margin:38px auto 0;}
+  .rsvp-form{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+  .rsvp-form.show{opacity:1; transform:none;}
+  .rsvp-tag{text-align:center; color:var(--gold-soft); font-family:var(--serif); font-style:italic; font-size:1.05rem; margin-bottom:18px;}
+  .rsvp-form iframe{width:100%; border:0; border-radius:16px; background:#fff; min-height:560px; box-shadow:0 40px 80px -40px rgba(0,0,0,.6);}
+  .rsvp-wait{text-align:center; color:var(--muted); background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:40px 26px;}
+  .rsvp-bye{text-align:center; max-width:520px; margin:36px auto 0; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:40px 30px;}
+  .rsvp-bye .em{font-size:2rem;}
+  .rsvp-bye p{font-family:var(--serif); font-size:1.4rem; color:var(--ink); margin-top:12px; line-height:1.3;}
+  .rsvp-bye button{margin-top:22px; background:transparent; border:none; color:var(--gold-soft); font-weight:700; cursor:pointer; font-size:.95rem; text-decoration:underline; text-underline-offset:4px;}
+  .rsvp-reset{display:block; margin:20px auto 0; background:transparent; border:none; color:var(--muted); cursor:pointer; font-size:.86rem; text-decoration:underline; text-underline-offset:4px;}
   :focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
 </style>
 
@@ -245,7 +267,7 @@
         </div>
       </div>
       <div class="cta-row">
-        <a class="btn btn-gold" id="rsvp" href="mailto:hello@atlantahomeconcierge.com?subject=Presen%C3%A7a%20no%20BACCstage%20%C2%B7%2030%20de%20Julho&body=Ol%C3%A1%2C%20gostaria%20de%20confirmar%20minha%20presen%C3%A7a%20no%20BACCstage%20do%20dia%2030%20de%20Julho.">Confirmar presença</a>
+        <a class="btn btn-gold" id="rsvp" href="#confirmar">Confirmar presença</a>
         <a class="btn btn-ghost" id="cal-btn" href="#" target="_blank" rel="noopener">Adicionar ao Google Agenda</a>
       </div>
     </div>
@@ -278,6 +300,35 @@
   </div>
 </section>
 
+<!-- ===================== CONFIRMAÇÃO ===================== -->
+<section class="rsvp" id="confirmar">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Confirmação de presença</p>
+      <h2 style="margin-top:14px;">Você vai ao BACCstage?</h2>
+      <p style="color:var(--muted); margin-top:14px;">Sua resposta nos ajuda a preparar uma experiência à altura da nossa comunidade.</p>
+    </div>
+
+    <div class="rsvp-choices reveal" id="rsvp-choices">
+      <button type="button" class="rsvp-btn yes" data-answer="Sim">Sim, vou comparecer</button>
+      <button type="button" class="rsvp-btn maybe" data-answer="Talvez">Talvez</button>
+      <button type="button" class="rsvp-btn no" data-answer="Nao">Não vou poder</button>
+    </div>
+
+    <div class="rsvp-panel">
+      <div class="rsvp-form" id="rsvp-form" hidden>
+        <p class="rsvp-tag" id="rsvp-tag">Que ótimo! Complete os dados abaixo.</p>
+        <iframe id="tally-frame" data-tally-src="" loading="lazy" title="Confirmação de presença no BACCstage"></iframe>
+      </div>
+      <div class="rsvp-bye" id="rsvp-bye" hidden>
+        <p>Ah, que pena! Esperamos por você da próxima vez.</p>
+        <button type="button" onclick="rsvpReset()">Mudei de ideia</button>
+      </div>
+    </div>
+    <button type="button" class="rsvp-reset" id="rsvp-reset" onclick="rsvpReset()" hidden>Trocar minha resposta</button>
+  </div>
+</section>
+
 <!-- ===================== UPDATES ===================== -->
 <section class="updates" id="fique-por-dentro">
   <div class="wrap">
@@ -305,6 +356,55 @@
     </div>
   </div>
 </section>
+
+<!-- RSVP gate + Tally -->
+<script src="https://tally.so/widgets/embed.js"></script>
+<script>
+  (function () {
+    var TALLY_SRC = '__TALLY_SRC__'; // ex: https://tally.so/embed/FORMID
+    var choices = document.getElementById('rsvp-choices');
+    var form = document.getElementById('rsvp-form');
+    var bye = document.getElementById('rsvp-bye');
+    var reset = document.getElementById('rsvp-reset');
+    var tag = document.getElementById('rsvp-tag');
+    var frame = document.getElementById('tally-frame');
+
+    window.rsvpReset = function () {
+      form.hidden = true; form.classList.remove('show');
+      bye.hidden = true; reset.hidden = true;
+      choices.hidden = false;
+      choices.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    };
+
+    function openForm(answer) {
+      choices.hidden = true; bye.hidden = true;
+      tag.textContent = answer === 'Talvez' ? 'Sem problema! Deixe seus dados que mantemos você por dentro.' : 'Que ótimo! Complete os dados abaixo.';
+      form.hidden = false;
+      if (/^https?:/.test(TALLY_SRC)) {
+        frame.setAttribute('data-tally-src', TALLY_SRC + '?presenca=' + answer + '&hideTitle=1&dynamicHeight=1');
+        if (window.Tally && Tally.loadEmbeds) { Tally.loadEmbeds(); }
+        else { frame.src = frame.getAttribute('data-tally-src'); }
+      } else {
+        form.innerHTML = '<div class="rsvp-wait">O formulário de confirmação será ativado em instantes. Tente novamente em breve.</div>';
+      }
+      reset.hidden = false;
+      requestAnimationFrame(function () { form.classList.add('show'); });
+      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    if (choices) {
+      choices.addEventListener('click', function (e) {
+        var b = e.target.closest('.rsvp-btn'); if (!b) return;
+        var ans = b.getAttribute('data-answer');
+        if (ans === 'Nao') {
+          choices.hidden = true; form.hidden = true;
+          bye.hidden = false; reset.hidden = false;
+          bye.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        } else { openForm(ans); }
+      });
+    }
+  })();
+</script>
 
 <!-- ===================== FOOTER ===================== -->
 <footer>
