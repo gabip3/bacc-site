@@ -294,11 +294,64 @@
   .foot a:hover{color:var(--ink);}
   .foot-note{margin-top:44px; padding-top:24px; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:18px; flex-wrap:wrap; font-size:.8rem; color:var(--muted);}
 
+  /* portao de acesso restrito (a pagina principal exige senha; o /convite e publico) */
+  html.locked{overflow:hidden;}
+  #gate{position:fixed; inset:0; z-index:99999; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px;
+    background:radial-gradient(700px 420px at 50% 18%, rgba(244,165,33,.14), transparent 65%), #0A1628;}
+  html.unlocked #gate{display:none;}
+  #gate .g-box{max-width:430px; width:100%;}
+  #gate .g-eyebrow{font-size:.72rem; font-weight:700; letter-spacing:.3em; text-transform:uppercase; color:var(--gold);}
+  #gate h1{font-family:var(--serif); font-weight:400; color:#EDF2FB; font-size:1.9rem; margin:18px 0 10px; letter-spacing:-.01em;}
+  #gate p{color:#93A6C6; font-size:.95rem;}
+  #gate .g-row{display:flex; gap:10px; margin-top:26px;}
+  #gate input{flex:1; background:#102338; border:1px solid #24395E; border-radius:10px; padding:14px 16px; color:#EDF2FB; font-size:1rem; outline:none;}
+  #gate input:focus{border-color:var(--gold);}
+  #gate button{background:var(--gold); color:#23180A; border:none; border-radius:10px; padding:14px 22px; font-weight:700; font-size:.95rem; cursor:pointer;}
+  #gate button:hover{filter:brightness(1.06);}
+  #gate .g-err{color:#F08A8A; font-size:.85rem; margin-top:14px; min-height:1.2em;}
   .reveal{opacity:0; transform:translateY(20px); transition:opacity .75s cubic-bezier(.22,.61,.36,1), transform .75s cubic-bezier(.22,.61,.36,1); will-change:opacity, transform;}
   .reveal.in{opacity:1; transform:none;}
   @media (prefers-reduced-motion: reduce){ .reveal, .reveal.in{opacity:1 !important; transform:none !important; transition:none !important;} }
   :focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
 </style>
+
+<script>
+  (function () {
+    if (sessionStorage.getItem('bacc_gate') === 'ok') { document.documentElement.classList.add('unlocked'); }
+    else { document.documentElement.classList.add('locked'); }
+  })();
+</script>
+<div id="gate">
+  <div class="g-box">
+    <p class="g-eyebrow">BACC-SE · House of AHC</p>
+    <h1>Acesso restrito</h1>
+    <p>Esta apresentação é reservada. Digite a senha para continuar.</p>
+    <div class="g-row">
+      <input id="gate-pass" type="password" placeholder="Senha" autocomplete="off" onkeydown="if(event.key==='Enter'){gateTry();}">
+      <button type="button" onclick="gateTry()">Entrar</button>
+    </div>
+    <p class="g-err" id="gate-err"></p>
+  </div>
+</div>
+<script>
+  async function gateTry() {
+    var v = (document.getElementById('gate-pass').value || '').trim().toLowerCase();
+    var err = document.getElementById('gate-err');
+    if (!v) { err.textContent = 'Digite a senha.'; return; }
+    try {
+      var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(v));
+      var hex = Array.prototype.map.call(new Uint8Array(buf), function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+      if (hex === 'f5703ed5e6955b57612ebb6c683b3e011976fdda0080c3171d841e0057be0c72') {
+        sessionStorage.setItem('bacc_gate', 'ok');
+        document.documentElement.classList.remove('locked');
+        document.documentElement.classList.add('unlocked');
+      } else {
+        err.textContent = 'Senha incorreta. Tente novamente.';
+        document.getElementById('gate-pass').value = '';
+      }
+    } catch (e) { err.textContent = 'Não foi possível validar. Recarregue a página.'; }
+  }
+</script>
 
 <header class="nav">
   <div class="wrap nav-inner">
