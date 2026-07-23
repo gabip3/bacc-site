@@ -198,8 +198,22 @@
   .rsvp-form{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
   .rsvp-form.show{opacity:1; transform:none;}
   .rsvp-tag{text-align:center; color:var(--gold-soft); font-family:var(--serif); font-style:italic; font-size:1.05rem; margin-bottom:18px;}
-  .rsvp-form iframe{width:100%; border:0; border-radius:16px; background:#fff; min-height:560px; box-shadow:0 40px 80px -40px rgba(0,0,0,.6);}
-  .rsvp-wait{text-align:center; color:var(--muted); background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:40px 26px;}
+  .rsvp-fields{display:grid; grid-template-columns:1fr 1fr; gap:16px; text-align:left; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:30px; box-shadow:0 40px 80px -40px rgba(0,0,0,.6);}
+  .rsvp-fields .fld{display:flex; flex-direction:column; gap:7px;}
+  .rsvp-fields .fld-full{grid-column:1/-1;}
+  .rsvp-fields label{font-size:.76rem; font-weight:600; letter-spacing:.04em; color:var(--soft);}
+  .rsvp-fields input, .rsvp-fields textarea{background:#0C1B31; border:1px solid var(--line); border-radius:10px; padding:12px 14px; color:var(--ink); font-family:var(--sans); font-size:.95rem; outline:none; width:100%;}
+  .rsvp-fields input:focus, .rsvp-fields textarea:focus{border-color:var(--gold);}
+  .rsvp-fields input[type=file]{padding:10px 12px; color:var(--muted); font-size:.85rem; cursor:pointer;}
+  .rsvp-fields input[type=file]::file-selector-button{background:var(--gold); color:#231704; border:none; border-radius:7px; padding:8px 14px; font-weight:700; margin-right:12px; cursor:pointer;}
+  .fhint{font-size:.72rem; color:var(--muted);}
+  .rsvp-submit{grid-column:1/-1; justify-self:start; margin-top:6px;}
+  .rsvp-status{grid-column:1/-1; font-size:.9rem; color:var(--gold-soft); min-height:1.1em; margin:0;}
+  .rsvp-status.err{color:#F08A8A;}
+  @media (max-width:600px){ .rsvp-fields{grid-template-columns:1fr; padding:22px;} }
+  .rsvp-done{text-align:center; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:44px 30px;}
+  .rsvp-done p{font-family:var(--serif); font-size:1.45rem; color:var(--ink); line-height:1.3;}
+  .rsvp-done button{margin-top:20px; background:transparent; border:none; color:var(--gold-soft); font-weight:700; cursor:pointer; text-decoration:underline; text-underline-offset:4px;}
   .rsvp-bye{text-align:center; max-width:520px; margin:36px auto 0; background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:40px 30px;}
   .rsvp-bye .em{font-size:2rem;}
   .rsvp-bye p{font-family:var(--serif); font-size:1.4rem; color:var(--ink); margin-top:12px; line-height:1.3;}
@@ -319,7 +333,22 @@
     <div class="rsvp-panel">
       <div class="rsvp-form" id="rsvp-form" hidden>
         <p class="rsvp-tag" id="rsvp-tag">Que ótimo! Complete os dados abaixo.</p>
-        <iframe id="tally-frame" data-tally-src="" loading="lazy" title="Confirmação de presença no BACCstage"></iframe>
+        <form class="rsvp-fields" id="rsvp-fields" novalidate>
+          <div class="fld"><label>Nome completo *</label><input name="nome" required autocomplete="name"></div>
+          <div class="fld"><label>Empresa *</label><input name="empresa" required autocomplete="organization"></div>
+          <div class="fld"><label>E-mail *</label><input name="email" type="email" required autocomplete="email"></div>
+          <div class="fld"><label>WhatsApp</label><input name="whatsapp" inputmode="tel" autocomplete="tel"></div>
+          <div class="fld"><label>Instagram da empresa</label><input name="instagram" placeholder="@suaempresa"></div>
+          <div class="fld"><label>Site da empresa</label><input name="site" placeholder="www.suaempresa.com"></div>
+          <div class="fld fld-full"><label>Logo da empresa</label><input id="rsvp-logo" type="file" accept="image/*,.pdf,.svg"><span class="fhint">PNG, JPG, SVG ou PDF (até 8 MB)</span></div>
+          <div class="fld fld-full"><label>Observações</label><textarea name="obs" rows="3"></textarea></div>
+          <button type="submit" class="btn btn-gold rsvp-submit" id="rsvp-submit">Enviar confirmação</button>
+          <p class="rsvp-status" id="rsvp-status"></p>
+        </form>
+      </div>
+      <div class="rsvp-done" id="rsvp-done" hidden>
+        <p>Presença confirmada. Obrigado! Em breve entramos em contato.</p>
+        <button type="button" onclick="rsvpReset()">Enviar outra confirmação</button>
       </div>
       <div class="rsvp-bye" id="rsvp-bye" hidden>
         <p>Ah, que pena! Esperamos por você da próxima vez.</p>
@@ -330,50 +359,81 @@
   </div>
 </section>
 
-<!-- RSVP gate + Tally -->
-<script src="https://tally.so/widgets/embed.js"></script>
+<!-- RSVP gate + Google Apps Script -->
 <script>
   (function () {
-    var TALLY_SRC = 'https://tally.so/embed/44DYPB'; // ex: https://tally.so/embed/FORMID
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUD1_dOAtd7IlEDqdCQNck97W53b-7DWh7yiojYD_KhE4oEqbgAYmQMyqf8znw6ov9gA/exec';
     var choices = document.getElementById('rsvp-choices');
-    var form = document.getElementById('rsvp-form');
+    var formWrap = document.getElementById('rsvp-form');
+    var fields = document.getElementById('rsvp-fields');
+    var done = document.getElementById('rsvp-done');
     var bye = document.getElementById('rsvp-bye');
     var reset = document.getElementById('rsvp-reset');
     var tag = document.getElementById('rsvp-tag');
-    var frame = document.getElementById('tally-frame');
+    var statusEl = document.getElementById('rsvp-status');
+    var submitBtn = document.getElementById('rsvp-submit');
+    var logoInput = document.getElementById('rsvp-logo');
+    var presenca = 'Sim';
+
+    function hideAll(){ choices.hidden=true; formWrap.hidden=true; formWrap.classList.remove('show'); done.hidden=true; bye.hidden=true; }
 
     window.rsvpReset = function () {
-      form.hidden = true; form.classList.remove('show');
-      bye.hidden = true; reset.hidden = true;
-      choices.hidden = false;
-      choices.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      hideAll(); reset.hidden=true;
+      if (fields) fields.reset();
+      if (submitBtn){ submitBtn.disabled=false; submitBtn.textContent='Enviar confirmação'; }
+      if (statusEl){ statusEl.textContent=''; statusEl.classList.remove('err'); }
+      choices.hidden=false;
+      choices.scrollIntoView({behavior:'smooth', block:'center'});
     };
 
     function openForm(answer) {
-      choices.hidden = true; bye.hidden = true;
-      tag.textContent = answer === 'Talvez' ? 'Sem problema! Deixe seus dados que mantemos você por dentro.' : 'Que ótimo! Complete os dados abaixo.';
-      form.hidden = false;
-      if (/^https?:/.test(TALLY_SRC)) {
-        frame.setAttribute('data-tally-src', TALLY_SRC + '?presenca=' + answer + '&hideTitle=1&dynamicHeight=1');
-        if (window.Tally && Tally.loadEmbeds) { Tally.loadEmbeds(); }
-        else { frame.src = frame.getAttribute('data-tally-src'); }
-      } else {
-        form.innerHTML = '<div class="rsvp-wait">O formulário de confirmação será ativado em instantes. Tente novamente em breve.</div>';
-      }
-      reset.hidden = false;
-      requestAnimationFrame(function () { form.classList.add('show'); });
-      form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      presenca = answer;
+      hideAll();
+      tag.textContent = answer === 'Talvez' ? 'Sem problema! Deixe seus dados e mantemos você por dentro.' : 'Que ótimo! Complete os dados abaixo.';
+      formWrap.hidden=false; reset.hidden=false;
+      requestAnimationFrame(function(){ formWrap.classList.add('show'); });
+      formWrap.scrollIntoView({behavior:'smooth', block:'start'});
     }
 
     if (choices) {
       choices.addEventListener('click', function (e) {
         var b = e.target.closest('.rsvp-btn'); if (!b) return;
         var ans = b.getAttribute('data-answer');
-        if (ans === 'Nao') {
-          choices.hidden = true; form.hidden = true;
-          bye.hidden = false; reset.hidden = false;
-          bye.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else { openForm(ans); }
+        if (ans === 'Nao') { hideAll(); bye.hidden=false; reset.hidden=false; bye.scrollIntoView({behavior:'smooth', block:'center'}); }
+        else { openForm(ans); }
+      });
+    }
+
+    function readFile(file, cb){
+      if (!file) return cb(null);
+      var r = new FileReader();
+      r.onload = function(){ cb({ b64:String(r.result).split(',')[1], name:file.name, type:file.type||'application/octet-stream' }); };
+      r.onerror = function(){ cb(null); };
+      r.readAsDataURL(file);
+    }
+
+    if (fields) {
+      fields.addEventListener('submit', function (e) {
+        e.preventDefault();
+        statusEl.classList.remove('err');
+        var nome = fields.nome.value.trim(), empresa = fields.empresa.value.trim(), email = fields.email.value.trim();
+        if (!nome || !empresa || !email) { statusEl.classList.add('err'); statusEl.textContent='Preencha nome, empresa e e-mail.'; return; }
+        var file = logoInput && logoInput.files[0];
+        if (file && file.size > 8*1024*1024) { statusEl.classList.add('err'); statusEl.textContent='O logo passa de 8 MB. Envie um arquivo menor.'; return; }
+        submitBtn.disabled=true; submitBtn.textContent='Enviando...'; statusEl.textContent='';
+        readFile(file, function (logo) {
+          var body = new URLSearchParams();
+          body.set('presenca', presenca);
+          body.set('nome', nome); body.set('empresa', empresa); body.set('email', email);
+          body.set('whatsapp', fields.whatsapp.value.trim());
+          body.set('instagram', fields.instagram.value.trim());
+          body.set('site', fields.site.value.trim());
+          body.set('obs', fields.obs.value.trim());
+          if (logo && logo.b64) { body.set('logo', logo.b64); body.set('logoNome', logo.name); body.set('logoTipo', logo.type); }
+          fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body: body.toString() })
+            .then(function () { hideAll(); done.hidden=false; reset.hidden=true; done.scrollIntoView({behavior:'smooth', block:'center'}); })
+            .catch(function () { submitBtn.disabled=false; submitBtn.textContent='Enviar confirmação'; statusEl.classList.add('err'); statusEl.textContent='Não foi possível enviar. Verifique a conexão e tente de novo.'; });
+        });
       });
     }
   })();
