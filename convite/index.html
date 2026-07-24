@@ -319,7 +319,7 @@
           <div class="fld"><label>WhatsApp</label><input name="whatsapp" inputmode="tel" autocomplete="tel"></div>
           <div class="fld"><label>Instagram da empresa</label><input name="instagram" placeholder="@suaempresa"></div>
           <div class="fld"><label>Site da empresa</label><input name="site" placeholder="www.suaempresa.com"></div>
-          <div class="fld fld-full"><label>Logo da empresa</label><input id="rsvp-logo" type="file" accept="image/*,.pdf,.svg"><span class="fhint">PNG, JPG, SVG ou PDF (até 8 MB)</span></div>
+          <div class="fld fld-full"><label>Logo da empresa *</label><input id="rsvp-logo" type="file" accept="image/*,.pdf,.svg" required><span class="fhint">PNG, JPG, SVG ou PDF (até 8 MB) · obrigatório</span></div>
           <div class="fld fld-full"><label>Observações</label><textarea name="obs" rows="3"></textarea></div>
           <button type="submit" class="btn btn-gold rsvp-submit" id="rsvp-submit">Enviar confirmação</button>
           <p class="rsvp-status" id="rsvp-status"></p>
@@ -423,7 +423,8 @@
         var nome = fields.nome.value.trim(), empresa = fields.empresa.value.trim(), email = fields.email.value.trim();
         if (!nome || !empresa || !email) { statusEl.classList.add('err'); statusEl.textContent='Preencha nome, empresa e e-mail.'; return; }
         var file = logoInput && logoInput.files[0];
-        if (file && file.size > 8*1024*1024) { statusEl.classList.add('err'); statusEl.textContent='O logo passa de 8 MB. Envie um arquivo menor.'; return; }
+        if (!file) { statusEl.classList.add('err'); statusEl.textContent='Anexe o logo da sua empresa (obrigatório).'; return; }
+        if (file.size > 8*1024*1024) { statusEl.classList.add('err'); statusEl.textContent='O logo passa de 8 MB. Envie um arquivo menor.'; return; }
         submitBtn.disabled=true; submitBtn.textContent='Enviando...'; statusEl.textContent='';
         readFile(file, function (logo) {
           var body = new URLSearchParams();
