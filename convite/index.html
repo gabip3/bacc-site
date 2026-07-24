@@ -326,8 +326,8 @@
         </form>
       </div>
       <div class="rsvp-done" id="rsvp-done" hidden>
-        <p>Presença confirmada. Obrigado! Em breve entramos em contato.</p>
-        <button type="button" onclick="rsvpReset()">Enviar outra confirmação</button>
+        <p id="rsvp-done-msg">Presença confirmada. Obrigado! Em breve entramos em contato.</p>
+        <button type="button" onclick="rsvpReset()">Enviar outra resposta</button>
       </div>
       <div class="rsvp-bye" id="rsvp-bye" hidden>
         <p>Ah, que pena! Esperamos por você da próxima vez.</p>
@@ -388,7 +388,13 @@
     function openForm(answer) {
       presenca = answer;
       hideAll();
-      tag.textContent = answer === 'Talvez' ? 'Sem problema! Deixe seus dados e mantemos você por dentro.' : 'Que ótimo! Complete os dados abaixo.';
+      if (answer === 'Nao') {
+        tag.textContent = 'Que pena que não poderá dessa vez! Deixe seus dados e o logo da sua empresa para fazer parte da rede da BACC-SE.';
+        submitBtn.textContent = 'Enviar meus dados';
+      } else {
+        tag.textContent = 'Que ótimo! Complete os dados abaixo para confirmar sua presença.';
+        submitBtn.textContent = 'Enviar confirmação';
+      }
       formWrap.hidden=false; reset.hidden=false;
       requestAnimationFrame(function(){ formWrap.classList.add('show'); });
       formWrap.scrollIntoView({behavior:'smooth', block:'start'});
@@ -398,8 +404,7 @@
       choices.addEventListener('click', function (e) {
         var b = e.target.closest('.rsvp-btn'); if (!b) return;
         var ans = b.getAttribute('data-answer');
-        if (ans === 'Nao') { hideAll(); bye.hidden=false; reset.hidden=false; bye.scrollIntoView({behavior:'smooth', block:'center'}); }
-        else { openForm(ans); }
+        openForm(ans);
       });
     }
 
@@ -430,7 +435,11 @@
           body.set('obs', fields.obs.value.trim());
           if (logo && logo.b64) { body.set('logo', logo.b64); body.set('logoNome', logo.name); body.set('logoTipo', logo.type); }
           fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body: body.toString() })
-            .then(function () { hideAll(); done.hidden=false; reset.hidden=true; done.scrollIntoView({behavior:'smooth', block:'center'}); })
+            .then(function () {
+              var msg = document.getElementById('rsvp-done-msg');
+              if (msg) msg.textContent = presenca === 'Nao' ? 'Cadastro recebido. Obrigado por fazer parte da nossa rede!' : 'Presença confirmada. Obrigado! Em breve entramos em contato.';
+              hideAll(); done.hidden=false; reset.hidden=true; done.scrollIntoView({behavior:'smooth', block:'center'});
+            })
             .catch(function () { submitBtn.disabled=false; submitBtn.textContent='Enviar confirmação'; statusEl.classList.add('err'); statusEl.textContent='Não foi possível enviar. Verifique a conexão e tente de novo.'; });
         });
       });
