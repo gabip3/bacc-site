@@ -78,8 +78,9 @@
   .s-gallery{background:var(--paper); flex-direction:column; justify-content:center; text-align:center;}
   .s-gallery .eyebrow{color:var(--gold);}
   .s-gallery h2{font-size:clamp(2.2rem,4.8vw,5.5rem); color:var(--ink); margin-top:14px;}
-  .gal-grid{display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:1080px; margin:44px auto 0; width:100%;}
-  .gal-grid .g{border-radius:16px; overflow:hidden; aspect-ratio:16/10; border:1px solid var(--line); box-shadow:0 22px 46px -26px rgba(11,27,52,.32); background:#0A1730;}
+  .gal-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; max-width:1080px; margin:40px auto 0; width:100%;}
+  .gal-grid .g{border-radius:16px; overflow:hidden; aspect-ratio:5/4; border:1px solid var(--line); box-shadow:0 22px 46px -26px rgba(11,27,52,.32); background:#0A1730;}
+  .gal-grid .g.wide{grid-column:1/-1; aspect-ratio:1320/541;}
   .gal-grid .g img{width:100%; height:100%; object-fit:cover; object-position:center 18%; transition:transform .7s cubic-bezier(.16,.8,.3,1);}
   .gal-grid .g:hover img{transform:scale(1.06);}
   .s-gallery .cap{font-family:var(--serif); font-style:italic; color:#33425F; font-size:clamp(1.05rem,1.7vw,1.45rem); margin:36px auto 0; max-width:62ch; line-height:1.4;}
@@ -228,7 +229,7 @@
       <div class="g anim" style="--d:220"><img src="../media/deck/mov1.jpg" alt="Encontro da BACC-SE"></div>
       <div class="g anim" style="--d:320"><img src="../media/deck/mov2.jpg" alt="Encontro da BACC-SE"></div>
       <div class="g anim" style="--d:420"><img src="../media/deck/mov3.jpg" alt="Encontro da BACC-SE"></div>
-      <div class="g anim" style="--d:520"><img src="../media/deck/mov4.jpg" alt="Encontro da BACC-SE"></div>
+      <div class="g wide anim" style="--d:560"><img src="../media/deck/mov4.jpg" alt="Encontro da BACC-SE"></div>
     </div>
     <p class="cap anim" style="--d:640">Cada encontro fortalece conexões, gera oportunidades e aproxima empresários, profissionais e instituições.</p>
   </section>
@@ -396,15 +397,17 @@
       var sw = spark.offsetWidth || 15;
       var xs = [];
       Array.prototype.forEach.call(nodes, function(nd){ var r = nd.getBoundingClientRect(); xs.push(r.left - rowRect.left + r.width/2 - sw/2); });
-      var n = xs.length, kf = [];
+      var n = xs.length, kf = [], W = 0.88, seg = W/n;
       kf.push({ left: xs[0]+'px', opacity: 0, offset: 0 });
-      kf.push({ left: xs[0]+'px', opacity: 1, offset: 0.03 });
+      kf.push({ left: xs[0]+'px', opacity: 1, offset: 0.02 });
       for (var i=0;i<n;i++){
-        var s=i/n, e=(i+1)/n, arrive = s + (e-s)*0.42;
+        var base = 0.02 + (i/n)*W;
+        var arrive = base + seg*0.40;
+        var hold = base + seg*0.97;
         if (i>0) kf.push({ left: xs[i]+'px', offset: +arrive.toFixed(4) });
-        kf.push({ left: xs[i]+'px', offset: +(e-0.002).toFixed(4) });
+        kf.push({ left: xs[i]+'px', offset: +hold.toFixed(4) });
       }
-      kf.push({ left: xs[n-1]+'px', opacity: 1, offset: 0.97 });
+      kf.push({ left: xs[n-1]+'px', opacity: 1, offset: 0.9 });
       kf.push({ left: xs[n-1]+'px', opacity: 0, offset: 1 });
       anim = spark.animate(kf, { duration: 15000, iterations: Infinity, easing: 'ease-in-out' });
     }
