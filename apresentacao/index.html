@@ -138,21 +138,7 @@
   .tl-item:nth-child(5){--sd:.78s} .tl-item:nth-child(6){--sd:.90s} .tl-item:nth-child(7){--sd:1.02s} .tl-item:nth-child(8){--sd:1.14s}
   .slide.on .tl-item .node{transition-delay:var(--sd);}
   .slide.on .tl-item .date, .slide.on .tl-item .ev, .slide.on .tl-item .tag{transition-delay:calc(var(--sd) + .1s);}
-  .tl-spark{position:absolute; top:10px; left:1.5%; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 0 12px 4px var(--gold-l), 0 0 24px 7px rgba(201,162,75,.5); z-index:2; opacity:0; pointer-events:none;}
-  .slide.on .tl-spark{animation:tlspark 17s linear infinite 1.9s;}
-  @keyframes tlspark{
-    0%{left:1.5%; opacity:0}
-    2%{opacity:1}
-    9%{left:1.5%}
-    13%{left:14%}   20%{left:14%}
-    24%{left:26.5%} 31%{left:26.5%}
-    35%{left:39%}   42%{left:39%}
-    46%{left:51.5%} 53%{left:51.5%}
-    57%{left:64%}   64%{left:64%}
-    68%{left:76.5%} 75%{left:76.5%}
-    79%{left:89%}   93%{left:89%; opacity:1}
-    100%{left:89%; opacity:0}
-  }
+  .tl-spark{position:absolute; top:10px; left:0; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 0 12px 4px var(--gold-l), 0 0 24px 7px rgba(201,162,75,.5); z-index:2; opacity:0; pointer-events:none;}
 
   /* ---------- SLIDE 6 · CAROL (product page) ---------- */
   .s-carol{padding:0; background:var(--graphite); color:#fff;}
@@ -393,6 +379,43 @@
 
     // first slide visible immediately
     slides[0].classList.add('on');
+  })();
+
+  // Luz da timeline: para exatamente em cima de cada bolinha (posições calculadas)
+  (function(){
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var spark = document.querySelector('.tl-spark');
+    var row = document.querySelector('.tl-row');
+    if (!spark || !row || !spark.animate) return;
+    var anim = null;
+    function build(){
+      if (anim) { try { anim.cancel(); } catch(e){} anim = null; }
+      var nodes = row.querySelectorAll('.tl-item .node');
+      if (!nodes.length) return;
+      var rowRect = row.getBoundingClientRect();
+      var sw = spark.offsetWidth || 15;
+      var xs = [];
+      Array.prototype.forEach.call(nodes, function(nd){ var r = nd.getBoundingClientRect(); xs.push(r.left - rowRect.left + r.width/2 - sw/2); });
+      var n = xs.length, kf = [];
+      kf.push({ left: xs[0]+'px', opacity: 0, offset: 0 });
+      kf.push({ left: xs[0]+'px', opacity: 1, offset: 0.03 });
+      for (var i=0;i<n;i++){
+        var s=i/n, e=(i+1)/n, arrive = s + (e-s)*0.42;
+        if (i>0) kf.push({ left: xs[i]+'px', offset: +arrive.toFixed(4) });
+        kf.push({ left: xs[i]+'px', offset: +(e-0.002).toFixed(4) });
+      }
+      kf.push({ left: xs[n-1]+'px', opacity: 1, offset: 0.97 });
+      kf.push({ left: xs[n-1]+'px', opacity: 0, offset: 1 });
+      anim = spark.animate(kf, { duration: 15000, iterations: Infinity, easing: 'ease-in-out' });
+    }
+    var started = false;
+    function start(){ if (started) return; started = true; build(); }
+    var slide = spark.closest('.slide');
+    if ('IntersectionObserver' in window && slide){
+      var io2 = new IntersectionObserver(function(en){ en.forEach(function(x){ if (x.isIntersecting && x.intersectionRatio > 0.5) start(); }); }, { threshold: 0.5 });
+      io2.observe(slide);
+    } else { start(); }
+    var rt; window.addEventListener('resize', function(){ if (!started) return; clearTimeout(rt); rt = setTimeout(build, 250); });
   })();
 </script>
 </body>
