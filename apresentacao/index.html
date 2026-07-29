@@ -147,7 +147,11 @@
   /* ---------- SLIDE 6 · CAROL (product page) ---------- */
   .s-carol{padding:0; background:var(--graphite); color:#fff;}
   .s-carol .ph{flex:0 0 46%; background-size:cover; background-position:center top; position:relative; overflow:hidden; background:#0E1A30;}
-  .s-carol .ph video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; z-index:0;}
+  .s-carol .ph video, .s-carol .ph img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; z-index:0;}
+  /* Duas marcas lado a lado, escalando junto com a tela para o telao de LED */
+  .s-carol .brands{display:flex; align-items:center; gap:clamp(18px,2.2vw,42px); margin-top:clamp(30px,3vw,52px); flex-wrap:wrap;}
+  .s-carol .brands img{height:clamp(26px,2.9vw,64px); width:auto; opacity:.96;}
+  .s-carol .brands .sep{width:1px; height:clamp(26px,2.5vw,54px); background:rgba(255,255,255,.26); flex:none;}
   .s-carol .ph::after{content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg, transparent 60%, rgba(19,30,51,.9));}
   .s-carol .txt{flex:1; display:flex; flex-direction:column; justify-content:center; padding:8vh 6vw;}
   .s-carol .eyebrow{color:var(--gold-l); margin-bottom:24px;}
@@ -322,7 +326,22 @@
     </div>
   </section>
 
-  <!-- 8 · NOVOS MEMBROS -->
+  <!-- 8 · RICARDO SOUZA -->
+  <section class="slide s-carol" data-theme="dark">
+    <div class="ph anim sc"><img src="../media/deck/ricardo.jpg" alt="Ricardo Souza"></div>
+    <div class="txt">
+      <p class="eyebrow anim rt" style="--d:150">Nosso anfitrião</p>
+      <h2 class="anim rt" style="--d:280">Ricardo Souza</h2>
+      <p class="role anim rt" style="--d:420">CEO &amp; Founder</p>
+      <div class="brands anim rt" style="--d:560">
+        <img src="../media/house_white.png" alt="House of AHC">
+        <span class="sep"></span>
+        <img src="../media/deck/atl_white.png" alt="Atlanta Home Concierge">
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 · NOVOS MEMBROS -->
   <section class="slide s-mem" data-theme="light">
     <div class="s-head">
       <p class="eyebrow anim">BACC-SE · Novos membros corporativos</p>
