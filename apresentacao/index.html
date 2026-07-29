@@ -108,15 +108,23 @@
   .s-time .eyebrow{color:var(--gold-l);}
   .s-time h2{font-size:clamp(2.2rem,4.6vw,3.8rem); margin-top:14px;}
   .s-time .sub{color:var(--muted-d); margin-top:14px; max-width:60ch; font-size:1.05rem;}
-  .tl{margin-top:54px; overflow-x:auto; padding-bottom:14px; scrollbar-width:none;}
+  .tl{margin-top:60px; overflow-x:auto; padding-bottom:16px; scrollbar-width:none;}
   .tl::-webkit-scrollbar{display:none;}
-  .tl-row{display:flex; gap:0; min-width:min-content; position:relative; padding-top:44px;}
-  .tl-row::before{content:""; position:absolute; top:52px; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold) 6%,var(--gold) 94%,transparent);}
-  .tl-item{min-width:150px; flex:1; position:relative; padding:0 12px;}
-  .tl-item .node{position:absolute; top:-32px; left:24px; width:14px; height:14px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 5px rgba(201,162,75,.18);}
-  .tl-item .date{font-weight:800; font-size:1.05rem; color:#fff; font-variant-numeric:tabular-nums;}
-  .tl-item .ev{font-size:.82rem; color:var(--muted-d); margin-top:6px; line-height:1.35;}
-  .tl-item .tag{display:inline-block; margin-top:8px; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-l); border:1px solid rgba(201,162,75,.4); border-radius:999px; padding:3px 9px;}
+  .tl-row{display:flex; min-width:min-content; position:relative;}
+  .tl-row::before{content:""; position:absolute; top:11px; left:8px; right:8px; height:2px; border-radius:2px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transform:scaleX(0); transform-origin:left center; transition:transform 1.5s cubic-bezier(.16,.8,.3,1) .15s;}
+  .slide.on .tl-row::before{transform:scaleX(1);}
+  .tl-item{min-width:170px; flex:1; position:relative; padding:40px 16px 0;}
+  .tl-item .node{position:absolute; top:3px; left:16px; width:17px; height:17px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 6px rgba(201,162,75,.16); transform:scale(0); transition:transform .55s cubic-bezier(.34,1.56,.64,1);}
+  .slide.on .tl-item .node{transform:scale(1);}
+  .tl-item .date{font-weight:800; font-size:1.2rem; color:#fff; font-variant-numeric:tabular-nums;}
+  .tl-item .ev{font-size:.88rem; color:var(--muted-d); margin-top:7px; line-height:1.35;}
+  .tl-item .tag{display:inline-block; margin-top:9px; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-l); border:1px solid rgba(201,162,75,.4); border-radius:999px; padding:3px 9px;}
+  .tl-item .date, .tl-item .ev, .tl-item .tag{opacity:0; transform:translateY(12px); transition:opacity .55s ease, transform .55s ease;}
+  .slide.on .tl-item .date, .slide.on .tl-item .ev, .slide.on .tl-item .tag{opacity:1; transform:none;}
+  .tl-item:nth-child(1){--sd:.30s} .tl-item:nth-child(2){--sd:.42s} .tl-item:nth-child(3){--sd:.54s} .tl-item:nth-child(4){--sd:.66s}
+  .tl-item:nth-child(5){--sd:.78s} .tl-item:nth-child(6){--sd:.90s} .tl-item:nth-child(7){--sd:1.02s} .tl-item:nth-child(8){--sd:1.14s}
+  .slide.on .tl-item .node{transition-delay:var(--sd);}
+  .slide.on .tl-item .date, .slide.on .tl-item .ev, .slide.on .tl-item .tag{transition-delay:calc(var(--sd) + .1s);}
 
   /* ---------- SLIDE 6 · CAROL (product page) ---------- */
   .s-carol{padding:0; background:var(--graphite); color:#fff;}
@@ -156,7 +164,7 @@
 </head>
 <body>
 
-<img class="brandmark" id="brandmark" src="../media/deck/bacc_mark.png" alt="BACC-SE">
+<img class="brandmark" id="brandmark" src="../media/deck/bacc_white.png" alt="BACC-SE">
 <nav class="dots" id="dots" aria-label="Navegação de slides"></nav>
 <div class="counter" id="counter">01 / 08</div>
 
@@ -196,7 +204,7 @@
       <div class="prog-card anim" style="--d:400"><div class="lg"><img src="../media/deck/bacctalks_logo.png" alt="BACCtalks"></div><h3>BACCtalks</h3><p>Conversas que inspiram e conectam.</p></div>
       <div class="prog-card anim" style="--d:500"><div class="lg"><img src="../media/deck/entre_cafes_logo.png" alt="Entre Cafés"></div><h3>Entre Cafés</h3><p>Networking próximo e informal.</p></div>
       <div class="prog-card anim" style="--d:600">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="46" height="46"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 21l-5-2.8 1-5.5-4-3.9 5.5-.8z"/></svg></div>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h14"/><path d="M13 4l4 4-4 4"/><path d="M21 16H7"/><path d="M11 20l-4-4 4-4"/></svg></div>
         <h3>Leadership Exchange</h3><p>Lideranças que trocam e crescem juntas.</p>
       </div>
     </div>
@@ -224,7 +232,7 @@
       <h2 class="anim" style="--d:120">O que vem por aí</h2>
       <p class="sub anim" style="--d:240">BACC Academy, Entre Cafés, Leadership Exchange e BACCstage — três formas de conectar, aprender e crescer juntos.</p>
     </div>
-    <div class="tl anim" style="--d:360">
+    <div class="tl">
       <div class="tl-row">
         <div class="tl-item"><span class="node"></span><div class="date">14 Ago</div><div class="ev">BACC Academy</div></div>
         <div class="tl-item"><span class="node"></span><div class="date">27 Ago</div><div class="ev">BACCstage</div><span class="tag">On-line</span></div>
@@ -246,7 +254,6 @@
       <h2 class="anim rt" style="--d:280">Carol Pepe</h2>
       <p class="role anim rt" style="--d:420">Founder &amp; CEO · Oklahoma USA LLC</p>
       <p class="quote anim rt" style="--d:560">Importação e Exportação na Prática: oportunidades, desafios e estratégias para fazer negócios entre Brasil e EUA.</p>
-      <img class="oka anim rt" style="--d:700" src="../media/deck/okahoma_logo.jpg" alt="Oklahoma USA LLC">
     </div>
   </section>
 
@@ -274,7 +281,7 @@
     <h2 class="anim" style="--d:320">Um novo momentum começa aqui</h2>
     <p class="sub anim" style="--d:480">Cada pin da BACC-SE representa a confiança e a credibilidade construídas ao longo do nosso trabalho — e marca o novo momentum entre Brasil e Estados Unidos.</p>
     <p class="sign anim" style="--d:640">Conectando pessoas, ideias e oportunidades.</p>
-    <img class="mk anim" style="--d:760" src="../media/deck/bacc_mark.png" alt="BACC-SE">
+    <img class="mk anim" style="--d:760" src="../media/deck/bacc_white.png" alt="BACC-SE">
   </section>
 
 </main>
@@ -309,9 +316,8 @@
           dots.forEach(function(d,di){ d.classList.toggle('active', di===i); d.classList.toggle('dark', !dark); });
           counter.textContent = pad(i+1) + ' / ' + pad(slides.length);
           counter.classList.toggle('dark', !dark);
-          // brandmark color: invert on light slides
-          brand.style.filter = dark ? 'none' : 'none';
-          brand.style.opacity = dark ? '.92' : '.6';
+          // brandmark branco: só aparece nos slides escuros
+          brand.style.display = dark ? 'block' : 'none';
         }
       });
     }, { root: deck, threshold: [0, .55, 1] });
