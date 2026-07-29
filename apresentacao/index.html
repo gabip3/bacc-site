@@ -155,7 +155,10 @@
   .s-carol .role{font-size:clamp(1rem,1.6vw,1.35rem); color:var(--soft); margin-top:14px; font-weight:500;}
   .s-carol .quote{font-family:var(--serif); font-style:italic; font-size:clamp(1.25rem,2.2vw,1.9rem); color:#EAF0FA; margin-top:36px; line-height:1.35; max-width:26ch; border-left:2px solid var(--gold); padding-left:24px;}
   .s-carol .oka{height:38px; margin-top:34px; width:auto; background:#fff; padding:8px 14px; border-radius:8px;}
-  @media (max-width:820px){ .slide.s-carol{flex-direction:column;} .s-carol .ph{flex:0 0 40vh;} .s-carol .ph::after{background:linear-gradient(180deg,transparent 55%,rgba(19,30,51,.95));} .s-carol .txt{padding:44px 26px;} }
+  /* Espelhado: usado no slide seguinte para nao repetir a mesma composicao duas vezes */
+  .s-carol.s-flip{flex-direction:row-reverse;}
+  .s-carol.s-flip .ph::after{background:linear-gradient(270deg, transparent 60%, rgba(19,30,51,.9));}
+  @media (max-width:820px){ .slide.s-carol, .slide.s-carol.s-flip{flex-direction:column;} .s-carol .ph{flex:0 0 40vh;} .s-carol .ph::after, .s-carol.s-flip .ph::after{background:linear-gradient(180deg,transparent 55%,rgba(19,30,51,.95));} .s-carol .txt{padding:44px 26px;} }
 
   /* ---------- SLIDE 7 · NOVOS MEMBROS (light logo wall) ---------- */
   .s-mem{background:var(--paper); flex-direction:column; justify-content:center; text-align:center;}
@@ -308,7 +311,18 @@
     </div>
   </section>
 
-  <!-- 7 · NOVOS MEMBROS -->
+  <!-- 7 · LÚCIA (mesma composicao da Carol, espelhada) -->
+  <section class="slide s-carol s-flip" data-theme="dark">
+    <div class="ph anim sc"><video autoplay muted loop playsinline><source src="../media/deck/lucia.mp4" type="video/mp4"></video></div>
+    <div class="txt">
+      <p class="eyebrow anim rt" style="--d:150">Nossa convidada</p>
+      <h2 class="anim rt" style="--d:280">Lúcia Ranzani</h2>
+      <p class="role anim rt" style="--d:420">CEO &amp; Founder</p>
+      <p class="quote anim rt" style="--d:560">Há 30 anos fazendo história, desde 1996.</p>
+    </div>
+  </section>
+
+  <!-- 8 · NOVOS MEMBROS -->
   <section class="slide s-mem" data-theme="light">
     <div class="s-head">
       <p class="eyebrow anim">BACC-SE · Novos membros corporativos</p>
