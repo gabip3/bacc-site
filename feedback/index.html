@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Event Experience · House of AHC</title>
 <meta name="description" content="Share your feedback about your event at House of AHC.">
-<meta name="theme-color" content="#0A0B0E">
+<meta name="theme-color" content="#12294A">
 <style>
   :root{
-    --bg:#0A0B0E; --card:#14161D;
-    --ink:#FFFFFF; --soft:#C6CBD4; --dim:#8A91A0; --dim2:#5E6472;
+    --bg:#0B1B34; --bg-deep:#081426; --card:#122544; --navy-ink:#0B1B34;
+    --ink:#FFFFFF; --soft:#CBD6E6; --dim:#93A3BC; --dim2:#7E8FB0;
     --champ:#C8B896; --champ-l:#E4D7BA;
-    --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.055);
-    --star:#E4C87E;
+    --line:rgba(255,255,255,.12); --line2:rgba(255,255,255,.07);
+    --star:#E9CE85;
     --safe-t:0px; --safe-b:0px;
   }
   @supports (padding:env(safe-area-inset-bottom)){
@@ -23,8 +23,11 @@
     background:var(--bg); color:var(--ink); font-size:16px;
     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
     -webkit-font-smoothing:antialiased; line-height:1.5;
-    background-image:radial-gradient(120% 70% at 50% 0%, rgba(200,184,150,.10) 0%, rgba(10,11,14,0) 58%);
+    background-image:
+      radial-gradient(115% 62% at 50% 0%, rgba(200,184,150,.13) 0%, rgba(11,27,52,0) 60%),
+      linear-gradient(180deg, #12294A 0%, #0B1B34 42%, #081426 100%);
     background-repeat:no-repeat;
+    background-attachment:fixed;
   }
   button,input,textarea{font-family:inherit; font-size:16px; color:inherit;}
   button{cursor:pointer; border:none; background:none; touch-action:manipulation;}
@@ -37,14 +40,14 @@
   .lang{
     position:fixed; z-index:55; top:calc(var(--safe-t) + 16px); right:16px;
     display:flex; gap:3px; padding:4px; border-radius:99px;
-    background:rgba(20,22,29,.86); border:1px solid var(--line);
+    background:rgba(18,37,68,.88); border:1px solid var(--line);
     backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
   }
   .lang button{
     font-size:11.5px; font-weight:800; letter-spacing:.12em; color:var(--dim);
     padding:8px 13px; border-radius:99px; transition:all .2s;
   }
-  .lang button.sel{background:var(--champ); color:#12130F;}
+  .lang button.sel{background:var(--champ); color:#0B1B34;}
 
   .wrap{max-width:760px; margin:0 auto; padding:calc(var(--safe-t) + 74px) 22px calc(var(--safe-b) + 60px);}
 
@@ -104,7 +107,7 @@
   .nps label{height:50px; display:grid; place-items:center; border:1px solid var(--line); border-radius:11px; font-size:15.5px; font-weight:700; color:var(--soft); cursor:pointer; transition:all .18s;}
   .nps label:hover{border-color:rgba(200,184,150,.6); background:rgba(200,184,150,.09);}
   .nps label:active{transform:scale(.93);}
-  .nps input:checked + label{background:var(--champ); border-color:var(--champ); color:#12130F;}
+  .nps input:checked + label{background:var(--champ); border-color:var(--champ); color:#0B1B34;}
   .nps input:focus-visible + label{box-shadow:0 0 0 3px rgba(200,184,150,.4);}
   .npsends{display:flex; justify-content:space-between; gap:16px; margin-top:12px; font-size:13px; color:var(--dim);}
 
@@ -118,7 +121,7 @@
 
   /* ---------- ENVIO ---------- */
   .send{margin-top:44px;}
-  .send button{width:100%; background:var(--champ); color:#12130F; font-weight:800; font-size:16.5px; padding:20px; border-radius:15px; letter-spacing:.03em; transition:transform .14s, background .2s, opacity .2s; box-shadow:0 18px 40px -18px rgba(200,184,150,.5);}
+  .send button{width:100%; background:var(--champ); color:#0B1B34; font-weight:800; font-size:16.5px; padding:20px; border-radius:15px; letter-spacing:.03em; transition:transform .14s, background .2s, opacity .2s; box-shadow:0 18px 40px -18px rgba(200,184,150,.5);}
   .send button:hover{background:var(--champ-l);}
   .send button:active{transform:scale(.985);}
   .send button[disabled]{opacity:.55; cursor:default; transform:none;}
@@ -196,7 +199,7 @@
         <div class="rlab" data-for="q4"></div>
         <label class="chk">
           <input type="checkbox" id="q4none">
-          <span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="#12130F" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4.5 4.5L19 7"/></svg></span>
+          <span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="#0B1B34" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4.5 4.5L19 7"/></svg></span>
           <span data-t="q4none"></span>
         </label>
       </div>
