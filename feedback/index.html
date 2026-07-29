@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Event Experience · House of AHC</title>
+<meta name="description" content="Share your feedback about your event at House of AHC.">
+<meta name="theme-color" content="#0A0B0E">
+<style>
+  :root{
+    --bg:#0A0B0E; --card:#14161D;
+    --ink:#FFFFFF; --soft:#C6CBD4; --dim:#8A91A0; --dim2:#5E6472;
+    --champ:#C8B896; --champ-l:#E4D7BA;
+    --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.055);
+    --star:#E4C87E;
+    --safe-t:0px; --safe-b:0px;
+  }
+  @supports (padding:env(safe-area-inset-bottom)){
+    :root{ --safe-t:env(safe-area-inset-top); --safe-b:env(safe-area-inset-bottom); }
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  body{
+    background:var(--bg); color:var(--ink); font-size:16px;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.5;
+    background-image:radial-gradient(120% 70% at 50% 0%, rgba(200,184,150,.10) 0%, rgba(10,11,14,0) 58%);
+    background-repeat:no-repeat;
+  }
+  button,input,textarea{font-family:inherit; font-size:16px; color:inherit;}
+  button{cursor:pointer; border:none; background:none; touch-action:manipulation;}
+
+  /* ---------- PROGRESSO ---------- */
+  #prog{position:fixed; top:0; left:0; right:0; height:3px; background:rgba(255,255,255,.07); z-index:50;}
+  #prog i{display:block; height:100%; width:0%; background:linear-gradient(90deg,var(--champ),var(--champ-l)); transition:width .5s cubic-bezier(.16,.8,.3,1);}
+
+  /* ---------- IDIOMA ---------- */
+  .lang{
+    position:fixed; z-index:55; top:calc(var(--safe-t) + 16px); right:16px;
+    display:flex; gap:3px; padding:4px; border-radius:99px;
+    background:rgba(20,22,29,.86); border:1px solid var(--line);
+    backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  }
+  .lang button{
+    font-size:11.5px; font-weight:800; letter-spacing:.12em; color:var(--dim);
+    padding:8px 13px; border-radius:99px; transition:all .2s;
+  }
+  .lang button.sel{background:var(--champ); color:#12130F;}
+
+  .wrap{max-width:760px; margin:0 auto; padding:calc(var(--safe-t) + 74px) 22px calc(var(--safe-b) + 60px);}
+
+  /* ---------- CAPA ---------- */
+  .top{text-align:center; padding-bottom:44px; border-bottom:1px solid var(--line2);}
+  .top img{height:62px; width:auto; margin:0 auto 30px; display:block;}
+  .kick{font-size:10.5px; letter-spacing:.42em; text-indent:.42em; color:var(--champ); font-weight:700;}
+  .top h1{font-family:Georgia,'Times New Roman',serif; font-size:clamp(1.85rem,6.6vw,3rem); font-weight:400; line-height:1.14; margin:16px auto 0; letter-spacing:-.01em; max-width:22ch; text-wrap:balance;}
+  .top p{color:var(--soft); font-size:16.5px; line-height:1.66; margin:20px auto 0; max-width:48ch;}
+
+  /* ---------- PERGUNTA ---------- */
+  .q{padding:38px 0; border-bottom:1px solid var(--line2); opacity:0; transform:translateY(18px); transition:opacity .7s, transform .7s cubic-bezier(.16,.8,.3,1);}
+  .q.in{opacity:1; transform:none;}
+  .q:last-of-type{border-bottom:none;}
+  .qh{display:flex; gap:15px; align-items:baseline;}
+  .qn{font-family:Georgia,serif; font-size:15px; color:var(--champ); flex:none; width:22px; font-style:italic;}
+  .qt{font-size:18.5px; font-weight:600; line-height:1.42; letter-spacing:-.01em;}
+  .qs{color:var(--dim); font-size:14.5px; margin:9px 0 0 37px;}
+  .opt{display:inline-block; color:var(--dim2); font-size:10.5px; font-weight:700; letter-spacing:.16em; margin-left:9px; white-space:nowrap;}
+  .qbody{margin:22px 0 0 37px;}
+  @media (max-width:520px){ .qbody,.qs{margin-left:0;} }
+
+  /* ---------- ESTRELAS ---------- */
+  .stars{display:flex; gap:6px;}
+  .stars input{position:absolute; opacity:0; width:1px; height:1px; pointer-events:none;}
+  .stars label{width:54px; height:54px; display:grid; place-items:center; cursor:pointer; border-radius:12px; transition:background .16s, transform .16s;}
+  .stars label:active{transform:scale(.9);}
+  .stars label svg{width:34px; height:34px; display:block; transition:transform .22s cubic-bezier(.2,1.5,.4,1);}
+  .stars label svg path{fill:none; stroke:rgba(255,255,255,.3); stroke-width:1.5; transition:fill .2s, stroke .2s;}
+  .stars label.on svg path{fill:var(--star); stroke:var(--star);}
+  .stars label.on svg{transform:scale(1.06);}
+  .stars input:focus-visible + label{background:rgba(200,184,150,.16); box-shadow:0 0 0 2px var(--champ);}
+  .stars.off{opacity:.32; pointer-events:none;}
+  .rlab{margin-top:11px; font-size:14.5px; font-weight:600; color:var(--champ-l); min-height:21px;}
+
+  /* ---------- CHECKBOX ---------- */
+  .chk{display:flex; align-items:center; gap:13px; margin-top:22px; cursor:pointer; padding:13px 15px; border:1px solid var(--line); border-radius:13px; transition:background .18s; width:fit-content; max-width:100%;}
+  .chk:hover{background:rgba(255,255,255,.035);}
+  .chk input{position:absolute; opacity:0; width:1px; height:1px;}
+  .chk .bx{width:23px; height:23px; border-radius:6px; border:1.5px solid rgba(255,255,255,.32); flex:none; display:grid; place-items:center; transition:all .2s;}
+  .chk .bx svg{opacity:0; transform:scale(.5); transition:all .2s cubic-bezier(.2,1.5,.4,1); width:14px; height:14px;}
+  .chk input:checked ~ .bx{background:var(--champ); border-color:var(--champ);}
+  .chk input:checked ~ .bx svg{opacity:1; transform:scale(1);}
+  .chk span:last-child{font-size:15px; color:var(--soft);}
+  .chk input:focus-visible ~ .bx{box-shadow:0 0 0 3px rgba(200,184,150,.35);}
+
+  /* ---------- TEXTO ---------- */
+  textarea{width:100%; min-height:118px; resize:vertical; background:rgba(255,255,255,.045); border:1px solid var(--line); border-radius:14px; padding:16px 17px; line-height:1.6; outline:none; transition:border-color .2s, background .2s;}
+  textarea::placeholder{color:var(--dim2);}
+  textarea:focus{border-color:var(--champ); background:rgba(255,255,255,.07);}
+  .count{text-align:right; font-size:12px; color:var(--dim2); margin-top:7px;}
+
+  /* ---------- NPS ---------- */
+  .nps{display:grid; grid-template-columns:repeat(11,1fr); gap:6px;}
+  @media (max-width:600px){ .nps{grid-template-columns:repeat(6,1fr);} }
+  .nps input{position:absolute; opacity:0; width:1px; height:1px; pointer-events:none;}
+  .nps label{height:50px; display:grid; place-items:center; border:1px solid var(--line); border-radius:11px; font-size:15.5px; font-weight:700; color:var(--soft); cursor:pointer; transition:all .18s;}
+  .nps label:hover{border-color:rgba(200,184,150,.6); background:rgba(200,184,150,.09);}
+  .nps label:active{transform:scale(.93);}
+  .nps input:checked + label{background:var(--champ); border-color:var(--champ); color:#12130F;}
+  .nps input:focus-visible + label{box-shadow:0 0 0 3px rgba(200,184,150,.4);}
+  .npsends{display:flex; justify-content:space-between; gap:16px; margin-top:12px; font-size:13px; color:var(--dim);}
+
+  /* ---------- CAMPOS CURTOS ---------- */
+  .two{display:flex; gap:12px; flex-wrap:wrap;}
+  .two > div{flex:1; min-width:190px;}
+  .two label{display:block; font-size:11px; font-weight:700; letter-spacing:.16em; color:var(--dim); margin-bottom:9px;}
+  .two input{width:100%; background:rgba(255,255,255,.045); border:1px solid var(--line); border-radius:13px; padding:15px 16px; outline:none; transition:border-color .2s, background .2s;}
+  .two input::placeholder{color:var(--dim2);}
+  .two input:focus{border-color:var(--champ); background:rgba(255,255,255,.07);}
+
+  /* ---------- ENVIO ---------- */
+  .send{margin-top:44px;}
+  .send button{width:100%; background:var(--champ); color:#12130F; font-weight:800; font-size:16.5px; padding:20px; border-radius:15px; letter-spacing:.03em; transition:transform .14s, background .2s, opacity .2s; box-shadow:0 18px 40px -18px rgba(200,184,150,.5);}
+  .send button:hover{background:var(--champ-l);}
+  .send button:active{transform:scale(.985);}
+  .send button[disabled]{opacity:.55; cursor:default; transform:none;}
+  .err{color:#FF9C9C; font-size:14.5px; margin-top:15px; text-align:center; min-height:21px;}
+  .priv{color:var(--dim2); font-size:12.5px; text-align:center; margin-top:20px; line-height:1.6;}
+
+  .miss{animation:shake .42s;}
+  @keyframes shake{0%,100%{transform:translateX(0)}22%{transform:translateX(-7px)}44%{transform:translateX(7px)}66%{transform:translateX(-4px)}88%{transform:translateX(4px)}}
+  .q.miss .qt{color:#FFC7C7;}
+
+  /* ---------- AGRADECIMENTO ---------- */
+  #done{display:none; min-height:80vh; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:40px 0;}
+  #done.on{display:flex; animation:rise .8s cubic-bezier(.16,.8,.3,1);}
+  @keyframes rise{from{opacity:0; transform:translateY(24px);} to{opacity:1; transform:none;}}
+  #done .seal{width:78px; height:78px; border-radius:50%; border:1px solid rgba(200,184,150,.45); display:grid; place-items:center; margin-bottom:32px; background:rgba(200,184,150,.1);}
+  #done h2{font-family:Georgia,serif; font-size:clamp(1.8rem,6.2vw,2.7rem); font-weight:400; line-height:1.18; margin-top:16px;}
+  #done p{color:var(--soft); font-size:16.5px; line-height:1.7; margin-top:20px; max-width:44ch;}
+  #done img{height:56px; width:auto; margin-top:44px; opacity:.85;}
+
+  @media (prefers-reduced-motion:reduce){
+    .q{opacity:1!important; transform:none!important; transition:none!important;}
+    #done.on{animation:none;} .miss{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div id="prog"><i></i></div>
+
+<div class="lang" id="lang">
+  <button type="button" data-l="en">EN</button>
+  <button type="button" data-l="pt">PT</button>
+</div>
+
+<div class="wrap">
+
+  <form id="form" novalidate>
+
+    <div class="top">
+      <img src="../media/house_white.png" alt="House of AHC by Atlanta Home Concierge">
+      <div class="kick" data-t="kick"></div>
+      <h1 data-t="h1"></h1>
+      <p data-t="intro"></p>
+    </div>
+
+    <div class="q" data-req="q1">
+      <div class="qh"><div class="qn">01</div><div class="qt" data-t="q1"></div></div>
+      <div class="qbody">
+        <div class="stars" data-name="q1"></div>
+        <div class="rlab" data-for="q1"></div>
+      </div>
+    </div>
+
+    <div class="q" data-req="q2">
+      <div class="qh"><div class="qn">02</div><div class="qt" data-t="q2"></div></div>
+      <div class="qbody">
+        <div class="stars" data-name="q2"></div>
+        <div class="rlab" data-for="q2"></div>
+      </div>
+    </div>
+
+    <div class="q" data-req="q3">
+      <div class="qh"><div class="qn">03</div><div class="qt" data-t="q3"></div></div>
+      <div class="qbody">
+        <div class="stars" data-name="q3"></div>
+        <div class="rlab" data-for="q3"></div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="qh"><div class="qn">04</div><div class="qt"><span data-t="q4"></span><span class="opt" data-t="optional"></span></div></div>
+      <p class="qs" data-t="q4sub"></p>
+      <div class="qbody">
+        <div class="stars" data-name="q4"></div>
+        <div class="rlab" data-for="q4"></div>
+        <label class="chk">
+          <input type="checkbox" id="q4none">
+          <span class="bx"><svg viewBox="0 0 24 24" fill="none" stroke="#12130F" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4.5 4.5L19 7"/></svg></span>
+          <span data-t="q4none"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="qh"><div class="qn">05</div><div class="qt"><span data-t="q5"></span><span class="opt" data-t="optional"></span></div></div>
+      <div class="qbody">
+        <textarea id="q5" maxlength="600" data-tp="q5ph"></textarea>
+        <div class="count"><span>0</span>/600</div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="qh"><div class="qn">06</div><div class="qt"><span data-t="q6"></span><span class="opt" data-t="optional"></span></div></div>
+      <div class="qbody">
+        <textarea id="q6" maxlength="600" data-tp="q6ph"></textarea>
+        <div class="count"><span>0</span>/600</div>
+      </div>
+    </div>
+
+    <div class="q" data-req="q7">
+      <div class="qh"><div class="qn">07</div><div class="qt" data-t="q7"></div></div>
+      <div class="qbody">
+        <div class="nps" id="nps"></div>
+        <div class="npsends"><span data-t="nps0"></span><span data-t="nps10"></span></div>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="qh"><div class="qn">08</div><div class="qt"><span data-t="q8"></span><span class="opt" data-t="optional"></span></div></div>
+      <p class="qs" data-t="q8sub"></p>
+      <div class="qbody">
+        <div class="two">
+          <div><label data-t="lname"></label><input id="nome" autocomplete="name" data-tp="ph"></div>
+          <div><label data-t="ldate"></label><input id="data" data-tp="ph"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="send">
+      <button type="submit" id="btn" data-t="submit"></button>
+      <div class="err" id="err"></div>
+      <p class="priv" data-t="priv"></p>
+    </div>
+  </form>
+
+  <div id="done">
+    <div class="seal">
+      <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#E4D7BA" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg>
+    </div>
+    <div class="kick" data-t="tykick"></div>
+    <h2 data-t="tyh"></h2>
+    <p data-t="typ"></p>
+    <img src="../media/house_white.png" alt="House of AHC by Atlanta Home Concierge">
+  </div>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ================================================================
+     COLE AQUI a URL do app do Google Apps Script (termina em /exec).
+     Enquanto estiver vazio, o formulario avisa que nao esta conectado
+     em vez de fingir que enviou.
+     ================================================================ */
+  var ENDPOINT = '';
+
+  var T = {
+    en:{
+      title:'Event Experience · House of AHC',
+      kick:'EVENT EXPERIENCE',
+      h1:'How was your event at House of AHC?',
+      intro:'Thank you for choosing House of AHC for your event. Your feedback helps us continue delivering exceptional experiences.',
+      q1:'Overall, how would you rate your experience at House of AHC?',
+      q2:'How would you rate your experience with your Event Host?',
+      q3:'How would you rate the venue, cleanliness, and overall atmosphere?',
+      q4:'If you used any additional services, how would you rate them?',
+      q4sub:'Catering, bartender, valet, photography, décor, and similar.',
+      q4none:'I did not use additional services',
+      q5:'What was the highlight of your experience?',
+      q5ph:'The moment that stood out most...',
+      q6:'Is there anything we could have done to make your experience even better?',
+      q6ph:'We read every note carefully...',
+      q7:'How likely are you to recommend House of AHC to a friend or colleague?',
+      nps0:'0 = Not at all likely',
+      nps10:'10 = Extremely likely',
+      q8:'About your event',
+      q8sub:'Helps us connect your feedback to the right team.',
+      lname:'YOUR NAME', ldate:'EVENT DATE', ph:'Optional',
+      optional:'OPTIONAL',
+      submit:'Submit feedback',
+      sending:'Sending...',
+      missing:'Please answer the highlighted question.',
+      offline:'This form is not connected yet. Please contact House of AHC.',
+      priv:'Your responses are shared only with the House of AHC team.',
+      stars:{1:'Very Poor',2:'Poor',3:'Good',4:'Very Good',5:'Excellent'},
+      tykick:'THANK YOU',
+      tyh:'We appreciate your time.',
+      typ:'Thank you for taking the time to share your feedback. We truly appreciate the opportunity to be part of your special occasion and hope to welcome you back to House of AHC again soon.'
+    },
+    pt:{
+      title:'Experiência do Evento · House of AHC',
+      kick:'EXPERIÊNCIA DO EVENTO',
+      h1:'Como foi o seu evento na House of AHC?',
+      intro:'Obrigado por escolher a House of AHC para o seu evento. A sua opinião nos ajuda a continuar entregando experiências excepcionais.',
+      q1:'De modo geral, como você avalia a sua experiência na House of AHC?',
+      q2:'Como você avalia a sua experiência com o anfitrião do evento?',
+      q3:'Como você avalia o espaço, a limpeza e a atmosfera do ambiente?',
+      q4:'Se você usou serviços adicionais, como você avalia esses serviços?',
+      q4sub:'Buffet, bartender, valet, fotografia, decoração e similares.',
+      q4none:'Não utilizei serviços adicionais',
+      q5:'Qual foi o ponto alto da sua experiência?',
+      q5ph:'O momento que mais marcou...',
+      q6:'Existe algo que poderíamos ter feito para tornar a sua experiência ainda melhor?',
+      q6ph:'Lemos cada comentário com atenção...',
+      q7:'Qual a chance de você recomendar a House of AHC para um amigo ou colega?',
+      nps0:'0 = Nada provável',
+      nps10:'10 = Extremamente provável',
+      q8:'Sobre o seu evento',
+      q8sub:'Ajuda a direcionar a sua opinião para a equipe certa.',
+      lname:'SEU NOME', ldate:'DATA DO EVENTO', ph:'Opcional',
+      optional:'OPCIONAL',
+      submit:'Enviar avaliação',
+      sending:'Enviando...',
+      missing:'Por favor, responda a pergunta destacada.',
+      offline:'Este formulário ainda não está conectado. Fale com a House of AHC.',
+      priv:'Suas respostas são compartilhadas apenas com a equipe da House of AHC.',
+      stars:{1:'Muito ruim',2:'Ruim',3:'Bom',4:'Muito bom',5:'Excelente'},
+      tykick:'OBRIGADO',
+      tyh:'Agradecemos o seu tempo.',
+      typ:'Obrigado por dedicar um momento para compartilhar a sua opinião. Ficamos muito gratos pela oportunidade de fazer parte da sua ocasião especial e esperamos receber você novamente na House of AHC.'
+    }
+  };
+
+  var lang = 'en';
+  var answers = {};
+  var STAR = 'M12 2.6l2.95 5.98 6.6.96-4.77 4.65 1.12 6.57L12 17.66l-5.9 3.1 1.12-6.57L2.45 9.54l6.6-.96z';
+
+  function $(id){ return document.getElementById(id); }
+  function t(){ return T[lang]; }
+
+  /* ---------- idioma ---------- */
+  function setLang(l){
+    lang = (l === 'pt') ? 'pt' : 'en';
+    var d = t();
+    document.documentElement.lang = (lang === 'pt') ? 'pt-BR' : 'en';
+    document.title = d.title;
+
+    document.querySelectorAll('[data-t]').forEach(function(el){
+      var v = d[el.getAttribute('data-t')];
+      if(v != null) el.textContent = v;
+    });
+    document.querySelectorAll('[data-tp]').forEach(function(el){
+      var v = d[el.getAttribute('data-tp')];
+      if(v != null) el.placeholder = v;
+    });
+
+    /* rótulos das estrelas já escolhidas e aria-labels */
+    document.querySelectorAll('.stars').forEach(function(box){
+      var name = box.getAttribute('data-name');
+      box.querySelectorAll('input').forEach(function(inp){
+        inp.setAttribute('aria-label', inp.value + ' ' + d.stars[inp.value]);
+      });
+      var lab = document.querySelector('.rlab[data-for="'+name+'"]');
+      lab.textContent = answers[name] ? d.stars[answers[name]] : '';
+    });
+
+    document.querySelectorAll('#lang button').forEach(function(b){
+      b.classList.toggle('sel', b.getAttribute('data-l') === lang);
+    });
+    try{ localStorage.setItem('ahc_feedback_lang', lang); }catch(e){}
+  }
+
+  $('lang').addEventListener('click', function(e){
+    var b = e.target.closest('button');
+    if(b) setLang(b.getAttribute('data-l'));
+  });
+
+  /* ---------- estrelas ---------- */
+  function buildStars(box){
+    var name = box.getAttribute('data-name');
+    var lab = document.querySelector('.rlab[data-for="'+name+'"]');
+    for(var i=1;i<=5;i++){
+      var inp = document.createElement('input');
+      inp.type='radio'; inp.name=name; inp.value=i; inp.id=name+'-'+i;
+      var l = document.createElement('label');
+      l.setAttribute('for', name+'-'+i);
+      l.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="'+STAR+'"/></svg>';
+      box.appendChild(inp); box.appendChild(l);
+    }
+    var inputs = box.querySelectorAll('input');
+    var labels = box.querySelectorAll('label');
+
+    function paint(n){
+      for(var i=0;i<labels.length;i++){ labels[i].classList.toggle('on', i < n); }
+    }
+    inputs.forEach(function(inp){
+      inp.addEventListener('change', function(){
+        answers[name] = parseInt(inp.value,10);
+        paint(answers[name]);
+        lab.textContent = t().stars[answers[name]];
+        if(name === 'q4') $('q4none').checked = false;
+        var q = box.closest('.q'); if(q) q.classList.remove('miss');
+        progress();
+      });
+    });
+    labels.forEach(function(l, idx){
+      l.addEventListener('mouseenter', function(){ if(!box.classList.contains('off')) paint(idx+1); });
+    });
+    box.addEventListener('mouseleave', function(){ paint(answers[name] || 0); });
+
+    box._reset = function(){
+      answers[name] = null; paint(0); lab.textContent = '';
+      inputs.forEach(function(i){ i.checked = false; });
+    };
+  }
+  document.querySelectorAll('.stars').forEach(buildStars);
+
+  /* ---------- nao usei servicos ---------- */
+  var q4box = document.querySelector('.stars[data-name="q4"]');
+  $('q4none').addEventListener('change', function(){
+    if(this.checked){ q4box._reset(); q4box.classList.add('off'); }
+    else { q4box.classList.remove('off'); }
+    progress();
+  });
+
+  /* ---------- NPS ---------- */
+  (function(){
+    var wrap = $('nps');
+    for(var i=0;i<=10;i++){
+      var inp = document.createElement('input');
+      inp.type='radio'; inp.name='q7'; inp.value=i; inp.id='nps-'+i;
+      var l = document.createElement('label');
+      l.setAttribute('for','nps-'+i); l.textContent = i;
+      wrap.appendChild(inp); wrap.appendChild(l);
+    }
+    wrap.addEventListener('change', function(e){
+      if(e.target && e.target.name === 'q7'){
+        answers.q7 = parseInt(e.target.value,10);
+        var q = wrap.closest('.q'); if(q) q.classList.remove('miss');
+        progress();
+      }
+    });
+  })();
+
+  /* ---------- contadores ---------- */
+  ['q5','q6'].forEach(function(id){
+    var ta = $(id), out = ta.parentNode.querySelector('.count span');
+    ta.addEventListener('input', function(){ out.textContent = ta.value.length; progress(); });
+  });
+
+  /* ---------- progresso ---------- */
+  function progress(){
+    var feitos = 0;
+    ['q1','q2','q3','q7'].forEach(function(k){ if(answers[k] != null) feitos++; });
+    if(answers.q4 != null || $('q4none').checked) feitos++;
+    if($('q5').value.trim()) feitos++;
+    if($('q6').value.trim()) feitos++;
+    $('prog').firstChild.style.width = Math.round(feitos/7*100) + '%';
+  }
+
+  /* ---------- entrada animada ---------- */
+  if('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.18});
+    document.querySelectorAll('.q').forEach(function(q){ io.observe(q); });
+  } else {
+    document.querySelectorAll('.q').forEach(function(q){ q.classList.add('in'); });
+  }
+
+  /* ---------- envio ---------- */
+  $('form').addEventListener('submit', function(e){
+    e.preventDefault();
+    var err = $('err');
+    err.textContent = '';
+
+    var faltando = null;
+    var reqs = document.querySelectorAll('.q[data-req]');
+    for(var i=0;i<reqs.length;i++){
+      if(answers[reqs[i].getAttribute('data-req')] == null){ faltando = reqs[i]; break; }
+    }
+    if(faltando){
+      faltando.classList.add('miss');
+      setTimeout(function(){ faltando.classList.remove('miss'); }, 460);
+      faltando.scrollIntoView({behavior:'smooth', block:'center'});
+      err.textContent = t().missing;
+      return;
+    }
+
+    var p = new URLSearchParams();
+    p.append('form','houseofahc-feedback');
+    p.append('idioma', lang);
+    p.append('q1', answers.q1);
+    p.append('q2', answers.q2);
+    p.append('q3', answers.q3);
+    p.append('q4', $('q4none').checked ? 'N/A' : (answers.q4 != null ? answers.q4 : ''));
+    p.append('q4none', $('q4none').checked ? 'Sim' : 'Nao');
+    p.append('q5', $('q5').value.trim());
+    p.append('q6', $('q6').value.trim());
+    p.append('q7', answers.q7);
+    p.append('nome', $('nome').value.trim());
+    p.append('data', $('data').value.trim());
+    try{ p.append('evento', new URLSearchParams(location.search).get('e') || ''); }
+    catch(x){ p.append('evento',''); }
+
+    if(!ENDPOINT){ err.textContent = t().offline; return; }
+
+    var btn = $('btn');
+    btn.disabled = true;
+    btn.textContent = t().sending;
+
+    fetch(ENDPOINT, {
+      method:'POST', mode:'no-cors',
+      headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+      body: p
+    }).then(finish, finish);
+
+    function finish(){
+      $('form').style.display = 'none';
+      $('done').classList.add('on');
+      $('prog').firstChild.style.width = '100%';
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+  });
+
+  /* ---------- idioma inicial: ?lang=, memoria, ou o do aparelho ---------- */
+  (function(){
+    var l = null;
+    try{ l = new URLSearchParams(location.search).get('lang'); }catch(e){}
+    if(!l){ try{ l = localStorage.getItem('ahc_feedback_lang'); }catch(e){} }
+    if(!l){
+      var nav = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+      l = (nav.indexOf('pt') === 0) ? 'pt' : 'en';
+    }
+    setLang(l);
+  })();
+
+  progress();
+})();
+</script>
+</body>
+</html>
