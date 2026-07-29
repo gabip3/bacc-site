@@ -51,21 +51,23 @@
   /* ---------- SLIDE 1 · HERO ---------- */
   .s-hero{color:#fff; align-items:flex-end;}
   .s-hero .bg{position:absolute; inset:0; z-index:-2; background-size:cover; background-position:center; transform:scale(1.06); animation:ken 16s ease-out forwards;}
+  .bgvid{position:absolute; inset:0; z-index:-2; width:100%; height:100%; object-fit:cover;}
   .kb{}
   @keyframes ken{to{transform:scale(1);}}
   .s-hero::after{content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(6,11,24,.55) 0%, rgba(6,11,24,.2) 40%, rgba(6,11,24,.9) 100%);}
   .s-hero .inner{max-width:1000px;}
   .s-hero .eyebrow{color:var(--gold-l); margin-bottom:26px;}
-  .s-hero h1{font-size:clamp(3rem,9vw,8rem); letter-spacing:-.04em; text-wrap:balance;}
+  .s-hero h1{font-size:clamp(3.4rem,9vw,12rem); letter-spacing:-.04em; text-wrap:balance;}
   .s-hero .sub{font-family:var(--serif); font-style:italic; font-size:clamp(1.3rem,3vw,2.3rem); color:#E7EDF8; margin-top:24px; font-weight:400; letter-spacing:0;}
 
   /* ---------- SLIDE 2 · MOVIMENTO (split) ---------- */
   .s-move{padding:0; background:var(--paper);}
   .s-move .txt{flex:1; display:flex; flex-direction:column; justify-content:center; padding:8vh 5.5vw;}
-  .s-move .ph{flex:1; background-size:cover; background-position:center; position:relative;}
-  .s-move .ph::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, rgba(244,246,251,.5), transparent 40%);}
+  .s-move .ph{flex:1; background-size:cover; background-position:center; position:relative; overflow:hidden; background:#0A1730;}
+  .s-move .ph video{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;}
+  .s-move .ph::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, rgba(244,246,251,.5), transparent 40%); z-index:1;}
   .s-move .eyebrow{color:var(--gold); margin-bottom:22px;}
-  .s-move h2{font-size:clamp(2.6rem,5.5vw,5rem); color:var(--ink);}
+  .s-move h2{font-size:clamp(2.8rem,5.6vw,7.5rem); color:var(--ink);}
   .s-move h2 em{font-style:normal; color:var(--gold);}
   .s-move .lead{font-family:var(--serif); font-size:clamp(1.3rem,2.4vw,2rem); color:#33425F; margin-top:22px; line-height:1.25; max-width:20ch;}
   .s-move p{color:var(--muted); font-size:clamp(1rem,1.3vw,1.15rem); margin-top:26px; max-width:44ch; line-height:1.6;}
@@ -75,22 +77,23 @@
   .s-prog{background:var(--paper); flex-direction:column; justify-content:center;}
   .s-head{max-width:1300px; margin:0 auto; width:100%;}
   .s-prog .eyebrow{color:var(--gold);}
-  .s-prog h2{font-size:clamp(2.2rem,4.6vw,4rem); color:var(--ink); margin-top:16px; max-width:16ch;}
+  .s-prog h2{font-size:clamp(2.4rem,4.8vw,6rem); color:var(--ink); margin-top:16px; max-width:16ch;}
   .prog-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:20px; max-width:1300px; margin:52px auto 0; width:100%;}
   @media (max-width:1000px){ .prog-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:560px){ .prog-grid{grid-template-columns:1fr 1fr; gap:12px;} }
-  .prog-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px 22px; display:flex; flex-direction:column; align-items:flex-start; gap:16px; min-height:230px; transition:transform .4s, box-shadow .4s; box-shadow:0 1px 2px rgba(11,27,52,.04);}
+  .prog-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px 22px 24px; display:flex; flex-direction:column; align-items:stretch; gap:14px; min-height:290px; transition:transform .4s, box-shadow .4s; box-shadow:0 1px 2px rgba(11,27,52,.04);}
   .prog-card:hover{transform:translateY(-6px); box-shadow:0 30px 60px -30px rgba(11,27,52,.28);}
-  .prog-card .lg{height:46px; display:flex; align-items:center;}
-  .prog-card .lg img{height:100%; width:auto; max-width:140px; object-fit:contain;}
-  .prog-card .ic{width:46px;height:46px;color:var(--gold);}
-  .prog-card h3{font-size:1.12rem; color:var(--ink); letter-spacing:-.01em; margin-top:auto;}
+  .prog-card .lg{width:100%; height:120px; display:flex; align-items:center; justify-content:center; padding:8px 6px 16px; border-bottom:1px solid var(--line);}
+  .prog-card .lg img{max-width:100%; max-height:100%; width:auto; object-fit:contain;}
+  .prog-card .ic{width:100%; height:120px; display:flex; align-items:center; justify-content:center; color:var(--gold); border-bottom:1px solid var(--line); padding-bottom:16px;}
+  .prog-card .ic svg{width:64px; height:64px;}
+  .prog-card h3{font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; margin-top:6px;}
   .prog-card p{font-size:.86rem; color:var(--muted); line-height:1.5;}
 
   /* ---------- SLIDE 4 · PARCERIAS (dark) ---------- */
   .s-part{background:var(--navy); color:#fff; flex-direction:column; justify-content:center;}
   .s-part .eyebrow{color:var(--gold-l);}
-  .s-part h2{font-size:clamp(2.2rem,4.6vw,4rem); margin-top:16px; max-width:18ch;}
+  .s-part h2{font-size:clamp(2.4rem,4.8vw,6rem); margin-top:16px; max-width:18ch;}
   .part-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px; max-width:1300px; margin:48px auto 0; width:100%;}
   @media (max-width:900px){ .part-grid{grid-template-columns:1fr 1fr;} }
   .part-card{background:rgba(255,255,255,.04); border:1px solid var(--line-d); border-radius:18px; padding:26px; backdrop-filter:blur(6px);}
@@ -121,7 +124,7 @@
   .s-carol .ph::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent 60%, rgba(19,30,51,.9));}
   .s-carol .txt{flex:1; display:flex; flex-direction:column; justify-content:center; padding:8vh 6vw;}
   .s-carol .eyebrow{color:var(--gold-l); margin-bottom:24px;}
-  .s-carol h2{font-size:clamp(3rem,7vw,6rem); letter-spacing:-.04em;}
+  .s-carol h2{font-size:clamp(3.4rem,7.5vw,9.5rem); letter-spacing:-.04em;}
   .s-carol .role{font-size:clamp(1rem,1.6vw,1.35rem); color:var(--soft); margin-top:14px; font-weight:500;}
   .s-carol .quote{font-family:var(--serif); font-style:italic; font-size:clamp(1.25rem,2.2vw,1.9rem); color:#EAF0FA; margin-top:36px; line-height:1.35; max-width:26ch; border-left:2px solid var(--gold); padding-left:24px;}
   .s-carol .oka{height:38px; margin-top:34px; width:auto; background:#fff; padding:8px 14px; border-radius:8px;}
@@ -130,7 +133,7 @@
   /* ---------- SLIDE 7 · NOVOS MEMBROS (light logo wall) ---------- */
   .s-mem{background:var(--paper); flex-direction:column; justify-content:center; text-align:center;}
   .s-mem .eyebrow{color:var(--gold);}
-  .s-mem h2{font-size:clamp(2.4rem,5vw,4.4rem); color:var(--ink); margin-top:16px;}
+  .s-mem h2{font-size:clamp(2.6rem,5.2vw,6.5rem); color:var(--ink); margin-top:16px;}
   .s-mem p{color:var(--muted); max-width:60ch; margin:20px auto 0; font-size:clamp(1rem,1.3vw,1.15rem); line-height:1.6;}
   .mem-wall{display:grid; grid-template-columns:repeat(5,1fr); gap:20px; max-width:1150px; margin:50px auto 0; width:100%;}
   @media (max-width:900px){ .mem-wall{grid-template-columns:repeat(3,1fr);} }
@@ -145,7 +148,7 @@
   .s-end::after{content:""; position:absolute; inset:0; z-index:-1; background:radial-gradient(1000px 600px at 50% 30%, rgba(10,23,48,.55), rgba(6,11,24,.94));}
   .s-end .pin{height:clamp(120px,17vw,200px); filter:drop-shadow(0 24px 50px rgba(201,162,75,.4)); }
   .s-end .eyebrow{color:var(--gold-l); margin:34px 0 18px;}
-  .s-end h2{font-size:clamp(2.4rem,6vw,5.2rem); max-width:16ch;}
+  .s-end h2{font-size:clamp(2.8rem,6.5vw,8rem); max-width:16ch;}
   .s-end .sub{color:var(--soft); margin-top:20px; max-width:52ch; font-size:1.05rem; line-height:1.6;}
   .s-end .sign{font-family:var(--serif); font-style:italic; font-size:clamp(1.2rem,2.2vw,1.7rem); color:var(--gold-l); margin-top:30px;}
   .s-end .mk{height:30px; margin-top:26px; opacity:.9;}
@@ -161,7 +164,7 @@
 
   <!-- 1 · HERO -->
   <section class="slide s-hero" data-theme="dark">
-    <div class="bg kb" style="background-image:url(../media/deck/hero.jpg)"></div>
+    <video class="bgvid" autoplay muted loop playsinline poster="../media/deck/skyline.jpg"><source src="../media/deck/hero.mp4" type="video/mp4"></video>
     <div class="inner">
       <p class="eyebrow anim" style="--d:150">Uma iniciativa da Brazilian-American Chamber of Commerce Southeast</p>
       <h1 class="anim" style="--d:300">Bem-vindos ao<br>BACCstage</h1>
@@ -178,7 +181,7 @@
       <p class="lead anim rt" style="--d:260">Construímos uma comunidade que cresce a cada encontro.</p>
       <p class="anim rt" style="--d:420">Cada encontro fortalece conexões, gera oportunidades e aproxima empresários, profissionais e instituições.</p>
     </div>
-    <div class="ph anim sc" style="--d:200; background-image:url(../media/deck/day.jpg)"></div>
+    <div class="ph anim sc" style="--d:200"><video autoplay muted loop playsinline poster="../media/deck/skyline.jpg"><source src="../media/deck/conexoes.mp4" type="video/mp4"></video></div>
   </section>
 
   <!-- 3 · PROGRAMAS -->
@@ -265,7 +268,7 @@
 
   <!-- 8 · MOMENTUM -->
   <section class="slide s-end" data-theme="dark">
-    <div class="bg" style="background-image:url(../media/deck/skyline.jpg)"></div>
+    <video class="bgvid" autoplay muted loop playsinline poster="../media/deck/skyline.jpg"><source src="../media/deck/fechamento.mp4" type="video/mp4"></video>
     <img class="pin anim sc" src="../media/deck/pin_bacc_se.png" alt="Pin BACC-SE">
     <p class="eyebrow anim" style="--d:200">Um novo momentum</p>
     <h2 class="anim" style="--d:320">Um novo momentum começa aqui</h2>
