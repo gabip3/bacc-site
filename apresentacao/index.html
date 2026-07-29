@@ -97,6 +97,7 @@
   .prog-card:hover{transform:translateY(-6px); box-shadow:0 30px 60px -30px rgba(11,27,52,.28);}
   .prog-card .lg{width:100%; height:120px; display:flex; align-items:center; justify-content:center; padding:8px 6px 16px; border-bottom:1px solid var(--line);}
   .prog-card .lg img{max-width:100%; max-height:100%; width:auto; object-fit:contain;}
+  .prog-card .lg.lg-dark{background:#000; border-radius:12px; border-bottom:none; padding:12px 14px;}
   .prog-card .ic{width:100%; height:120px; display:flex; align-items:center; justify-content:center; color:var(--gold); border-bottom:1px solid var(--line); padding-bottom:16px;}
   .prog-card .ic svg{width:64px; height:64px;}
   .prog-card h3{font-size:1.18rem; color:var(--ink); letter-spacing:-.01em; margin-top:6px;}
@@ -120,7 +121,7 @@
   .s-time .eyebrow{color:var(--gold-l);}
   .s-time h2{font-size:clamp(2.2rem,4.6vw,3.8rem); margin-top:14px;}
   .s-time .sub{color:var(--muted-d); margin-top:14px; max-width:60ch; font-size:1.05rem;}
-  .tl{margin-top:72px; overflow-x:auto; padding-bottom:18px; scrollbar-width:none;}
+  .tl{margin-top:54px; overflow-x:auto; padding:34px 0 24px; scrollbar-width:none;}
   .tl::-webkit-scrollbar{display:none;}
   .tl-row{display:flex; min-width:min-content; position:relative;}
   .tl-row::before{content:""; position:absolute; top:16px; left:10px; right:10px; height:3px; border-radius:3px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transform:scaleX(0); transform-origin:left center; transition:transform 1.6s cubic-bezier(.16,.8,.3,1) .15s;}
@@ -137,7 +138,7 @@
   .tl-item:nth-child(5){--sd:.78s} .tl-item:nth-child(6){--sd:.90s} .tl-item:nth-child(7){--sd:1.02s} .tl-item:nth-child(8){--sd:1.14s}
   .slide.on .tl-item .node{transition-delay:var(--sd);}
   .slide.on .tl-item .date, .slide.on .tl-item .ev, .slide.on .tl-item .tag{transition-delay:calc(var(--sd) + .1s);}
-  .tl-spark{position:absolute; top:10px; left:1.5%; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 0 16px 6px var(--gold-l), 0 0 38px 15px rgba(201,162,75,.55); z-index:2; opacity:0; pointer-events:none;}
+  .tl-spark{position:absolute; top:10px; left:1.5%; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 0 12px 4px var(--gold-l), 0 0 24px 7px rgba(201,162,75,.5); z-index:2; opacity:0; pointer-events:none;}
   .slide.on .tl-spark{animation:tlspark 17s linear infinite 1.9s;}
   @keyframes tlspark{
     0%{left:1.5%; opacity:0}
@@ -258,7 +259,7 @@
       <div class="prog-card anim" style="--d:400"><div class="lg"><img src="../media/deck/bacctalks_logo.png" alt="BACCtalks"></div><h3>BACCtalks</h3><p>Conversas que inspiram e conectam.</p></div>
       <div class="prog-card anim" style="--d:500"><div class="lg"><img src="../media/deck/entre_cafes_logo.png" alt="Entre Cafés"></div><h3>Entre Cafés</h3><p>Networking próximo e informal.</p></div>
       <div class="prog-card anim" style="--d:600">
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h14"/><path d="M13 4l4 4-4 4"/><path d="M21 16H7"/><path d="M11 20l-4-4 4-4"/></svg></div>
+        <div class="lg"><img src="../media/deck/leadership.png" alt="Leadership Exchange"></div>
         <h3>Leadership Exchange</h3><p>Lideranças que trocam e crescem juntas.</p>
       </div>
       <div class="prog-card anim" style="--d:700"><div class="lg"><img src="../media/deck/iwd_logo.png" alt="International Women's Day"></div><h3>International Women's Day</h3><p>Celebrando e conectando mulheres líderes.</p></div>
