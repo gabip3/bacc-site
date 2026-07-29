@@ -49,15 +49,16 @@
   @keyframes kbscroll{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,11px)}}
 
   /* ---------- SLIDE 1 · HERO ---------- */
-  .s-hero{color:#fff; align-items:flex-end;}
+  .s-hero{color:#fff; align-items:center; justify-content:center; text-align:center;}
+  .s-hero .hero-logo{height:clamp(66px,9vw,155px); width:auto; margin-bottom:32px;}
   .s-hero .bg{position:absolute; inset:0; z-index:-2; background-size:cover; background-position:center; transform:scale(1.06); animation:ken 16s ease-out forwards;}
   .bgvid{position:absolute; inset:0; z-index:-2; width:100%; height:100%; object-fit:cover;}
   .kb{}
   @keyframes ken{to{transform:scale(1);}}
   .s-hero::after{content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(6,11,24,.55) 0%, rgba(6,11,24,.2) 40%, rgba(6,11,24,.9) 100%);}
-  .s-hero .inner{max-width:1000px;}
+  .s-hero .inner{max-width:1400px; display:flex; flex-direction:column; align-items:center;}
   .s-hero .eyebrow{color:var(--gold-l); margin-bottom:26px;}
-  .s-hero h1{font-size:clamp(3.4rem,9vw,12rem); letter-spacing:-.04em; text-wrap:balance;}
+  .s-hero h1{font-size:clamp(1.7rem,6.6vw,10.5rem); letter-spacing:-.035em; white-space:nowrap;}
   .s-hero .sub{font-family:var(--serif); font-style:italic; font-size:clamp(1.3rem,3vw,2.3rem); color:#E7EDF8; margin-top:24px; font-weight:400; letter-spacing:0;}
 
   /* ---------- SLIDE 2 · MOVIMENTO (split) ---------- */
@@ -174,11 +175,11 @@
   <section class="slide s-hero" data-theme="dark">
     <video class="bgvid" autoplay muted loop playsinline poster="../media/deck/skyline.jpg"><source src="../media/deck/hero.mp4" type="video/mp4"></video>
     <div class="inner">
-      <p class="eyebrow anim" style="--d:150">Uma iniciativa da Brazilian-American Chamber of Commerce Southeast</p>
-      <h1 class="anim" style="--d:300">Bem-vindos ao<br>BACCstage</h1>
-      <p class="sub anim" style="--d:600">Conectando pessoas, ideias e oportunidades.</p>
+      <img class="hero-logo anim" style="--d:100" src="../media/deck/bacc_white.png" alt="BACC-SE">
+      <p class="eyebrow anim" style="--d:280">Uma iniciativa da Brazilian-American Chamber of Commerce Southeast</p>
+      <h1 class="anim" style="--d:430">Bem-vindos ao BACCstage</h1>
+      <p class="sub anim" style="--d:680">Conectando pessoas, ideias e oportunidades.</p>
     </div>
-    <div class="cue"><span class="m"></span>rolar</div>
   </section>
 
   <!-- 2 · MOVIMENTO -->
@@ -316,8 +317,8 @@
           dots.forEach(function(d,di){ d.classList.toggle('active', di===i); d.classList.toggle('dark', !dark); });
           counter.textContent = pad(i+1) + ' / ' + pad(slides.length);
           counter.classList.toggle('dark', !dark);
-          // brandmark branco: só aparece nos slides escuros
-          brand.style.display = dark ? 'block' : 'none';
+          // brandmark branco: aparece nos slides escuros, exceto o slide 1 (que já tem o logo grande)
+          brand.style.display = (dark && i !== 0) ? 'block' : 'none';
         }
       });
     }, { root: deck, threshold: [0, .55, 1] });
