@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BACCstage · Temporada 2026 · BACC-SE</title>
+<meta name="description" content="Apresentação BACCstage — Brazilian-American Chamber of Commerce Southeast. Temporada 2026.">
+<style>
+  :root{
+    --navy:#0A1730; --navy2:#0C1E3E; --ink:#0B1B34; --graphite:#131E33;
+    --paper:#F4F6FB; --paper2:#EEF1F7; --white:#fff;
+    --muted:#6A7896; --muted-d:#9DB0D2; --soft:#C9D5EA;
+    --gold:#C9A24B; --gold-l:#E6C579;
+    --line:#E4E9F2; --line-d:#22335A;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,"Noto Sans",sans-serif;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%;}
+  body{font-family:var(--sans); color:var(--ink); background:#060D1C; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility; overflow:hidden;}
+
+  .deck{height:100vh; height:100svh; overflow-y:scroll; scroll-snap-type:y mandatory; scroll-behavior:smooth; scrollbar-width:none;}
+  .deck::-webkit-scrollbar{display:none;}
+  .slide{position:relative; height:100vh; height:100svh; scroll-snap-align:start; overflow:hidden; display:flex; padding:6.5vh 7vw;}
+  @media (max-width:760px){ .slide{padding:64px 26px;} }
+
+  h1,h2,h3{letter-spacing:-.025em; line-height:1; font-weight:700;}
+  .eyebrow{font-size:clamp(.66rem,1vw,.8rem); font-weight:700; letter-spacing:.26em; text-transform:uppercase;}
+
+  /* entrance animation system */
+  .anim{opacity:0; transform:translateY(34px); transition:opacity 1s cubic-bezier(.16,.8,.3,1), transform 1s cubic-bezier(.16,.8,.3,1); transition-delay:calc(var(--d,0) * 1ms);}
+  .anim.rt{transform:translateX(-40px);}
+  .anim.sc{transform:scale(.9);}
+  .slide.on .anim{opacity:1; transform:none;}
+  @media (prefers-reduced-motion:reduce){ .anim{opacity:1!important; transform:none!important; transition:none!important;} .kb{animation:none!important;} }
+
+  /* progress dots */
+  .dots{position:fixed; right:26px; top:50%; transform:translateY(-50%); z-index:60; display:flex; flex-direction:column; gap:13px;}
+  .dots button{width:9px; height:9px; border-radius:50%; border:1.5px solid rgba(255,255,255,.5); background:transparent; cursor:pointer; padding:0; transition:all .3s;}
+  .dots button.dark{border-color:rgba(11,27,52,.35);}
+  .dots button.active{background:var(--gold); border-color:var(--gold); transform:scale(1.25);}
+  @media (max-width:760px){ .dots{right:12px; gap:10px;} .dots button{width:7px;height:7px;} }
+  .counter{position:fixed; left:26px; bottom:22px; z-index:60; font-size:.78rem; letter-spacing:.14em; color:rgba(255,255,255,.6); font-variant-numeric:tabular-nums;}
+  .counter.dark{color:rgba(11,27,52,.5);}
+  .brandmark{position:fixed; left:28px; top:26px; z-index:60; height:26px; opacity:.92;}
+  .cue{position:absolute; left:50%; bottom:26px; transform:translateX(-50%); z-index:5; display:flex; flex-direction:column; align-items:center; gap:8px; font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.55);}
+  .cue .m{width:20px;height:32px;border:1.5px solid rgba(255,255,255,.4);border-radius:11px;position:relative;}
+  .cue .m::after{content:"";position:absolute;left:50%;top:6px;width:3px;height:6px;border-radius:2px;background:var(--gold);transform:translateX(-50%);animation:kbscroll 1.8s infinite;}
+  @keyframes kbscroll{0%{opacity:0;transform:translate(-50%,0)}30%{opacity:1}100%{opacity:0;transform:translate(-50%,11px)}}
+
+  /* ---------- SLIDE 1 · HERO ---------- */
+  .s-hero{color:#fff; align-items:flex-end;}
+  .s-hero .bg{position:absolute; inset:0; z-index:-2; background-size:cover; background-position:center; transform:scale(1.06); animation:ken 16s ease-out forwards;}
+  .kb{}
+  @keyframes ken{to{transform:scale(1);}}
+  .s-hero::after{content:""; position:absolute; inset:0; z-index:-1; background:linear-gradient(180deg, rgba(6,11,24,.55) 0%, rgba(6,11,24,.2) 40%, rgba(6,11,24,.9) 100%);}
+  .s-hero .inner{max-width:1000px;}
+  .s-hero .eyebrow{color:var(--gold-l); margin-bottom:26px;}
+  .s-hero h1{font-size:clamp(3rem,9vw,8rem); letter-spacing:-.04em; text-wrap:balance;}
+  .s-hero .sub{font-family:var(--serif); font-style:italic; font-size:clamp(1.3rem,3vw,2.3rem); color:#E7EDF8; margin-top:24px; font-weight:400; letter-spacing:0;}
+
+  /* ---------- SLIDE 2 · MOVIMENTO (split) ---------- */
+  .s-move{padding:0; background:var(--paper);}
+  .s-move .txt{flex:1; display:flex; flex-direction:column; justify-content:center; padding:8vh 5.5vw;}
+  .s-move .ph{flex:1; background-size:cover; background-position:center; position:relative;}
+  .s-move .ph::after{content:""; position:absolute; inset:0; background:linear-gradient(120deg, rgba(244,246,251,.5), transparent 40%);}
+  .s-move .eyebrow{color:var(--gold); margin-bottom:22px;}
+  .s-move h2{font-size:clamp(2.6rem,5.5vw,5rem); color:var(--ink);}
+  .s-move h2 em{font-style:normal; color:var(--gold);}
+  .s-move .lead{font-family:var(--serif); font-size:clamp(1.3rem,2.4vw,2rem); color:#33425F; margin-top:22px; line-height:1.25; max-width:20ch;}
+  .s-move p{color:var(--muted); font-size:clamp(1rem,1.3vw,1.15rem); margin-top:26px; max-width:44ch; line-height:1.6;}
+  @media (max-width:820px){ .slide.s-move{flex-direction:column;} .s-move .ph{min-height:38vh;} .s-move .txt{padding:52px 26px;} }
+
+  /* ---------- SLIDE 3 · PROGRAMAS (grid) ---------- */
+  .s-prog{background:var(--paper); flex-direction:column; justify-content:center;}
+  .s-head{max-width:1300px; margin:0 auto; width:100%;}
+  .s-prog .eyebrow{color:var(--gold);}
+  .s-prog h2{font-size:clamp(2.2rem,4.6vw,4rem); color:var(--ink); margin-top:16px; max-width:16ch;}
+  .prog-grid{display:grid; grid-template-columns:repeat(5,1fr); gap:20px; max-width:1300px; margin:52px auto 0; width:100%;}
+  @media (max-width:1000px){ .prog-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .prog-grid{grid-template-columns:1fr 1fr; gap:12px;} }
+  .prog-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px 22px; display:flex; flex-direction:column; align-items:flex-start; gap:16px; min-height:230px; transition:transform .4s, box-shadow .4s; box-shadow:0 1px 2px rgba(11,27,52,.04);}
+  .prog-card:hover{transform:translateY(-6px); box-shadow:0 30px 60px -30px rgba(11,27,52,.28);}
+  .prog-card .lg{height:46px; display:flex; align-items:center;}
+  .prog-card .lg img{height:100%; width:auto; max-width:140px; object-fit:contain;}
+  .prog-card .ic{width:46px;height:46px;color:var(--gold);}
+  .prog-card h3{font-size:1.12rem; color:var(--ink); letter-spacing:-.01em; margin-top:auto;}
+  .prog-card p{font-size:.86rem; color:var(--muted); line-height:1.5;}
+
+  /* ---------- SLIDE 4 · PARCERIAS (dark) ---------- */
+  .s-part{background:var(--navy); color:#fff; flex-direction:column; justify-content:center;}
+  .s-part .eyebrow{color:var(--gold-l);}
+  .s-part h2{font-size:clamp(2.2rem,4.6vw,4rem); margin-top:16px; max-width:18ch;}
+  .part-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:20px; max-width:1300px; margin:48px auto 0; width:100%;}
+  @media (max-width:900px){ .part-grid{grid-template-columns:1fr 1fr;} }
+  .part-card{background:rgba(255,255,255,.04); border:1px solid var(--line-d); border-radius:18px; padding:26px; backdrop-filter:blur(6px);}
+  .part-card .chip{background:#fff; border-radius:12px; height:88px; display:flex; align-items:center; justify-content:center; padding:16px; margin-bottom:20px;}
+  .part-card .chip img{max-height:100%; max-width:100%; object-fit:contain;}
+  .part-card h3{font-size:1.12rem; letter-spacing:-.01em;}
+  .part-card p{font-size:.86rem; color:var(--muted-d); margin-top:9px; line-height:1.55;}
+  .s-part .foot{max-width:1300px; margin:40px auto 0; width:100%; font-family:var(--serif); font-style:italic; font-size:clamp(1.2rem,2vw,1.7rem); color:var(--gold-l);}
+
+  /* ---------- SLIDE 5 · TIMELINE (dark) ---------- */
+  .s-time{background:linear-gradient(180deg,#0A1730,#0C1E3E); color:#fff; flex-direction:column; justify-content:center;}
+  .s-time .eyebrow{color:var(--gold-l);}
+  .s-time h2{font-size:clamp(2.2rem,4.6vw,3.8rem); margin-top:14px;}
+  .s-time .sub{color:var(--muted-d); margin-top:14px; max-width:60ch; font-size:1.05rem;}
+  .tl{margin-top:54px; overflow-x:auto; padding-bottom:14px; scrollbar-width:none;}
+  .tl::-webkit-scrollbar{display:none;}
+  .tl-row{display:flex; gap:0; min-width:min-content; position:relative; padding-top:44px;}
+  .tl-row::before{content:""; position:absolute; top:52px; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold) 6%,var(--gold) 94%,transparent);}
+  .tl-item{min-width:150px; flex:1; position:relative; padding:0 12px;}
+  .tl-item .node{position:absolute; top:-32px; left:24px; width:14px; height:14px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 5px rgba(201,162,75,.18);}
+  .tl-item .date{font-weight:800; font-size:1.05rem; color:#fff; font-variant-numeric:tabular-nums;}
+  .tl-item .ev{font-size:.82rem; color:var(--muted-d); margin-top:6px; line-height:1.35;}
+  .tl-item .tag{display:inline-block; margin-top:8px; font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--gold-l); border:1px solid rgba(201,162,75,.4); border-radius:999px; padding:3px 9px;}
+
+  /* ---------- SLIDE 6 · CAROL (product page) ---------- */
+  .s-carol{padding:0; background:var(--graphite); color:#fff;}
+  .s-carol .ph{flex:0 0 46%; background-size:cover; background-position:center top; position:relative;}
+  .s-carol .ph::after{content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent 60%, rgba(19,30,51,.9));}
+  .s-carol .txt{flex:1; display:flex; flex-direction:column; justify-content:center; padding:8vh 6vw;}
+  .s-carol .eyebrow{color:var(--gold-l); margin-bottom:24px;}
+  .s-carol h2{font-size:clamp(3rem,7vw,6rem); letter-spacing:-.04em;}
+  .s-carol .role{font-size:clamp(1rem,1.6vw,1.35rem); color:var(--soft); margin-top:14px; font-weight:500;}
+  .s-carol .quote{font-family:var(--serif); font-style:italic; font-size:clamp(1.25rem,2.2vw,1.9rem); color:#EAF0FA; margin-top:36px; line-height:1.35; max-width:26ch; border-left:2px solid var(--gold); padding-left:24px;}
+  .s-carol .oka{height:38px; margin-top:34px; width:auto; background:#fff; padding:8px 14px; border-radius:8px;}
+  @media (max-width:820px){ .slide.s-carol{flex-direction:column;} .s-carol .ph{flex:0 0 40vh;} .s-carol .ph::after{background:linear-gradient(180deg,transparent 55%,rgba(19,30,51,.95));} .s-carol .txt{padding:44px 26px;} }
+
+  /* ---------- SLIDE 7 · NOVOS MEMBROS (light logo wall) ---------- */
+  .s-mem{background:var(--paper); flex-direction:column; justify-content:center; text-align:center;}
+  .s-mem .eyebrow{color:var(--gold);}
+  .s-mem h2{font-size:clamp(2.4rem,5vw,4.4rem); color:var(--ink); margin-top:16px;}
+  .s-mem p{color:var(--muted); max-width:60ch; margin:20px auto 0; font-size:clamp(1rem,1.3vw,1.15rem); line-height:1.6;}
+  .mem-wall{display:grid; grid-template-columns:repeat(5,1fr); gap:20px; max-width:1150px; margin:50px auto 0; width:100%;}
+  @media (max-width:900px){ .mem-wall{grid-template-columns:repeat(3,1fr);} }
+  @media (max-width:520px){ .mem-wall{grid-template-columns:1fr 1fr;} }
+  .mem-wall .cell{background:#fff; border:1px solid var(--line); border-radius:16px; height:120px; display:flex; align-items:center; justify-content:center; padding:22px; transition:transform .35s, box-shadow .35s;}
+  .mem-wall .cell:hover{transform:translateY(-5px); box-shadow:0 24px 48px -26px rgba(11,27,52,.3);}
+  .mem-wall .cell img{max-height:100%; max-width:100%; object-fit:contain;}
+
+  /* ---------- SLIDE 8 · MOMENTUM (closing) ---------- */
+  .s-end{color:#fff; align-items:center; text-align:center; justify-content:center; flex-direction:column;}
+  .s-end .bg{position:absolute; inset:0; z-index:-2; background-size:cover; background-position:center;}
+  .s-end::after{content:""; position:absolute; inset:0; z-index:-1; background:radial-gradient(1000px 600px at 50% 30%, rgba(10,23,48,.55), rgba(6,11,24,.94));}
+  .s-end .pin{height:clamp(120px,17vw,200px); filter:drop-shadow(0 24px 50px rgba(201,162,75,.4)); }
+  .s-end .eyebrow{color:var(--gold-l); margin:34px 0 18px;}
+  .s-end h2{font-size:clamp(2.4rem,6vw,5.2rem); max-width:16ch;}
+  .s-end .sub{color:var(--soft); margin-top:20px; max-width:52ch; font-size:1.05rem; line-height:1.6;}
+  .s-end .sign{font-family:var(--serif); font-style:italic; font-size:clamp(1.2rem,2.2vw,1.7rem); color:var(--gold-l); margin-top:30px;}
+  .s-end .mk{height:30px; margin-top:26px; opacity:.9;}
+</style>
+</head>
+<body>
+
+<img class="brandmark" id="brandmark" src="../media/deck/bacc_mark.png" alt="BACC-SE">
+<nav class="dots" id="dots" aria-label="Navegação de slides"></nav>
+<div class="counter" id="counter">01 / 08</div>
+
+<main class="deck" id="deck">
+
+  <!-- 1 · HERO -->
+  <section class="slide s-hero" data-theme="dark">
+    <div class="bg kb" style="background-image:url(../media/deck/hero.jpg)"></div>
+    <div class="inner">
+      <p class="eyebrow anim" style="--d:150">Uma iniciativa da Brazilian-American Chamber of Commerce Southeast</p>
+      <h1 class="anim" style="--d:300">Bem-vindos ao<br>BACCstage</h1>
+      <p class="sub anim" style="--d:600">Conectando pessoas, ideias e oportunidades.</p>
+    </div>
+    <div class="cue"><span class="m"></span>rolar</div>
+  </section>
+
+  <!-- 2 · MOVIMENTO -->
+  <section class="slide s-move" data-theme="light">
+    <div class="txt">
+      <p class="eyebrow anim rt">A BACC-SE em movimento</p>
+      <h2 class="anim rt" style="--d:120">Muito além<br>dos <em>eventos</em>.</h2>
+      <p class="lead anim rt" style="--d:260">Construímos uma comunidade que cresce a cada encontro.</p>
+      <p class="anim rt" style="--d:420">Cada encontro fortalece conexões, gera oportunidades e aproxima empresários, profissionais e instituições.</p>
+    </div>
+    <div class="ph anim sc" style="--d:200; background-image:url(../media/deck/day.jpg)"></div>
+  </section>
+
+  <!-- 3 · PROGRAMAS -->
+  <section class="slide s-prog" data-theme="light">
+    <div class="s-head">
+      <p class="eyebrow anim">Nossos programas</p>
+      <h2 class="anim" style="--d:120">Programas que fortalecem nossa comunidade</h2>
+    </div>
+    <div class="prog-grid">
+      <div class="prog-card anim" style="--d:200"><div class="lg"><img src="../media/deck/bacc_academy_logo.png" alt="BACC Academy"></div><h3>BACC Academy</h3><p>Educação e desenvolvimento para empresários.</p></div>
+      <div class="prog-card anim" style="--d:300"><div class="lg"><img src="../media/deck/baccstage_logo.png" alt="BACCstage"></div><h3>BACCstage</h3><p>O palco é dos nossos membros.</p></div>
+      <div class="prog-card anim" style="--d:400"><div class="lg"><img src="../media/deck/bacctalks_logo.png" alt="BACCtalks"></div><h3>BACCtalks</h3><p>Conversas que inspiram e conectam.</p></div>
+      <div class="prog-card anim" style="--d:500"><div class="lg"><img src="../media/deck/entre_cafes_logo.png" alt="Entre Cafés"></div><h3>Entre Cafés</h3><p>Networking próximo e informal.</p></div>
+      <div class="prog-card anim" style="--d:600">
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="46" height="46"><path d="M12 3l2.5 5 5.5.8-4 3.9 1 5.5L12 21l-5-2.8 1-5.5-4-3.9 5.5-.8z"/></svg></div>
+        <h3>Leadership Exchange</h3><p>Lideranças que trocam e crescem juntas.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · PARCERIAS -->
+  <section class="slide s-part" data-theme="dark">
+    <div class="s-head">
+      <p class="eyebrow anim">Parcerias institucionais</p>
+      <h2 class="anim" style="--d:120">Parcerias que ampliam oportunidades</h2>
+    </div>
+    <div class="part-grid">
+      <div class="part-card anim" style="--d:220"><div class="chip"><img src="../media/deck/woodruff_logo.png" alt="Woodruff Arts Center"></div><h3>Woodruff Arts Center</h3><p>Conexão com um dos principais centros culturais dos EUA.</p></div>
+      <div class="part-card anim" style="--d:320"><div class="chip"><img src="../media/deck/uga_logo.png" alt="University of Georgia"></div><h3>University of Georgia</h3><p>Universidade, inovação e negócios mais próximos.</p></div>
+      <div class="part-card anim" style="--d:420"><div class="chip"><img src="../media/deck/clarkatlanta_logo.jpg" alt="Clark Atlanta University"></div><h3>Clark Atlanta University</h3><p>Academia, tecnologia e desenvolvimento em colaboração.</p></div>
+      <div class="part-card anim" style="--d:520"><div class="chip"><img src="../media/deck/atlanta_seal.jpg" alt="City of Atlanta"></div><h3>City of Atlanta</h3><p>Oportunidades por meio de parcerias estratégicas.</p></div>
+    </div>
+    <p class="foot anim" style="--d:640">Mais conexões. Mais oportunidades. Mais valor para nossos membros.</p>
+  </section>
+
+  <!-- 5 · TIMELINE -->
+  <section class="slide s-time" data-theme="dark">
+    <div class="s-head">
+      <p class="eyebrow anim">Temporada Inaugural 2026</p>
+      <h2 class="anim" style="--d:120">O que vem por aí</h2>
+      <p class="sub anim" style="--d:240">BACC Academy, Entre Cafés, Leadership Exchange e BACCstage — três formas de conectar, aprender e crescer juntos.</p>
+    </div>
+    <div class="tl anim" style="--d:360">
+      <div class="tl-row">
+        <div class="tl-item"><span class="node"></span><div class="date">14 Ago</div><div class="ev">BACC Academy</div></div>
+        <div class="tl-item"><span class="node"></span><div class="date">27 Ago</div><div class="ev">BACCstage</div><span class="tag">On-line</span></div>
+        <div class="tl-item"><span class="node"></span><div class="date">11 Set</div><div class="ev">BACC Academy</div></div>
+        <div class="tl-item"><span class="node"></span><div class="date">19 Set</div><div class="ev">Entre Cafés</div></div>
+        <div class="tl-item"><span class="node"></span><div class="date">30 Set</div><div class="ev">BACCstage</div><span class="tag">Presencial</span></div>
+        <div class="tl-item"><span class="node"></span><div class="date">09 Out</div><div class="ev">BACC Academy</div></div>
+        <div class="tl-item"><span class="node"></span><div class="date">29 Out</div><div class="ev">BACCstage</div></div>
+        <div class="tl-item"><span class="node"></span><div class="date">08 Dez</div><div class="ev">BACCstage</div><span class="tag">Confraternização</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · CAROL -->
+  <section class="slide s-carol" data-theme="dark">
+    <div class="ph anim sc" style="background-image:url(../media/deck/carol.jpg)"></div>
+    <div class="txt">
+      <p class="eyebrow anim rt" style="--d:150">Nossa convidada</p>
+      <h2 class="anim rt" style="--d:280">Carol Pepe</h2>
+      <p class="role anim rt" style="--d:420">Founder &amp; CEO · Oklahoma USA LLC</p>
+      <p class="quote anim rt" style="--d:560">Importação e Exportação na Prática: oportunidades, desafios e estratégias para fazer negócios entre Brasil e EUA.</p>
+      <img class="oka anim rt" style="--d:700" src="../media/deck/okahoma_logo.jpg" alt="Oklahoma USA LLC">
+    </div>
+  </section>
+
+  <!-- 7 · NOVOS MEMBROS -->
+  <section class="slide s-mem" data-theme="light">
+    <div class="s-head">
+      <p class="eyebrow anim">BACC-SE · Novos membros corporativos</p>
+      <h2 class="anim" style="--d:120">Sejam bem-vindos à BACC-SE!</h2>
+      <p class="anim" style="--d:240">Hoje temos a alegria de receber novos membros que passam a fazer parte de uma comunidade comprometida com colaboração, desenvolvimento e conexões estratégicas.</p>
+    </div>
+    <div class="mem-wall">
+      <div class="cell anim" style="--d:340"><img src="../media/deck/topnotch_logo_v2.png" alt="Membro"></div>
+      <div class="cell anim" style="--d:410"><img src="../media/deck/bwealth_logo.png" alt="Membro"></div>
+      <div class="cell anim" style="--d:480"><img src="../media/deck/stelladiloreto_logo.jpg" alt="Membro"></div>
+      <div class="cell anim" style="--d:550"><img src="../media/deck/iwd_logo.png" alt="Membro"></div>
+      <div class="cell anim" style="--d:620"><img src="../media/deck/beo_logo.png" alt="Membro"></div>
+    </div>
+  </section>
+
+  <!-- 8 · MOMENTUM -->
+  <section class="slide s-end" data-theme="dark">
+    <div class="bg" style="background-image:url(../media/deck/skyline.jpg)"></div>
+    <img class="pin anim sc" src="../media/deck/pin_bacc_se.png" alt="Pin BACC-SE">
+    <p class="eyebrow anim" style="--d:200">Um novo momentum</p>
+    <h2 class="anim" style="--d:320">Um novo momentum começa aqui</h2>
+    <p class="sub anim" style="--d:480">Cada pin da BACC-SE representa a confiança e a credibilidade construídas ao longo do nosso trabalho — e marca o novo momentum entre Brasil e Estados Unidos.</p>
+    <p class="sign anim" style="--d:640">Conectando pessoas, ideias e oportunidades.</p>
+    <img class="mk anim" style="--d:760" src="../media/deck/bacc_mark.png" alt="BACC-SE">
+  </section>
+
+</main>
+
+<script>
+  (function(){
+    var deck = document.getElementById('deck');
+    var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+    var dotsWrap = document.getElementById('dots');
+    var counter = document.getElementById('counter');
+    var brand = document.getElementById('brandmark');
+    var pad = function(n){ return (n<10?'0':'')+n; };
+    var current = 0;
+
+    // dots
+    slides.forEach(function(s, i){
+      var b = document.createElement('button');
+      b.setAttribute('aria-label', 'Slide ' + (i+1));
+      b.addEventListener('click', function(){ slides[i].scrollIntoView({behavior:'smooth'}); });
+      dotsWrap.appendChild(b);
+    });
+    var dots = Array.prototype.slice.call(dotsWrap.children);
+
+    // entrance + active state via IntersectionObserver
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        var i = slides.indexOf(e.target);
+        if (e.isIntersecting && e.intersectionRatio >= 0.55){
+          e.target.classList.add('on');
+          current = i;
+          var dark = e.target.getAttribute('data-theme') === 'dark';
+          dots.forEach(function(d,di){ d.classList.toggle('active', di===i); d.classList.toggle('dark', !dark); });
+          counter.textContent = pad(i+1) + ' / ' + pad(slides.length);
+          counter.classList.toggle('dark', !dark);
+          // brandmark color: invert on light slides
+          brand.style.filter = dark ? 'none' : 'none';
+          brand.style.opacity = dark ? '.92' : '.6';
+        }
+      });
+    }, { root: deck, threshold: [0, .55, 1] });
+    slides.forEach(function(s){ io.observe(s); });
+
+    // keyboard navigation
+    function go(dir){
+      var n = Math.max(0, Math.min(slides.length-1, current + dir));
+      slides[n].scrollIntoView({behavior:'smooth'});
+    }
+    window.addEventListener('keydown', function(e){
+      if (['ArrowDown','PageDown',' ','Spacebar'].indexOf(e.key) > -1){ e.preventDefault(); go(1); }
+      else if (['ArrowUp','PageUp'].indexOf(e.key) > -1){ e.preventDefault(); go(-1); }
+      else if (e.key === 'Home'){ e.preventDefault(); slides[0].scrollIntoView({behavior:'smooth'}); }
+      else if (e.key === 'End'){ e.preventDefault(); slides[slides.length-1].scrollIntoView({behavior:'smooth'}); }
+    });
+
+    // first slide visible immediately
+    slides[0].classList.add('on');
+  })();
+</script>
+</body>
+</html>
