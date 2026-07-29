@@ -42,7 +42,7 @@
   @media (max-width:760px){ .dots{right:12px; gap:10px;} .dots button{width:7px;height:7px;} }
   .counter{position:fixed; left:26px; bottom:22px; z-index:60; font-size:.78rem; letter-spacing:.14em; color:rgba(255,255,255,.6); font-variant-numeric:tabular-nums;}
   .counter.dark{color:rgba(11,27,52,.5);}
-  .brandmark{position:fixed; left:28px; top:26px; z-index:60; height:26px; opacity:.92;}
+  .brandmark{position:fixed; left:28px; top:26px; z-index:60; height:46px; opacity:.92;}
   .cue{position:absolute; left:50%; bottom:26px; transform:translateX(-50%); z-index:5; display:flex; flex-direction:column; align-items:center; gap:8px; font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.55);}
   .cue .m{width:20px;height:32px;border:1.5px solid rgba(255,255,255,.4);border-radius:11px;position:relative;}
   .cue .m::after{content:"";position:absolute;left:50%;top:6px;width:3px;height:6px;border-radius:2px;background:var(--gold);transform:translateX(-50%);animation:kbscroll 1.8s infinite;}
@@ -50,7 +50,9 @@
 
   /* ---------- SLIDE 1 · HERO ---------- */
   .s-hero{color:#fff; align-items:center; justify-content:center; text-align:center;}
-  .s-hero .hero-logo{height:clamp(66px,9vw,155px); width:auto; margin-bottom:32px;}
+  /* Logo completa (proporcao 1.92:1): bem maior, mas limitada tambem pela altura
+     da tela para nunca empurrar o titulo fora do slide. */
+  .s-hero .hero-logo{height:clamp(120px, min(22vw,30vh), 560px); width:auto; margin-bottom:38px;}
   .s-hero .bg{position:absolute; inset:0; z-index:-2; background-size:cover; background-position:center; transform:scale(1.06); animation:ken 16s ease-out forwards;}
   .bgvid{position:absolute; inset:0; z-index:-2; width:100%; height:100%; object-fit:cover;}
   .kb{}
@@ -92,7 +94,7 @@
   .s-head{max-width:1300px; margin:0 auto; width:100%;}
   .s-prog .eyebrow{color:var(--gold);}
   .s-prog h2{font-size:clamp(2.4rem,4.8vw,6rem); color:var(--ink); margin-top:16px; max-width:16ch;}
-  .prog-grid{display:grid; grid-template-columns:repeat(6,1fr); gap:18px; max-width:1440px; margin:52px auto 0; width:100%;}
+  .prog-grid{display:grid; grid-template-columns:repeat(7,1fr); gap:16px; max-width:1660px; margin:48px auto 0; width:100%;}
   @media (max-width:1000px){ .prog-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:560px){ .prog-grid{grid-template-columns:1fr 1fr; gap:12px;} }
   .prog-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:22px 22px 24px; display:flex; flex-direction:column; align-items:stretch; gap:14px; min-height:290px; transition:transform .4s, box-shadow .4s; box-shadow:0 1px 2px rgba(11,27,52,.04);}
@@ -160,7 +162,7 @@
   .s-mem .eyebrow{color:var(--gold);}
   .s-mem h2{font-size:clamp(1.5rem,5vw,6rem); color:var(--ink); margin-top:16px; white-space:nowrap;}
   .s-mem p{color:var(--muted); max-width:60ch; margin:20px auto 0; font-size:clamp(1rem,1.3vw,1.15rem); line-height:1.6;}
-  .mem-wall{display:grid; grid-template-columns:repeat(5,1fr); gap:18px; max-width:1200px; margin:50px auto 0; width:100%;}
+  .mem-wall{display:grid; grid-template-columns:repeat(4,1fr); gap:18px; max-width:1040px; margin:50px auto 0; width:100%;}
   @media (max-width:900px){ .mem-wall{grid-template-columns:repeat(3,1fr);} }
   @media (max-width:520px){ .mem-wall{grid-template-columns:1fr 1fr;} }
   .mem-wall .cell{background:#fff; border:1px solid var(--line); border-radius:16px; height:155px; display:flex; align-items:center; justify-content:center; padding:16px; transition:transform .35s, box-shadow .35s;}
@@ -184,10 +186,10 @@
   .slide.on .s-end .pin{opacity:1; animation:pinfloat 4.6s ease-in-out infinite; transition:opacity 1.1s ease .1s;}
   @keyframes pinfloat{0%,100%{transform:translateY(0)} 50%{transform:translateY(-20px)}}
   .s-end .eyebrow{color:var(--gold-l); margin:34px 0 18px;}
-  .s-end h2{font-size:clamp(1.6rem,5.4vw,7rem); white-space:nowrap; margin-top:34px;}
+  .s-end h2{font-size:clamp(1.05rem,3vw,7rem); white-space:nowrap; margin-top:34px;}
   .s-end .sub{color:var(--soft); margin-top:20px; max-width:52ch; font-size:1.05rem; line-height:1.6;}
   .s-end .sign{font-family:var(--serif); font-style:italic; font-size:clamp(1.2rem,2.2vw,1.7rem); color:var(--gold-l); margin-top:30px;}
-  .s-end .mk{height:30px; margin-top:26px; opacity:.9;}
+  .s-end .mk{height:56px; margin-top:30px; opacity:.9;}
 </style>
 </head>
 <body>
@@ -203,9 +205,8 @@
     <video class="bgvid" autoplay muted loop playsinline poster="../media/deck/skyline.jpg"><source src="../media/deck/hero.mp4" type="video/mp4"></video>
     <div class="inner">
       <img class="hero-logo anim" style="--d:100" src="../media/deck/bacc_white.png" alt="BACC-SE">
-      <p class="eyebrow anim" style="--d:280">Uma iniciativa da Brazilian-American Chamber of Commerce Southeast</p>
-      <h1 class="anim" style="--d:430">Bem-vindos ao BACCstage</h1>
-      <p class="sub anim" style="--d:680">Conectando pessoas, ideias e oportunidades.</p>
+      <h1 class="anim" style="--d:340">Bem-vindos ao BACCstage</h1>
+      <p class="sub anim" style="--d:560">Conectando pessoas, ideias e oportunidades.</p>
     </div>
   </section>
 
@@ -238,7 +239,7 @@
   <!-- 3 · PROGRAMAS -->
   <section class="slide s-prog" data-theme="light">
     <div class="s-head">
-      <p class="eyebrow anim">Nossos programas</p>
+      <p class="eyebrow anim">Programas e eventos</p>
       <h2 class="anim" style="--d:120">Programas que fortalecem nossa comunidade</h2>
     </div>
     <div class="prog-grid">
@@ -251,6 +252,7 @@
         <h3>Leadership Exchange</h3><p>Lideranças que trocam e crescem juntas.</p>
       </div>
       <div class="prog-card anim" style="--d:700"><div class="lg"><img src="../media/deck/iwd_logo.png" alt="International Women's Day"></div><h3>International Women's Day</h3><p>Celebrando e conectando mulheres líderes.</p></div>
+      <div class="prog-card anim" style="--d:800"><div class="lg"><img src="../media/deck/beo_logo.png" alt="Brazil Economic Outlook"></div><h3>Brazil Economic Outlook</h3><p>Leitura econômica para decisões de negócio.</p></div>
     </div>
   </section>
 
@@ -272,9 +274,9 @@
   <!-- 5 · TIMELINE -->
   <section class="slide s-time" data-theme="dark">
     <div class="s-head">
-      <p class="eyebrow anim">Temporada Inaugural 2026</p>
+      <p class="eyebrow anim">Calendário 2026</p>
       <h2 class="anim" style="--d:120">O que vem por aí</h2>
-      <p class="sub anim" style="--d:240">BACC Academy, Entre Cafés, Leadership Exchange e BACCstage: três formas de conectar, aprender e crescer juntos.</p>
+      <p class="sub anim" style="--d:240">BACC Academy, Entre Cafés, Leadership Exchange e BACCstage: quatro formas de conectar, aprender e crescer juntos.</p>
     </div>
     <div class="tl">
       <div class="tl-row">
@@ -313,8 +315,7 @@
       <div class="cell anim" style="--d:340"><img src="../media/deck/topnotch_logo_v2.png" alt="Membro"></div>
       <div class="cell anim" style="--d:410"><img src="../media/deck/bwealth_logo.png" alt="Membro"></div>
       <div class="cell anim" style="--d:480"><img src="../media/deck/stelladiloreto_logo.jpg" alt="Membro"></div>
-      <div class="cell anim" style="--d:550"><img src="../media/deck/beo_logo.png" alt="Membro"></div>
-      <div class="cell anim" style="--d:690"><img src="../media/deck/pagarva.png" alt="Membro"></div>
+      <div class="cell anim" style="--d:550"><img src="../media/deck/pagarva.png" alt="Membro"></div>
     </div>
   </section>
 
@@ -322,8 +323,8 @@
   <section class="slide s-end" data-theme="dark">
     <video class="bgvid" autoplay muted loop playsinline poster="../media/deck/skyline.jpg"><source src="../media/deck/fechamento.mp4" type="video/mp4"></video>
     <img class="pin" src="../media/deck/pin_bacc_se.png" alt="Pin BACC-SE">
-    <h2 class="anim" style="--d:280">Um novo momentum começa aqui</h2>
-    <p class="sub anim" style="--d:480">Cada pin da BACC-SE representa a confiança e a credibilidade construídas ao longo do nosso trabalho, e marca o novo momentum entre Brasil e Estados Unidos.</p>
+    <h2 class="anim" style="--d:280">O novo momentum para relações comerciais entre Brasil e EUA</h2>
+    <p class="sub anim" style="--d:480">Cada pin da BACC-SE representa a confiança e a credibilidade construídas ao longo do nosso trabalho.</p>
     <p class="sign anim" style="--d:640">Conectando pessoas, ideias e oportunidades.</p>
     <img class="mk anim" style="--d:760" src="../media/deck/bacc_white.png" alt="BACC-SE">
   </section>
