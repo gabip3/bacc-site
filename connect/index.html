@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BACC-SE Connect · BACCstage 2026</title>
+<meta name="description" content="A comunidade do BACCstage 2026: participantes, patrocinadores, próximos eventos e fotos.">
+<meta name="theme-color" content="#0B1B34">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="BACC-SE Connect">
+<style>
+  :root{
+    --bg:#0B1B34; --bg2:#12294A; --deep:#081426;
+    --card:rgba(255,255,255,.055); --card2:rgba(255,255,255,.085);
+    --ink:#FFFFFF; --soft:#CBD6E6; --dim:#93A3BC; --dim2:#7E8FB0;
+    --gold:#C9A24B; --gold-l:#E4D7BA;
+    --line:rgba(255,255,255,.12); --line2:rgba(255,255,255,.07);
+    --safe-t:0px; --safe-b:0px;
+  }
+  @supports (padding:env(safe-area-inset-bottom)){
+    :root{ --safe-t:env(safe-area-inset-top); --safe-b:env(safe-area-inset-bottom); }
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+  body{
+    background:var(--bg); color:var(--ink); font-size:16px; line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(110% 55% at 50% 0%, rgba(201,162,75,.16) 0%, rgba(11,27,52,0) 58%),
+      linear-gradient(180deg, #12294A 0%, #0B1B34 38%, #081426 100%);
+    background-repeat:no-repeat; background-attachment:fixed;
+  }
+  button,input{font-family:inherit; font-size:16px; color:inherit;}
+  button{cursor:pointer; border:none; background:none; touch-action:manipulation;}
+  a{color:inherit; text-decoration:none;}
+  .serif{font-family:Georgia,'Times New Roman',serif;}
+  .wrap{max-width:720px; margin:0 auto; padding:0 20px;}
+
+  /* ---------- CAPA ---------- */
+  .capa{text-align:center; padding:calc(var(--safe-t) + 46px) 0 34px;}
+  .capa .logo{height:74px; width:auto; margin:0 auto 26px; display:block;}
+  .kick{font-size:10px; letter-spacing:.42em; text-indent:.42em; color:var(--gold); font-weight:800;}
+  .capa h1{font-family:Georgia,serif; font-size:clamp(2rem,9vw,2.9rem); font-weight:400; line-height:1.1; margin-top:14px; letter-spacing:-.01em;}
+  .capa .quando{color:var(--dim); font-size:14.5px; margin-top:14px; letter-spacing:.02em;}
+  .capa p.lead{color:var(--soft); font-size:16px; line-height:1.62; margin:18px auto 0; max-width:40ch;}
+
+  /* ---------- ATALHOS ---------- */
+  .atalhos{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:30px;}
+  .atalhos a{
+    background:var(--card); border:1px solid var(--line); border-radius:15px;
+    padding:16px 15px; display:flex; align-items:center; gap:12px;
+    font-size:14.5px; font-weight:600; transition:background .2s, transform .12s;
+  }
+  .atalhos a:active{transform:scale(.97); background:var(--card2);}
+  .atalhos .ic{font-size:19px; line-height:1; flex:none;}
+  .atalhos a.destaque{background:var(--gold); border-color:var(--gold); color:#0B1B34; font-weight:800; grid-column:1/-1; justify-content:center;}
+
+  /* ---------- SECAO ---------- */
+  section{padding:44px 0 0;}
+  .cab{display:flex; align-items:baseline; gap:11px; padding-bottom:16px; border-bottom:1px solid var(--line2); margin-bottom:20px;}
+  .cab h2{font-size:19px; font-weight:700; letter-spacing:-.01em;}
+  .cab .n{font-size:12.5px; font-weight:800; color:var(--gold); background:rgba(201,162,75,.14); padding:3px 9px; border-radius:99px;}
+
+  /* ---------- BUSCA ---------- */
+  .busca{position:relative; margin-bottom:14px;}
+  .busca input{
+    width:100%; background:rgba(255,255,255,.055); border:1px solid var(--line); color:#fff;
+    padding:14px 44px 14px 44px; border-radius:13px; outline:none;
+  }
+  .busca input::placeholder{color:var(--dim2);}
+  .busca input:focus{border-color:rgba(201,162,75,.65); background:rgba(255,255,255,.085);}
+  .busca .ic{position:absolute; left:16px; top:50%; transform:translateY(-50%); color:var(--dim2); pointer-events:none;}
+  .busca .x{position:absolute; right:7px; top:50%; transform:translateY(-50%); width:32px; height:32px; border-radius:50%; display:none; place-items:center; color:var(--dim);}
+  .busca input:not(:placeholder-shown) ~ .x{display:grid;}
+
+  /* ---------- PARTICIPANTES ---------- */
+  .gente{display:flex; flex-direction:column; gap:8px;}
+  .p{display:flex; align-items:center; gap:13px; background:var(--card); border:1px solid var(--line2); border-radius:13px; padding:13px 15px;}
+  .p .ini{
+    width:38px; height:38px; border-radius:50%; flex:none; display:grid; place-items:center;
+    font-size:13.5px; font-weight:800; color:#0B1B34;
+    background:linear-gradient(150deg, var(--gold-l), var(--gold));
+  }
+  .p .q{min-width:0;}
+  .p .nm{font-size:15.5px; font-weight:600; line-height:1.25; word-break:break-word;}
+  .p .co{font-size:13px; color:var(--dim2); margin-top:2px; word-break:break-word;}
+  .vazio{text-align:center; color:var(--dim2); padding:34px 10px; font-size:15px; line-height:1.6;}
+
+  /* ---------- PATROCINADORES ---------- */
+  .tier{margin-bottom:26px;}
+  .tier .rot{font-size:11px; letter-spacing:.24em; font-weight:800; margin-bottom:13px; display:flex; align-items:center; gap:8px;}
+  .tier.ouro .rot{color:#E4C87E;}
+  .tier.prata .rot{color:#CFD6E2;}
+  .tier.inst .rot{color:var(--dim);}
+  .marcas{display:flex; flex-wrap:wrap; gap:11px;}
+  .marca{
+    background:rgba(255,255,255,.055); border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; display:flex; align-items:center; justify-content:center; flex:1 1 44%; min-height:74px;
+  }
+  .marca img{max-width:100%; max-height:40px; width:auto; object-fit:contain;}
+  /* A House of AHC e horizontal (4,57:1) e a Atlanta e empilhada (2,62:1).
+     Na mesma altura a empilhada fica minuscula, entao ela recebe 1,74x
+     de altura, o que iguala a largura visivel das duas. */
+  .marca img.atl{max-height:70px;}
+  .tier.ouro .marca{border-color:rgba(201,162,75,.4); background:rgba(201,162,75,.08);}
+  .aguardando{background:var(--card); border:1px dashed var(--line); border-radius:14px; padding:20px; text-align:center; color:var(--dim2); font-size:14px; line-height:1.6;}
+
+  /* ---------- EVENTOS ---------- */
+  .ev{display:flex; gap:14px; align-items:flex-start; background:var(--card); border:1px solid var(--line2); border-radius:13px; padding:14px 15px; margin-bottom:8px;}
+  .ev .data{flex:none; width:52px; text-align:center;}
+  .ev .data b{display:block; font-size:19px; font-weight:700; line-height:1; letter-spacing:-.02em;}
+  .ev .data span{display:block; font-size:10.5px; letter-spacing:.14em; color:var(--gold); font-weight:800; margin-top:3px;}
+  .ev .oq{flex:1; min-width:0;}
+  .ev .oq .t{font-size:15.5px; font-weight:600;}
+  .ev .oq .m{font-size:12.5px; color:var(--dim2); margin-top:2px;}
+  .ev .tag{flex:none; font-size:10px; font-weight:800; letter-spacing:.1em; color:var(--gold-l); border:1px solid rgba(201,162,75,.38); padding:4px 8px; border-radius:99px; align-self:center;}
+
+  /* ---------- FOTOS ---------- */
+  .fotos{background:var(--card); border:1px dashed var(--line); border-radius:16px; padding:34px 22px; text-align:center;}
+  .fotos .em{font-size:32px; line-height:1; margin-bottom:14px;}
+  .fotos h3{font-size:16.5px; font-weight:700;}
+  .fotos p{color:var(--dim2); font-size:14px; line-height:1.62; margin-top:9px; max-width:34ch; margin-left:auto; margin-right:auto;}
+
+  /* ---------- FEEDBACK ---------- */
+  .cta{
+    display:flex; align-items:center; gap:15px; background:var(--gold); color:#0B1B34;
+    border-radius:16px; padding:20px 22px; margin-top:6px;
+    box-shadow:0 18px 40px -20px rgba(201,162,75,.55); transition:transform .13s;
+  }
+  .cta:active{transform:scale(.985);}
+  .cta .em{font-size:26px; line-height:1; flex:none;}
+  .cta .tx{flex:1; min-width:0;}
+  .cta .tx b{display:block; font-size:16.5px; font-weight:800;}
+  .cta .tx span{display:block; font-size:13.5px; opacity:.78; margin-top:2px; line-height:1.45;}
+  .cta .seta{flex:none; font-size:20px; font-weight:800;}
+
+  /* ---------- RODAPE ---------- */
+  footer{text-align:center; padding:52px 0 calc(var(--safe-b) + 42px); margin-top:44px; border-top:1px solid var(--line2);}
+  footer .cl{font-size:9.5px; letter-spacing:.34em; color:var(--dim2); font-weight:800;}
+  footer .duo{display:flex; align-items:center; justify-content:center; gap:20px; margin-top:16px; flex-wrap:wrap;}
+  footer .duo img{height:34px; width:auto; opacity:.9;}
+  footer .duo img.atl{height:59px;}
+  footer .duo .sep{width:1px; height:26px; background:rgba(255,255,255,.2);}
+  footer .fim{color:var(--dim2); font-size:12px; margin-top:26px;}
+
+  .anim{opacity:0; transform:translateY(14px); transition:opacity .6s, transform .6s cubic-bezier(.16,.8,.3,1);}
+  .anim.in{opacity:1; transform:none;}
+  @media (prefers-reduced-motion:reduce){ .anim{opacity:1!important; transform:none!important;} }
+  @media (min-width:600px){ .marca{flex:1 1 28%;} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="capa">
+    <img class="logo" src="../media/deck/bacc_white.png" alt="BACC-SE">
+    <div class="kick">BACC-SE CONNECT</div>
+    <h1>A comunidade do BACCstage</h1>
+    <div class="quando">30 de Julho de 2026 · Atlanta, GA</div>
+    <p class="lead">Todos os participantes, patrocinadores e próximos encontros da BACC-SE, num só lugar.</p>
+
+    <div class="atalhos">
+      <a href="#participantes"><span class="ic">&#128101;</span> Participantes</a>
+      <a href="#patrocinadores"><span class="ic">&#127942;</span> Patrocinadores</a>
+      <a href="#eventos"><span class="ic">&#128197;</span> Próximos eventos</a>
+      <a href="#fotos"><span class="ic">&#128248;</span> Fotos</a>
+      <a class="destaque" href="../feedback/?lang=pt"><span class="ic">&#11088;</span> Avaliar o evento</a>
+    </div>
+  </div>
+
+  <!-- ================= PARTICIPANTES ================= -->
+  <section id="participantes" class="anim">
+    <div class="cab"><h2>Participantes</h2><span class="n" id="conta"></span></div>
+    <div class="busca">
+      <svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Buscar nome ou empresa" aria-label="Buscar participante">
+      <button class="x" id="limpar" aria-label="Limpar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="gente" id="gente"></div>
+    <div class="vazio" id="semNada" hidden></div>
+  </section>
+
+  <!-- ================= PATROCINADORES ================= -->
+  <section id="patrocinadores" class="anim">
+    <div class="cab"><h2>Patrocinadores</h2></div>
+
+    <div class="tier ouro" id="tierOuro">
+      <div class="rot"><span>&#129351;</span> PATROCINADORES OURO</div>
+      <div class="marcas" id="ouro"></div>
+    </div>
+
+    <div class="tier prata" id="tierPrata">
+      <div class="rot"><span>&#129352;</span> PATROCINADORES PRATA</div>
+      <div class="marcas" id="prata"></div>
+    </div>
+
+    <div class="tier inst">
+      <div class="rot">REALIZAÇÃO INSTITUCIONAL</div>
+      <div class="marcas">
+        <div class="marca"><img src="../media/deck/house.png" alt="House of AHC"></div>
+        <div class="marca"><img class="atl" src="../media/deck/ahc_light.png" alt="Atlanta Home Concierge"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EVENTOS ================= -->
+  <section id="eventos" class="anim">
+    <div class="cab"><h2>Próximos eventos</h2><span class="n">2026</span></div>
+    <div id="listaEventos"></div>
+  </section>
+
+  <!-- ================= FOTOS ================= -->
+  <section id="fotos" class="anim">
+    <div class="cab"><h2>Fotos oficiais</h2></div>
+    <div class="fotos">
+      <div class="em">&#128248;</div>
+      <h3>Em breve</h3>
+      <p>As fotos oficiais do BACCstage serão publicadas aqui poucos dias depois do evento. Guarde este link.</p>
+    </div>
+  </section>
+
+  <!-- ================= FEEDBACK ================= -->
+  <section class="anim">
+    <div class="cab"><h2>Sua opinião</h2></div>
+    <a class="cta" href="../feedback/?lang=pt">
+      <span class="em">&#11088;</span>
+      <span class="tx"><b>Avaliar o evento</b><span>Leva menos de um minuto e ajuda muito.</span></span>
+      <span class="seta">&rsaquo;</span>
+    </a>
+  </section>
+
+  <footer>
+    <div class="cl">REALIZAÇÃO</div>
+    <div class="duo">
+      <img src="../media/deck/house.png" alt="House of AHC">
+      <span class="sep"></span>
+      <img class="atl" src="../media/deck/ahc_light.png" alt="Atlanta Home Concierge">
+    </div>
+    <div class="fim">BACC-SE · Brazilian-American Chamber of Commerce Southeast</div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var LISTA = `
+Annette Cornett, Copa Airlines
+Bruna Lopes, MJV Technology and Innovation
+Bruno Perez de Almeida Lopez, BRUNO LOPES LAW
+Caetano Nobre, Pagarva Inc.
+Carlos Ranzani, Drs. Quantum
+Carolina Marmo Pepe, Okahoma
+Celso Pinho, BACC
+Cinthia Almeida, Cinthia Almeida Personal Marketing Consulting
+Dallas Almeida, Dellitech
+Danielle R. Asis, B Wealth Consulting
+Danila Palmieri, Connect Solutions
+Ewerton Bordini, i7 Signs
+Fabrício Fernandes, KPMG
+Gisele Gofman, BACC
+Guilherme Macedo, Ademicon
+Helmer Pacheco, MK Atelier
+Hemelyh Lopes-DePaula, Premium Insurance Group
+Iuri Artiaga, Top Notch Remodeling
+Jordana Scussel, Yuppie Magazine
+Julia Bandle, Brazilian American Chamber of Commerce
+Kamila Salkini, GrowVision Tax & Business Advisory
+Karen Tosi, KT Brazilian Aesthetic
+Karina Graham, Atlanta Fine Homes Sotheby's International Realty
+Leilane Costa Cavalcante, Two Sense Photography
+Lucia Jennings, BACC
+Lucia Ranzani, Drs. Quantum
+Luiz G. Martins De Mattos, VOYCO
+Michely Pacheco, MK Atelier
+Milena Pazini, Top Notch Remodeling
+Nelson, Guaranha Assessoria Esportiva
+Neomar Bassani, Razzo Tecnologia
+Renan Castello Miguel, Timenow
+Renata Lillywhite, Alliance Immigration Law
+Rodrigo Souto Souza, Business Brazil USA
+Rosana Lima, Minas Grill
+`;
+
+  /* Para preencher os patrocinadores, basta acrescentar aqui.
+     Cada item: {nome:'...', logo:'../media/deck/arquivo.png'}
+     Sem logo, aparece o nome escrito. Tier vazio some da pagina. */
+  var OURO  = [];
+  var PRATA = [];
+
+  var EVENTOS = [
+    {dia:'14', mes:'AGO', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empresários'},
+    {dia:'27', mes:'AGO', titulo:'BACCstage',     nota:'O palco é dos nossos membros', tag:'On-line'},
+    {dia:'11', mes:'SET', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empresários'},
+    {dia:'19', mes:'SET', titulo:'Entre Cafés',   nota:'Networking próximo e informal'},
+    {dia:'30', mes:'SET', titulo:'BACCstage',     nota:'O palco é dos nossos membros', tag:'Presencial'},
+    {dia:'09', mes:'OUT', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empresários'},
+    {dia:'29', mes:'OUT', titulo:'BACCstage',     nota:'O palco é dos nossos membros'},
+    {dia:'08', mes:'DEZ', titulo:'BACCstage',     nota:'Confraternização de fim de ano', tag:'Confraternização'}
+  ];
+
+  function $(id){ return document.getElementById(id); }
+  function norm(s){ return (s||'').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase().trim(); }
+  function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  /* ---------- participantes ---------- */
+  var gente = LISTA.split('\n').map(function(l){ return l.replace(/\s+/g,' ').trim(); })
+    .filter(function(l){ return l; })
+    .map(function(l){
+      var p = l.split(',');
+      var nome = p[0].trim();
+      var partes = nome.split(' ').filter(Boolean);
+      var ini = (partes[0]||'').charAt(0) + (partes.length > 1 ? partes[partes.length-1].charAt(0) : '');
+      return { nome: nome, empresa: p.slice(1).join(',').trim(), ini: ini.toUpperCase() };
+    });
+
+  function pintar(){
+    var termo = norm($('q').value);
+    var vis = gente.filter(function(g){
+      return !termo || norm(g.nome + ' ' + g.empresa).indexOf(termo) !== -1;
+    });
+    $('conta').textContent = termo ? (vis.length + ' de ' + gente.length) : gente.length;
+
+    if (!vis.length){
+      $('gente').innerHTML = '';
+      $('semNada').hidden = false;
+      $('semNada').innerHTML = 'Nada encontrado para "' + esc($('q').value) + '".';
+      return;
+    }
+    $('semNada').hidden = true;
+    $('gente').innerHTML = vis.map(function(g){
+      return '<div class="p"><div class="ini">' + esc(g.ini) + '</div><div class="q">'
+           + '<div class="nm">' + esc(g.nome) + '</div>'
+           + (g.empresa ? '<div class="co">' + esc(g.empresa) + '</div>' : '')
+           + '</div></div>';
+    }).join('');
+  }
+  $('q').addEventListener('input', pintar);
+  $('limpar').addEventListener('click', function(){ $('q').value = ''; pintar(); $('q').focus(); });
+  pintar();
+
+  /* ---------- patrocinadores ---------- */
+  function tier(lista, alvo, secao){
+    if (!lista.length){ secao.style.display = 'none'; return; }
+    secao.style.display = '';
+    alvo.innerHTML = lista.map(function(m){
+      return '<div class="marca">' + (m.logo
+        ? '<img src="' + esc(m.logo) + '" alt="' + esc(m.nome) + '">'
+        : '<span style="font-weight:700;font-size:14.5px;text-align:center;">' + esc(m.nome) + '</span>') + '</div>';
+    }).join('');
+  }
+  tier(OURO,  $('ouro'),  $('tierOuro'));
+  tier(PRATA, $('prata'), $('tierPrata'));
+
+  /* ---------- eventos ---------- */
+  $('listaEventos').innerHTML = EVENTOS.map(function(e){
+    return '<div class="ev"><div class="data"><b>' + esc(e.dia) + '</b><span>' + esc(e.mes) + '</span></div>'
+         + '<div class="oq"><div class="t">' + esc(e.titulo) + '</div><div class="m">' + esc(e.nota) + '</div></div>'
+         + (e.tag ? '<span class="tag">' + esc(e.tag) + '</span>' : '') + '</div>';
+  }).join('');
+
+  /* ---------- entrada suave ---------- */
+  if ('IntersectionObserver' in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ if (e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+    }, {threshold:0.1});
+    [].forEach.call(document.querySelectorAll('.anim'), function(el){ io.observe(el); });
+  } else {
+    [].forEach.call(document.querySelectorAll('.anim'), function(el){ el.classList.add('in'); });
+  }
+})();
+</script>
+</body>
+</html>
