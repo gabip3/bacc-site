@@ -41,6 +41,28 @@
   .dots button.active{background:var(--gold); border-color:var(--gold); transform:scale(1.25);}
   @media (max-width:760px){ .dots{right:12px; gap:10px;} .dots button{width:7px;height:7px;} }
   .counter{position:fixed; left:26px; bottom:22px; z-index:60; font-size:.78rem; letter-spacing:.14em; color:rgba(255,255,255,.6); font-variant-numeric:tabular-nums;}
+
+  /* Setas para quem estiver controlando. Nascem escondidas e so aparecem
+     quando o mouse mexe, sumindo em 2,5s. Assim ajudam quem nao conhece o
+     teclado e nunca aparecem no telao durante a apresentacao. */
+  .seta{
+    position:fixed; top:50%; transform:translateY(-50%); z-index:60;
+    width:clamp(44px,3.4vw,74px); height:clamp(44px,3.4vw,74px); border-radius:50%;
+    border:1px solid rgba(255,255,255,.28); background:rgba(10,23,48,.42);
+    display:grid; place-items:center; cursor:pointer; padding:0;
+    color:rgba(255,255,255,.85); backdrop-filter:blur(8px);
+    opacity:0; pointer-events:none;
+    transition:opacity .35s ease, background .2s, border-color .2s, transform .15s;
+  }
+  .seta svg{width:42%; height:42%;}
+  .seta.esq{left:clamp(14px,1.6vw,34px);}
+  .seta.dir{right:clamp(14px,1.6vw,34px);}
+  body.mexeu .seta{opacity:1; pointer-events:auto;}
+  .seta:hover{background:rgba(201,162,75,.9); border-color:var(--gold); color:#0A1730;}
+  .seta:active{transform:translateY(-50%) scale(.92);}
+  .seta.dark{border-color:rgba(11,27,52,.22); background:rgba(255,255,255,.6); color:#0B1B34;}
+  .seta.dark:hover{background:var(--gold); border-color:var(--gold); color:#0A1730;}
+  @media (max-width:760px){ .seta{display:none;} }
   .counter.dark{color:rgba(11,27,52,.5);}
   .brandmark{position:fixed; left:28px; top:26px; z-index:60; height:46px; opacity:.92;}
   .cue{position:absolute; left:50%; bottom:26px; transform:translateX(-50%); z-index:5; display:flex; flex-direction:column; align-items:center; gap:8px; font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.55);}
@@ -275,11 +297,18 @@
 <nav class="dots" id="dots" aria-label="Navegação de slides"></nav>
 <div class="counter" id="counter">01 / 08</div>
 
+<button class="seta esq" id="setaEsq" aria-label="Slide anterior">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+<button class="seta dir" id="setaDir" aria-label="Próximo slide">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+</button>
+
 <main class="deck" id="deck">
 
   <!-- 1 · ABERTURA -->
   <section class="slide s-hero" data-theme="dark">
-    <img class="bgvid" src="../media/deck/skyline.jpg" alt="">
+    <video class="bgvid" autoplay muted loop playsinline preload="auto" poster="../media/deck/skyline.jpg"><source src="../media/deck/hero.mp4" type="video/mp4"></video>
     <div class="inner">
       <img class="hero-logo anim" style="--d:100" src="../media/deck/bacc_white.png" alt="BACC-SE">
       <h1 class="anim" style="--d:340">Bem-vindos ao BACCstage</h1>
@@ -322,7 +351,7 @@
       <p class="lead anim rt" style="--d:260">Construímos uma comunidade que cresce a cada encontro.</p>
       <p class="anim rt" style="--d:420">Cada encontro fortalece conexões, gera oportunidades e aproxima empresários, profissionais e instituições.</p>
     </div>
-    <div class="ph anim sc" style="--d:200"><img src="../media/deck/mov2.jpg" alt="Encontro da BACC-SE"></div>
+    <div class="ph anim sc" style="--d:200"><video autoplay muted loop playsinline preload="auto" poster="../media/deck/mov2.jpg"><source src="../media/deck/conexoes.mp4" type="video/mp4"></video></div>
   </section>
 
   <!-- GALERIA · comunidade em ação -->
@@ -434,7 +463,7 @@
 
   <!-- 11 · FECHAMENTO -->
   <section class="slide s-end" data-theme="dark">
-    <img class="bgvid" src="../media/deck/skyline.jpg" alt="">
+    <video class="bgvid" autoplay muted loop playsinline preload="auto" poster="../media/deck/skyline.jpg"><source src="../media/deck/fechamento.mp4" type="video/mp4"></video>
     <img class="pin" src="../media/deck/pin_bacc_se.png" alt="Pin BACC-SE">
     <h2 class="anim" style="--d:280">Um novo capítulo nas relações comerciais entre Brasil e EUA</h2>
     <p class="sub anim" style="--d:480">Cada pin da BACC-SE representa a confiança e a credibilidade construídas ao longo do nosso trabalho.</p>
@@ -501,6 +530,33 @@
       else if (e.key === 'Home'){ e.preventDefault(); slides[0].scrollIntoView({behavior:'smooth'}); }
       else if (e.key === 'End'){ e.preventDefault(); slides[slides.length-1].scrollIntoView({behavior:'smooth'}); }
     });
+
+    // setas discretas para quem estiver controlando
+    var setaEsq = document.getElementById('setaEsq');
+    var setaDir = document.getElementById('setaDir');
+    setaEsq.addEventListener('click', function(){ go(-1); });
+    setaDir.addEventListener('click', function(){ go(1); });
+
+    // aparecem ao mexer o mouse e somem em 2,5s, para nunca ficar no telao
+    var some = null;
+    function acordarSetas(){
+      document.body.classList.add('mexeu');
+      clearTimeout(some);
+      some = setTimeout(function(){ document.body.classList.remove('mexeu'); }, 2500);
+    }
+    window.addEventListener('mousemove', acordarSetas);
+
+    // nos slides claros as setas invertem para nao sumirem no fundo branco
+    var ioSetas = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting && e.intersectionRatio >= 0.55){
+          var claro = e.target.getAttribute('data-theme') !== 'dark';
+          setaEsq.classList.toggle('dark', claro);
+          setaDir.classList.toggle('dark', claro);
+        }
+      });
+    }, { root: deck, threshold: [0, .55, 1] });
+    slides.forEach(function(s){ ioSetas.observe(s); });
 
     // first slide visible immediately
     slides[0].classList.add('on');
