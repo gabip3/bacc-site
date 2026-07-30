@@ -130,7 +130,11 @@
   .tl-row{display:flex; min-width:min-content; position:relative;}
   .tl-row::before{content:""; position:absolute; top:16px; left:10px; right:10px; height:3px; border-radius:3px; background:linear-gradient(90deg,var(--gold),var(--gold-l)); transform:scaleX(0); transform-origin:left center; transition:transform 1.6s cubic-bezier(.16,.8,.3,1) .15s;}
   .slide.on .tl-row::before{transform:scaleX(1);}
-  .tl-item{min-width:220px; flex:1; position:relative; padding:58px 20px 0;}
+  .tl-item{min-width:200px; flex:1; position:relative; padding:58px 20px 0;}
+  /* Oito pontos numa linha estouram a largura em telas menores que o telao,
+     e o ultimo evento sai da tela sem aviso. Aqui eles apertam em vez de sumir. */
+  @media (max-width:1560px){ .tl-item{min-width:150px; padding:58px 14px 0;} .tl-item .date{font-size:1.45rem;} .tl-item .ev{font-size:.95rem;} }
+  @media (max-width:1400px){ .tl-item{min-width:112px; padding:56px 9px 0;} .tl-item .date{font-size:1.15rem;} .tl-item .ev{font-size:.8rem;} .tl-item .tag{font-size:.55rem; padding:2px 7px;} }
   .tl-item .node{position:absolute; top:6px; left:20px; width:24px; height:24px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 8px rgba(201,162,75,.15); transform:scale(0); transition:transform .6s cubic-bezier(.34,1.6,.64,1);}
   .slide.on .tl-item .node{transform:scale(1);}
   .tl-item .date{font-weight:800; font-size:1.7rem; color:#fff; font-variant-numeric:tabular-nums; letter-spacing:-.01em;}
@@ -144,6 +148,23 @@
   .slide.on .tl-item .node{transition-delay:var(--sd);}
   .slide.on .tl-item .date, .slide.on .tl-item .ev, .slide.on .tl-item .tag{transition-delay:calc(var(--sd) + .1s);}
   .tl-spark{position:absolute; top:10px; left:0; width:15px; height:15px; border-radius:50%; background:#fff; box-shadow:0 0 12px 4px var(--gold-l), 0 0 24px 7px rgba(201,162,75,.5); z-index:2; opacity:0; pointer-events:none;}
+
+  /* Fevereiro de 2027 fica fora da linha de propósito: e de outra
+     temporada e, junto dos oito de 2026, empurrava a linha para fora da tela. */
+  .tl-extra{
+    display:flex; align-items:center; gap:clamp(18px,1.8vw,32px);
+    max-width:900px; margin:clamp(26px,2.6vw,48px) auto 0; width:100%;
+    background:rgba(201,162,75,.09); border:1px solid rgba(201,162,75,.34);
+    border-radius:18px; padding:clamp(18px,1.7vw,28px) clamp(20px,2vw,34px);
+  }
+  .tl-extra .ex-data{flex:none; text-align:center; min-width:64px;}
+  .tl-extra .ex-data b{display:block; font-size:clamp(1.3rem,1.7vw,2rem); font-weight:800; letter-spacing:-.01em; line-height:1;}
+  .tl-extra .ex-data span{display:block; font-size:clamp(.66rem,.72vw,.86rem); letter-spacing:.18em; color:var(--gold); font-weight:800; margin-top:5px;}
+  .tl-extra .ex-txt{flex:1; min-width:0; text-align:left;}
+  .tl-extra .ex-nome{font-size:clamp(1.05rem,1.45vw,1.7rem); font-weight:700; letter-spacing:-.01em;}
+  .tl-extra .ex-tag{display:inline-block; vertical-align:2px; margin-left:10px; font-size:clamp(.56rem,.62vw,.72rem); letter-spacing:.12em; text-transform:uppercase; color:var(--gold-l); border:1px solid rgba(201,162,75,.42); border-radius:999px; padding:3px 9px; font-weight:700;}
+  .tl-extra .ex-desc{color:var(--muted-d); font-size:clamp(.86rem,1vw,1.15rem); margin-top:7px; line-height:1.45;}
+  @media (max-width:640px){ .tl-extra{flex-direction:column; text-align:center;} .tl-extra .ex-txt{text-align:center;} }
 
   /* ---------- SLIDE 6 · CAROL (product page) ---------- */
   .s-carol{padding:0; background:var(--graphite); color:#fff;}
@@ -206,26 +227,19 @@
   .s-end .sign{font-family:var(--serif); font-style:italic; font-size:clamp(1.2rem,2.2vw,1.7rem); color:var(--gold-l); margin-top:30px;}
   .s-end .mk{height:56px; margin-top:30px; opacity:.9;}
 
-  /* Assinatura do fechamento: House of AHC e Atlanta Home Concierge.
-     A Atlanta e um lockup empilhado (2,62:1) contra a House horizontal
-     (4,57:1), por isso recebe 1,74x de altura, o que iguala a largura
-     visivel das duas. */
-  .s-end .credito{display:flex; flex-direction:column; align-items:center; gap:clamp(12px,1.1vw,20px); margin-top:clamp(28px,2.6vw,54px);}
-  .s-end .credito .cl{font-size:clamp(8.5px,.62vw,13px); letter-spacing:.36em; text-indent:.36em; color:rgba(255,255,255,.5); font-weight:800;}
-  .s-end .credito .duo{display:flex; align-items:center; gap:clamp(18px,2vw,40px);}
-  .s-end .credito .duo img{height:clamp(24px,2.2vw,48px); width:auto; opacity:.92;}
-  .s-end .credito .duo img.atl{height:clamp(42px,3.8vw,84px);}
-  .s-end .credito .duo .sep{width:1px; height:clamp(22px,2vw,44px); background:rgba(255,255,255,.24); flex:none;}
-  /* Em janela baixa o fechamento junta seis blocos e fica no limite.
-     Aqui os espacos encolhem para nada sair do slide. */
-  @media (max-height:760px){
-    .s-end .sub{margin-top:14px;}
-    .s-end .sign{margin-top:18px;}
-    .s-end .mk{height:42px; margin-top:18px;}
-    .s-end .credito{margin-top:18px; gap:8px;}
-    .s-end .credito .duo img{height:22px;}
-    .s-end .credito .duo img.atl{height:38px;}
-  }
+  /* ---------- SLIDE 12 · REALIZAÇÃO ---------- */
+  /* A Atlanta e um lockup empilhado (2,62:1) contra a House horizontal
+     (4,57:1), por isso recebe 1,74x de altura: e isso que iguala a
+     largura visivel das duas e faz o par parecer equilibrado. */
+  .s-cred{background:linear-gradient(160deg,#101F3C,#0A1730); color:#fff; align-items:center; justify-content:center; flex-direction:column; text-align:center;}
+  .s-cred .eyebrow{color:var(--gold-l); margin-bottom:clamp(34px,4vw,80px);}
+  .s-cred .cred-duo{display:flex; align-items:center; gap:clamp(34px,4.6vw,104px);}
+  .s-cred .cred-duo img{height:clamp(46px,6.6vw,148px); width:auto;}
+  .s-cred .cred-duo img.atl{height:clamp(80px,11.5vw,258px);}
+  .s-cred .cred-duo .sep{width:1px; height:clamp(56px,6.4vw,144px); background:rgba(255,255,255,.22); flex:none;}
+  .s-cred .cred-sub{font-family:var(--serif); font-style:italic; color:var(--gold-l); margin-top:clamp(34px,4vw,80px); font-size:clamp(1.05rem,1.9vw,2.1rem);}
+  @media (max-width:700px){ .s-cred .cred-duo{flex-direction:column; gap:32px;} .s-cred .cred-duo .sep{width:64px; height:1px;} }
+  @media (max-height:760px){ .s-end .sub{margin-top:14px;} .s-end .sign{margin-top:18px;} .s-end .mk{height:42px; margin-top:18px;} }
 </style>
 </head>
 <body>
@@ -351,7 +365,13 @@
         <div class="tl-item"><span class="node"></span><div class="date">09 Out</div><div class="ev">BACC Academy</div></div>
         <div class="tl-item"><span class="node"></span><div class="date">29 Out</div><div class="ev">BACCstage</div></div>
         <div class="tl-item"><span class="node"></span><div class="date">08 Dez</div><div class="ev">BACCstage</div><span class="tag">Confraternização</span></div>
-        <div class="tl-item"><span class="node"></span><div class="date">Fev 27</div><div class="ev">Brazil Economic Outlook</div><span class="tag">Tradicional</span></div>
+      </div>
+    </div>
+    <div class="tl-extra anim" style="--d:1400">
+      <div class="ex-data"><b>FEV</b><span>2027</span></div>
+      <div class="ex-txt">
+        <div class="ex-nome">Brazil Economic Outlook <span class="ex-tag">Tradicional</span></div>
+        <div class="ex-desc">Perspectivas do cenário econômico entre Brasil e EUA</div>
       </div>
     </div>
   </section>
@@ -387,18 +407,21 @@
   <section class="slide s-end" data-theme="dark">
     <img class="bgvid" src="../media/deck/city.jpg" alt="">
     <img class="pin" src="../media/deck/pin_bacc_se.png" alt="Pin BACC-SE">
-    <h2 class="anim" style="--d:280">O novo momentum para relações comerciais entre Brasil e EUA</h2>
+    <h2 class="anim" style="--d:280">Um novo capítulo nas relações comerciais entre Brasil e EUA</h2>
     <p class="sub anim" style="--d:480">Cada pin da BACC-SE representa a confiança e a credibilidade construídas ao longo do nosso trabalho.</p>
     <p class="sign anim" style="--d:640">Conectando pessoas, ideias e oportunidades.</p>
     <img class="mk anim" style="--d:760" src="../media/deck/bacc_white.png" alt="BACC-SE">
-    <div class="credito anim" style="--d:900">
-      <span class="cl">REALIZAÇÃO</span>
-      <div class="duo">
-        <img src="../media/deck/house.png" alt="House of AHC">
-        <span class="sep"></span>
-        <img class="atl" src="../media/deck/ahc_light.png" alt="Atlanta Home Concierge">
-      </div>
+  </section>
+
+  <!-- 12 · REALIZAÇÃO -->
+  <section class="slide s-cred" data-theme="dark">
+    <p class="eyebrow anim">Realização</p>
+    <div class="cred-duo anim" style="--d:220">
+      <img src="../media/deck/house.png" alt="House of AHC">
+      <span class="sep"></span>
+      <img class="atl" src="../media/deck/ahc_light.png" alt="Atlanta Home Concierge">
     </div>
+    <p class="cred-sub anim" style="--d:460">Uma câmara de comércio precisa de uma casa.</p>
   </section>
 
 </main>
