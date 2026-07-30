@@ -183,7 +183,18 @@
   .s-carol h2{font-size:clamp(3.4rem,7.5vw,9.5rem); letter-spacing:-.04em;}
   .s-carol .role{font-size:clamp(1rem,1.6vw,1.35rem); color:var(--soft); margin-top:14px; font-weight:500;}
   .s-carol .quote{font-family:var(--serif); font-style:italic; font-size:clamp(1.25rem,2.2vw,1.9rem); color:#EAF0FA; margin-top:36px; line-height:1.35; max-width:26ch; border-left:2px solid var(--gold); padding-left:24px;}
-  .s-carol .oka{height:38px; margin-top:34px; width:auto; background:#fff; padding:8px 14px; border-radius:8px;}
+  /* Quadro branco: as duas logos tem partes escuras (verde escuro na Okahoma,
+     navy na BACC colorida) que desapareceriam no fundo escuro do slide.
+     align-self impede que o flex estique a imagem e distorca a logo. */
+  .s-carol .oka{
+    box-sizing:content-box;   /* a altura vale para a logo, nao para a logo mais o quadro */
+    height:clamp(34px,3.4vw,76px); width:auto; align-self:flex-start;
+    margin-top:clamp(26px,2.6vw,48px); background:#fff;
+    padding:clamp(7px,.7vw,14px) clamp(11px,1.1vw,22px); border-radius:10px;
+  }
+  /* Lockup empilhado (1,94:1) precisa de mais altura para ter largura
+     parecida com um lockup horizontal. */
+  .s-carol .oka.tall{height:clamp(64px,6.4vw,144px);}
   /* Espelhado: usado no slide seguinte para nao repetir a mesma composicao duas vezes */
   .s-carol.s-flip{flex-direction:row-reverse;}
   .s-carol.s-flip .ph::after{background:linear-gradient(270deg, transparent 60%, rgba(19,30,51,.9));}
@@ -284,6 +295,7 @@
       <h2 class="anim rt" style="--d:280">Lucia Jennings</h2>
       <p class="role anim rt" style="--d:420">CEO &amp; Founder</p>
       <p class="quote anim rt" style="--d:560">Há 30 anos fazendo história, desde 1996.</p>
+      <img class="oka tall anim rt" style="--d:720" src="../media/deck/bacc_color.png" alt="BACC-SE, Brazilian-American Chamber of Commerce Southeast">
     </div>
   </section>
 
@@ -400,6 +412,7 @@
       <h2 class="anim rt" style="--d:280">Carol Pepe</h2>
       <p class="role anim rt" style="--d:420">Founder &amp; CEO · Oklahoma USA LLC</p>
       <p class="quote anim rt" style="--d:560">Importação e Exportação na Prática: oportunidades, desafios e estratégias para fazer negócios entre Brasil e EUA.</p>
+      <img class="oka anim rt" style="--d:720" src="../media/deck/okahoma-logo.png" alt="Okahoma">
     </div>
   </section>
 
