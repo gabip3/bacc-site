@@ -23,7 +23,13 @@
 
   /* fundo: skyline com escurecimento forte, para o texto sempre vencer */
   .fundo{position:fixed; inset:0; z-index:0;}
-  .fundo video, .fundo img{width:100%; height:100%; object-fit:cover; opacity:.38;}
+  /* Dois videos sobrepostos: o skyline roda o tempo todo e o das cores
+     entra por cima nas cartelas do fim. Trocar o src causaria recarga e
+     piscada, entao a troca e so opacidade. */
+  .fundo video, .fundo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.38; transition:opacity 1.4s ease;}
+  .fundo video.cores{opacity:0;}
+  .fundo video.cores.ativo{opacity:.62;}
+  .fundo video.apagado{opacity:0;}
   .fundo::after{
     content:""; position:absolute; inset:0;
     background:
@@ -133,8 +139,11 @@
 <body>
 
   <div class="fundo">
-    <video autoplay muted loop playsinline preload="auto" poster="../media/deck/skyline.jpg">
+    <video id="fundoA" autoplay muted loop playsinline preload="auto" poster="../media/deck/skyline.jpg">
       <source src="../media/deck/hero.mp4" type="video/mp4">
+    </video>
+    <video id="fundoB" class="cores" autoplay muted loop playsinline preload="auto">
+      <source src="../media/deck/fechamento.mp4" type="video/mp4">
     </video>
   </div>
 
@@ -190,9 +199,9 @@
     { tipo:'texto', eyebrow:'Nossos anfitriões', classe:'media', linha:'House of AHC',
       },
 
-    { tipo:'texto', classe:'media', linha:'Um novo capítulo nas relações comerciais entre Brasil e EUA' },
+    { tipo:'texto', fundo:'cores', classe:'media', linha:'Um novo capítulo nas relações comerciais entre Brasil e EUA' },
 
-    { tipo:'texto', classe:'media serifa dourado', linha:'Sejam muito bem-vindos' }
+    { tipo:'texto', fundo:'cores', classe:'media serifa dourado', linha:'Sejam muito bem-vindos' }
   ];
 
   var PROGRAMAS = ['BACC Academy','Entre Cafés','Leadership Exchange Series','BACCstage','Brazil Economic Outlook'];
@@ -244,10 +253,18 @@
   /* monta todas de uma vez: troca de cartela vira so opacidade, sem engasgo */
   var nos = CARTELAS.map(function(c){ var n = montar(c); palco.appendChild(n); return n; });
 
+  var fundoA = document.getElementById('fundoA');
+  var fundoB = document.getElementById('fundoB');
+
   function mostrar(i){
     if (atual >= 0) nos[atual].classList.remove('on');
     atual = (i + nos.length) % nos.length;
     nos[atual].classList.add('on');
+
+    /* fundo das cores nas cartelas de fechamento */
+    var cores = CARTELAS[atual] && CARTELAS[atual].fundo === 'cores';
+    fundoB.classList.toggle('ativo', cores);
+    fundoA.classList.toggle('apagado', cores);
     conta.textContent = (atual + 1) + '/' + nos.length;
     inicio = performance.now();
   }
