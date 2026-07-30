@@ -162,6 +162,11 @@
      Na mesma altura a empilhada fica minuscula, entao ela recebe 1,74x
      de altura, o que iguala a largura visivel das duas. */
   .marca img.atl{max-height:70px;}
+  .marca{flex-direction:column; gap:10px; text-align:center; transition:transform .13s, background .2s;}
+  .marca:active{transform:scale(.98);}
+  .nomeMarca{font-weight:700; font-size:15px; letter-spacing:-.01em;}
+  .marca.t-gold{border:2px solid #E4C87E; background:rgba(228,200,126,.09);}
+  .marca.t-silver{border:2px solid #C8CFDA; background:rgba(200,207,218,.075);}
 
   /* ---------- EVENTOS ---------- */
   .ev{display:flex; gap:14px; align-items:flex-start; background:var(--card); border:1px solid var(--line2); border-radius:13px; padding:14px 15px; margin-bottom:8px;}
@@ -396,12 +401,16 @@ Rosana Lima, Minas Emporium
     'Rosana Lima':                  { ig:'minasgrillbrf',            site:'www.minasemporium.com' , mail:'rolima0909|gmail.com' }
   };
 
-  /* Quem e Gold e quem e Silver. Basta escrever o nome exatamente como
-     esta na lista acima. O anel colorido em volta da inicial e o selo
-     ao lado do nome aparecem sozinhos. Deixe vazio para nao marcar ninguem. */
-  var TIERS = {
-    // 'Nome da Pessoa': 'gold',
-    // 'Outra Pessoa':   'silver'
+  /* A categoria pertence a EMPRESA, e a pessoa herda dela. Assim, quando
+     um novo convidado de empresa patrocinadora entrar na lista, a borda
+     dourada ou prateada aparece sozinha, sem eu precisar mexer aqui. */
+  var TIERS_EMPRESA = {
+    'Drummond Advisors': 'silver'
+  };
+
+  /* Use so para excecoes, quando a pessoa tem categoria diferente da empresa. */
+  var TIERS_PESSOA = {
+    // 'Nome da Pessoa': 'gold'
   };
 
   /* Lista unica de patrocinadores, sem separacao por categoria.
@@ -410,7 +419,8 @@ Rosana Lima, Minas Emporium
      ajustar altura de logos empilhados. */
   var PATROCINADORES = [
     { nome:'House of AHC',           logo:'../media/deck/house.png' },
-    { nome:'Atlanta Home Concierge', logo:'../media/deck/ahc_light.png', classe:'atl' }
+    { nome:'Atlanta Home Concierge', logo:'../media/deck/ahc_light.png', classe:'atl' },
+    { nome:'Drummond Advisors',      site:'drummondadvisors.com', tier:'silver' }
   ];
 
   var EVENTOS = [
@@ -437,10 +447,11 @@ Rosana Lima, Minas Emporium
       var partes = nome.split(' ').filter(Boolean);
       var ini = (partes[0]||'').charAt(0) + (partes.length > 1 ? partes[partes.length-1].charAt(0) : '');
       var lk = LINKS[nome] || {};
+      var empresa = p.slice(1).join(',').trim();
       return {
-        nome: nome, empresa: p.slice(1).join(',').trim(), ini: ini.toUpperCase(),
+        nome: nome, empresa: empresa, ini: ini.toUpperCase(),
         site: lk.site || '', ig: lk.ig || '', mail: lk.mail || '',
-        tier: TIERS[nome] || ''
+        tier: TIERS_PESSOA[nome] || TIERS_EMPRESA[empresa] || ''
       };
     });
 
@@ -504,11 +515,16 @@ Rosana Lima, Minas Emporium
   $('limpar').addEventListener('click', function(){ $('q').value = ''; pintar(); $('q').focus(); });
   pintar();
 
-  /* ---------- patrocinadores, lista unica ---------- */
+  /* ---------- patrocinadores, lista unica com selo de categoria ---------- */
   $('marcas').innerHTML = PATROCINADORES.map(function(m){
-    return '<div class="marca">' + (m.logo
+    var dentro = m.logo
       ? '<img class="' + esc(m.classe || '') + '" src="' + esc(m.logo) + '" alt="' + esc(m.nome) + '">'
-      : '<span style="font-weight:700;font-size:14.5px;text-align:center;">' + esc(m.nome) + '</span>') + '</div>';
+      : '<span class="nomeMarca">' + esc(m.nome) + '</span>';
+    if (m.tier) dentro += '<span class="selo ' + esc(m.tier) + '">' + (m.tier === 'gold' ? 'GOLD' : 'SILVER') + '</span>';
+    var cls = 'marca' + (m.tier ? ' t-' + esc(m.tier) : '');
+    return m.site
+      ? '<a class="' + cls + '" href="' + esc(urlSite(m.site)) + '" target="_blank" rel="noopener noreferrer">' + dentro + '</a>'
+      : '<div class="' + cls + '">' + dentro + '</div>';
   }).join('');
 
   /* ---------- eventos ---------- */
