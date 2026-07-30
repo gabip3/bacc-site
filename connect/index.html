@@ -84,6 +84,23 @@
   .p .q{min-width:0;}
   .p .nm{font-size:15.5px; font-weight:600; line-height:1.25; word-break:break-word;}
   .p .co{font-size:13px; color:var(--dim2); margin-top:2px; word-break:break-word;}
+  .p .chips{display:flex; flex-wrap:wrap; gap:6px; margin-top:9px;}
+  .chip{
+    display:inline-flex; align-items:center; gap:5px; max-width:100%;
+    background:rgba(255,255,255,.07); border:1px solid var(--line); border-radius:99px;
+    padding:5px 10px 5px 8px; font-size:11.5px; font-weight:600; color:var(--soft);
+    transition:background .18s, border-color .18s, transform .12s;
+  }
+  .chip:active{transform:scale(.95);}
+  .chip svg{width:13px; height:13px; flex:none; opacity:.85;}
+  .chip span{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .chip.ig{background:rgba(201,162,75,.12); border-color:rgba(201,162,75,.34); color:var(--gold-l);}
+  @media (hover:hover){
+    .chip:hover{background:rgba(255,255,255,.13); border-color:rgba(255,255,255,.3);}
+    .chip.ig:hover{background:rgba(201,162,75,.22);}
+  }
+  .p{align-items:flex-start;}
+  .p .ini{margin-top:1px;}
   .vazio{text-align:center; color:var(--dim2); padding:34px 10px; font-size:15px; line-height:1.6;}
 
   /* ---------- PATROCINADORES ---------- */
@@ -286,6 +303,42 @@ Rodrigo Souto Souza, Business Brazil USA
 Rosana Lima, Minas Grill
 `;
 
+  /* Site e Instagram vindos da planilha de confirmacoes.
+     Emails e telefones foram deixados de fora de proposito: sao dados
+     pessoais e esta pagina e publica. Entradas invalidas na planilha
+     ("#ERROR!" e "www.i7signs" sem dominio) foram omitidas. */
+  var LINKS = {
+    'Annette Cornett':              { ig:'copaairlinesusa',          site:'www.copaair.com' },
+    'Bruno Perez de Almeida Lopez': { ig:'brunolopeslaw' },
+    'Caetano Nobre':                { ig:'pagarva_port',             site:'www.pagarva.com' },
+    'Carlos Ranzani':               { ig:'dr.ranzani',               site:'drsquantum.com' },
+    'Carolina Marmo Pepe':          { ig:'okahomaimport',            site:'www.okahoma.com.br' },
+    'Cinthia Almeida':              { ig:'cinthiaalmeida.mktpessoal', site:'www.cinthiaalmeida.com' },
+    'Dallas Almeida':               { ig:'dellitech',                site:'dellitech.com' },
+    'Danielle R. Asis':             { ig:'dany_blessed',             site:'bwealthconsulting.com' },
+    'Danila Palmieri':              { ig:'connecttsolutions',        site:'www.connect-solutions.us' },
+    'Ewerton Bordini':              { ig:'i7signs' },
+    'Fabrício Fernandes':           { site:'www.kpmg.com' },
+    'Guilherme Macedo':             { ig:'ademicon.atlanta',         site:'ademicon.com.br/licensed/959706/gmacedo' },
+    'Helmer Pacheco':               { ig:'shopmkatelier',            site:'www.shopmkatelier.com' },
+    'Hemelyh Lopes-DePaula':        { ig:'premiuminsurancegroup',    site:'pigagency.us' },
+    'Iuri Artiaga':                 { ig:'topnotch.remodeling',      site:'www.topnotch-remodeling.com' },
+    'Jordana Scussel':              { ig:'yuppiemag',                site:'yuppiemagazine.com' },
+    'Kamila Salkini':               { ig:'growvision.tax',           site:'www.growvisiontax.com' },
+    'Karen Tosi':                   { ig:'karentosi.aesthetics',     site:'www.ktbrazilianaesthetic.com' },
+    'Karina Graham':                { ig:'karinagraham_realtor',     site:'www.karinagraham.com' },
+    'Leilane Costa Cavalcante':     { ig:'twosensephotography',      site:'www.twosensephoto.com' },
+    'Luiz G. Martins De Mattos':    { ig:'voyco.usa',                site:'voyco.co' },
+    'Michely Pacheco':              { ig:'shopmkatelier',            site:'www.shopmkatelier.com' },
+    'Milena Pazini':                { ig:'topnotch.remodeling',      site:'www.topnotch-remodeling.com' },
+    'Nelson':                       { ig:'guaranha',                 site:'www.guaranhaone.com.br' },
+    'Neomar Bassani':               { site:'razzo.tech' },
+    'Renan Castello Miguel':        { ig:'somostimenow',             site:'www.timenowglobal.com' },
+    'Renata Lillywhite':            { ig:'allianceimmigrationusa',   site:'www.alliancelawusa.com' },
+    'Rodrigo Souto Souza':          { ig:'businessbrazil.usa' },
+    'Rosana Lima':                  { ig:'minasgrillbrf',            site:'www.minasemporium.com' }
+  };
+
   /* Para preencher os patrocinadores, basta acrescentar aqui.
      Cada item: {nome:'...', logo:'../media/deck/arquivo.png'}
      Sem logo, aparece o nome escrito. Tier vazio some da pagina. */
@@ -315,8 +368,15 @@ Rosana Lima, Minas Grill
       var nome = p[0].trim();
       var partes = nome.split(' ').filter(Boolean);
       var ini = (partes[0]||'').charAt(0) + (partes.length > 1 ? partes[partes.length-1].charAt(0) : '');
-      return { nome: nome, empresa: p.slice(1).join(',').trim(), ini: ini.toUpperCase() };
+      var lk = LINKS[nome] || {};
+      return {
+        nome: nome, empresa: p.slice(1).join(',').trim(), ini: ini.toUpperCase(),
+        site: lk.site || '', ig: lk.ig || ''
+      };
     });
+
+  function urlSite(s){ return /^https?:\/\//i.test(s) ? s : 'https://' + s; }
+  function rotuloSite(s){ return s.replace(/^https?:\/\//i,'').replace(/^www\./i,'').replace(/\/$/,''); }
 
   function pintar(){
     var termo = norm($('q').value);
@@ -333,9 +393,23 @@ Rosana Lima, Minas Grill
     }
     $('semNada').hidden = true;
     $('gente').innerHTML = vis.map(function(g){
+      var chips = '';
+      if (g.site){
+        chips += '<a class="chip" href="' + esc(urlSite(g.site)) + '" target="_blank" rel="noopener noreferrer">'
+              +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">'
+              +  '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18"/></svg>'
+              +  '<span>' + esc(rotuloSite(g.site)) + '</span></a>';
+      }
+      if (g.ig){
+        chips += '<a class="chip ig" href="https://instagram.com/' + esc(g.ig) + '" target="_blank" rel="noopener noreferrer">'
+              +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round">'
+              +  '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>'
+              +  '<span>@' + esc(g.ig) + '</span></a>';
+      }
       return '<div class="p"><div class="ini">' + esc(g.ini) + '</div><div class="q">'
            + '<div class="nm">' + esc(g.nome) + '</div>'
            + (g.empresa ? '<div class="co">' + esc(g.empresa) + '</div>' : '')
+           + (chips ? '<div class="chips">' + chips + '</div>' : '')
            + '</div></div>';
     }).join('');
   }
