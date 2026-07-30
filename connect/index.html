@@ -52,7 +52,8 @@
     font-size:14.5px; font-weight:600; transition:background .2s, transform .12s;
   }
   .atalhos a:active{transform:scale(.97); background:var(--card2);}
-  .atalhos .ic{font-size:19px; line-height:1; flex:none;}
+  .atalhos .ic{width:19px; height:19px; flex:none; color:var(--gold); opacity:.95;}
+  .atalhos a.destaque .ic{color:#0B1B34; opacity:1;}
   .atalhos a.destaque{background:var(--gold); border-color:var(--gold); color:#0B1B34; font-weight:800; grid-column:1/-1; justify-content:center;}
 
   /* ---------- SECAO ---------- */
@@ -127,7 +128,7 @@
 
   /* ---------- FOTOS ---------- */
   .fotos{background:var(--card); border:1px dashed var(--line); border-radius:16px; padding:34px 22px; text-align:center;}
-  .fotos .em{font-size:32px; line-height:1; margin-bottom:14px;}
+  .fotos .em{width:40px; height:40px; margin:0 auto 14px; display:block; color:var(--gold); opacity:.85;}
   .fotos h3{font-size:16.5px; font-weight:700;}
   .fotos p{color:var(--dim2); font-size:14px; line-height:1.62; margin-top:9px; max-width:34ch; margin-left:auto; margin-right:auto;}
 
@@ -138,7 +139,7 @@
     box-shadow:0 18px 40px -20px rgba(201,162,75,.55); transition:transform .13s;
   }
   .cta:active{transform:scale(.985);}
-  .cta .em{font-size:26px; line-height:1; flex:none;}
+  .cta .em{width:27px; height:27px; flex:none;}
   .cta .tx{flex:1; min-width:0;}
   .cta .tx b{display:block; font-size:16.5px; font-weight:800;}
   .cta .tx span{display:block; font-size:13.5px; opacity:.78; margin-top:2px; line-height:1.45;}
@@ -171,11 +172,31 @@
     <p class="lead">Todos os participantes, patrocinadores e próximos encontros da BACC-SE, num só lugar.</p>
 
     <div class="atalhos">
-      <a href="#participantes"><span class="ic">&#128101;</span> Participantes</a>
-      <a href="#patrocinadores"><span class="ic">&#127942;</span> Patrocinadores</a>
-      <a href="#eventos"><span class="ic">&#128197;</span> Próximos eventos</a>
-      <a href="#fotos"><span class="ic">&#128248;</span> Fotos</a>
-      <a class="destaque" href="../feedback/?lang=pt"><span class="ic">&#11088;</span> Avaliar o evento</a>
+      <a href="#participantes">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M16 20v-1.6a3.4 3.4 0 0 0-3.4-3.4H6.4A3.4 3.4 0 0 0 3 18.4V20"/><circle cx="9.5" cy="8" r="3.4"/><path d="M21 20v-1.6a3.4 3.4 0 0 0-2.6-3.3M15.6 4.7a3.4 3.4 0 0 1 0 6.6"/>
+        </svg> Participantes
+      </a>
+      <a href="#patrocinadores">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="9" r="5.4"/><path d="M8.6 13.6 7.2 21l4.8-2.6 4.8 2.6-1.4-7.4"/>
+        </svg> Patrocinadores
+      </a>
+      <a href="#eventos">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="3.2" y="5" width="17.6" height="16" rx="2.4"/><path d="M3.2 10h17.6M8.4 3v4M15.6 3v4"/>
+        </svg> Próximos eventos
+      </a>
+      <a href="#fotos">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M3 8.8A2.4 2.4 0 0 1 5.4 6.4h1.5l1.3-2h7.6l1.3 2h1.5A2.4 2.4 0 0 1 21 8.8v8.8a2.4 2.4 0 0 1-2.4 2.4H5.4A2.4 2.4 0 0 1 3 17.6z"/><circle cx="12" cy="13" r="3.6"/>
+        </svg> Fotos
+      </a>
+      <a class="destaque" href="../feedback/?lang=pt">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3.4l2.65 5.37 5.93.86-4.29 4.18 1.01 5.9L12 16.91l-5.3 2.8 1.01-5.9L3.42 9.63l5.93-.86z"/>
+        </svg> Avaliar o evento
+      </a>
     </div>
   </div>
 
@@ -210,7 +231,9 @@
   <section id="fotos" class="anim">
     <div class="cab"><h2>Fotos oficiais</h2></div>
     <div class="fotos">
-      <div class="em">&#128248;</div>
+      <svg class="em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 8.8A2.4 2.4 0 0 1 5.4 6.4h1.5l1.3-2h7.6l1.3 2h1.5A2.4 2.4 0 0 1 21 8.8v8.8a2.4 2.4 0 0 1-2.4 2.4H5.4A2.4 2.4 0 0 1 3 17.6z"/><circle cx="12" cy="13" r="3.6"/>
+      </svg>
       <h3>Em breve</h3>
       <p>As fotos oficiais do BACCstage serão publicadas aqui poucos dias depois do evento. Guarde este link.</p>
     </div>
@@ -220,7 +243,9 @@
   <section class="anim">
     <div class="cab"><h2>Sua opinião</h2></div>
     <a class="cta" href="../feedback/?lang=pt">
-      <span class="em">&#11088;</span>
+      <svg class="em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3.4l2.65 5.37 5.93.86-4.29 4.18 1.01 5.9L12 16.91l-5.3 2.8 1.01-5.9L3.42 9.63l5.93-.86z"/>
+      </svg>
       <span class="tx"><b>Avaliar o evento</b><span>Leva menos de um minuto e ajuda muito.</span></span>
       <span class="seta">&rsaquo;</span>
     </a>
@@ -249,25 +274,25 @@ Bruno Perez de Almeida Lopez, BRUNO LOPES LAW
 Caetano Nobre, Pagarva Inc.
 Carlos Ranzani, Drs. Quantum
 Carolina Marmo Pepe, Okahoma
-Celso Pinho, BACC
+Celso Pinho, BACC-SE
 Cinthia Almeida, Cinthia Almeida Personal Marketing Consulting
 Dallas Almeida, Dellitech
 Danielle R. Asis, B Wealth Consulting
 Danila Palmieri, Connect Solutions
 Ewerton Bordini, i7 Signs
 Fabrício Fernandes, KPMG
-Gisele Gofman, BACC
+Gisele Gofman, BACC-SE
 Guilherme Macedo, Ademicon
 Helmer Pacheco, MK Atelier
 Hemelyh Lopes-DePaula, Premium Insurance Group
 Iuri Artiaga, Top Notch Remodeling
 Jordana Scussel, Yuppie Magazine
-Julia Bandle, Brazilian American Chamber of Commerce
+Julia Bandle, BACC-SE
 Kamila Salkini, GrowVision Tax & Business Advisory
 Karen Tosi, KT Brazilian Aesthetic
 Karina Graham, Atlanta Fine Homes Sotheby's International Realty
 Leilane Costa Cavalcante, Two Sense Photography
-Lucia Jennings, BACC
+Lucia Jennings, BACC-SE
 Lucia Ranzani, Drs. Quantum
 Luiz G. Martins De Mattos, VOYCO
 Michely Pacheco, MK Atelier
@@ -277,7 +302,7 @@ Neomar Bassani, Razzo Tecnologia
 Renan Castello Miguel, Timenow
 Renata Lillywhite, Alliance Immigration Law
 Rodrigo Souto Souza, Business Brazil USA
-Rosana Lima, Minas Grill
+Rosana Lima, Minas Emporium
 `;
 
   /* Site e Instagram vindos da planilha de confirmacoes.
@@ -290,6 +315,10 @@ Rosana Lima, Minas Grill
     'Caetano Nobre':                { ig:'pagarva_port',             site:'www.pagarva.com' },
     'Carlos Ranzani':               { ig:'dr.ranzani',               site:'drsquantum.com' },
     'Carolina Marmo Pepe':          { ig:'okahomaimport',            site:'www.okahoma.com.br' },
+    'Celso Pinho':                  { site:'bacc-se.org' },
+    'Gisele Gofman':                { site:'bacc-se.org' },
+    'Julia Bandle':                 { site:'bacc-se.org' },
+    'Lucia Jennings':               { site:'bacc-se.org' },
     'Cinthia Almeida':              { ig:'cinthiaalmeida.mktpessoal', site:'www.cinthiaalmeida.com' },
     'Dallas Almeida':               { ig:'dellitech',                site:'dellitech.com' },
     'Danielle R. Asis':             { ig:'dany_blessed',             site:'bwealthconsulting.com' },
