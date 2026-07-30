@@ -408,9 +408,14 @@ Rosana Lima, Minas Emporium
     'Drummond Advisors': 'silver'
   };
 
-  /* Use so para excecoes, quando a pessoa tem categoria diferente da empresa. */
+  /* Categoria de membro, lida das cores de preenchimento da planilha de
+     confirmacoes: FFBF9000 = ouro, FFCCCCCC = prata, FFB6D7A8 = verde.
+     Verde nao recebe marcacao. */
   var TIERS_PESSOA = {
-    // 'Nome da Pessoa': 'gold'
+    'Bruna Lopes':           'gold',
+    'Annette Cornett':       'silver',
+    'Fabrício Fernandes':    'silver',
+    'Renan Castello Miguel': 'silver'
   };
 
   /* Lista unica de patrocinadores, sem separacao por categoria.
@@ -419,8 +424,7 @@ Rosana Lima, Minas Emporium
      ajustar altura de logos empilhados. */
   var PATROCINADORES = [
     { nome:'House of AHC',           logo:'../media/deck/house.png' },
-    { nome:'Atlanta Home Concierge', logo:'../media/deck/ahc_light.png', classe:'atl' },
-    { nome:'Drummond Advisors',      site:'drummondadvisors.com', tier:'silver' }
+    { nome:'Atlanta Home Concierge', logo:'../media/deck/ahc_light.png', classe:'atl' }
   ];
 
   var EVENTOS = [
