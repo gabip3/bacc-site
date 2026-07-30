@@ -26,10 +26,12 @@
   /* Dois videos sobrepostos: o skyline roda o tempo todo e o das cores
      entra por cima nas cartelas do fim. Trocar o src causaria recarga e
      piscada, entao a troca e so opacidade. */
-  .fundo video, .fundo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:.38; transition:opacity 1.4s ease;}
-  .fundo video.cores{opacity:0;}
-  .fundo video.cores.ativo{opacity:.62;}
-  .fundo video.apagado{opacity:0;}
+  .fundo video, .fundo img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:opacity 1.4s ease;}
+  /* A opacidade e escrita pelo JS em vez de classe: estilo inline vence a
+     cascata sempre. E o navegador pausa video invisivel, entao o JS tambem
+     precisa mandar tocar quando ele volta a aparecer. */
+  #fundoA{opacity:.38;}
+  #fundoB{opacity:0;}
   .fundo::after{
     content:""; position:absolute; inset:0;
     background:
@@ -262,9 +264,12 @@
     nos[atual].classList.add('on');
 
     /* fundo das cores nas cartelas de fechamento */
-    var cores = CARTELAS[atual] && CARTELAS[atual].fundo === 'cores';
-    fundoB.classList.toggle('ativo', cores);
-    fundoA.classList.toggle('apagado', cores);
+    var cores = !!(CARTELAS[atual] && CARTELAS[atual].fundo === 'cores');
+    fundoB.style.opacity = cores ? '.62' : '0';
+    fundoA.style.opacity = cores ? '0'   : '.38';
+    /* o navegador pausa video invisivel, entao mandamos tocar de novo */
+    var vivo = cores ? fundoB : fundoA;
+    if (vivo.paused) { var p = vivo.play(); if (p && p.catch) p.catch(function(){}); }
     conta.textContent = (atual + 1) + '/' + nos.length;
     inicio = performance.now();
   }
