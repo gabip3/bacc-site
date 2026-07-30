@@ -325,6 +325,7 @@
 
   var LISTA = `
 Annette Cornett, Copa Airlines
+Banco do Brasil
 Bruna Lopes, MJV Technology and Innovation
 Caetano Nobre, Pagarva Inc.
 Carlos Ranzani, Drs. Quantum
@@ -334,6 +335,7 @@ Cinthia Almeida, Cinthia Almeida Personal Marketing Consulting
 Dallas Almeida, Dellitech
 Danielle R. Asis, B Wealth Consulting
 Danila Palmieri, Connect Solutions
+Eduarda Lima, Drummond Advisors
 Ewerton Bordini, i7 Signs
 Fabrício Fernandes, KPMG
 Gisele Gofman, BACC-SE
@@ -358,6 +360,7 @@ Renan Castello Miguel, Timenow
 Renata Lillywhite, Alliance Immigration Law
 Rodrigo Souto Souza, Business Brazil USA
 Rosana Lima, Minas Emporium
+WEG
 `;
 
   /* Site e Instagram vindos da planilha de confirmacoes.
@@ -379,6 +382,7 @@ Rosana Lima, Minas Emporium
     'Dallas Almeida':               { ig:'dellitech',                site:'dellitech.com' , mail:'dallas.souza|gmail.com' },
     'Danielle R. Asis':             { ig:'dany_blessed',             site:'bwealthconsulting.com' , mail:'bwealthconsult|gmail.com' },
     'Danila Palmieri':              { ig:'connecttsolutions' , mail:'danila|connect-solutions.us' },
+    'Eduarda Lima':                 { site:'drummondadvisors.com' },
     'Ewerton Bordini':              { ig:'i7signs' , mail:'info|i7signs.com' },
     'Fabrício Fernandes':           { site:'www.kpmg.com' , mail:'fsilvafernandes|kpmg.com' },
     'Guilherme Macedo':             { ig:'ademicon.atlanta',         site:'ademicon.com.br/licensed/959706/gmacedo' , mail:'gmacedo|ademiconusa.com' },
@@ -405,7 +409,9 @@ Rosana Lima, Minas Emporium
      um novo convidado de empresa patrocinadora entrar na lista, a borda
      dourada ou prateada aparece sozinha, sem eu precisar mexer aqui. */
   var TIERS_EMPRESA = {
-    'Drummond Advisors': 'silver'
+    'Drummond Advisors': 'silver',
+    'Banco do Brasil':   'gold',
+    'WEG':               'gold'
   };
 
   /* Categoria de membro, lida das cores de preenchimento da planilha de
@@ -455,7 +461,9 @@ Rosana Lima, Minas Emporium
       return {
         nome: nome, empresa: empresa, ini: ini.toUpperCase(),
         site: lk.site || '', ig: lk.ig || '', mail: lk.mail || '',
-        tier: TIERS_PESSOA[nome] || TIERS_EMPRESA[empresa] || ''
+        /* o terceiro caso cobre entradas que sao a propria empresa,
+           como Banco do Brasil e WEG, sem pessoa vinculada */
+        tier: TIERS_PESSOA[nome] || TIERS_EMPRESA[empresa] || TIERS_EMPRESA[nome] || ''
       };
     });
 
