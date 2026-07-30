@@ -141,6 +141,20 @@
   #done p{color:var(--soft); font-size:16.5px; line-height:1.7; margin-top:20px; max-width:44ch;}
   #done img{height:56px; width:auto; margin-top:44px; opacity:.85;}
 
+  /* ---------- AVALIAR NO GOOGLE ---------- */
+  .gbtn{
+    display:inline-flex; align-items:center; gap:15px; margin-top:34px;
+    background:#fff; color:#1F2937; border-radius:15px; padding:16px 22px;
+    text-align:left; max-width:min(92vw,420px);
+    box-shadow:0 16px 38px -18px rgba(0,0,0,.55); transition:transform .13s, box-shadow .2s;
+  }
+  .gbtn:active{transform:scale(.98);}
+  .gbtn svg{width:26px; height:26px; flex:none;}
+  .gbtn .gtx{display:flex; flex-direction:column; min-width:0;}
+  .gbtn .gtx b{font-size:15.5px; font-weight:800; letter-spacing:-.01em;}
+  .gbtn .gtx span{font-size:13px; color:#5A6472; margin-top:2px; line-height:1.4;}
+  @media (hover:hover){ .gbtn:hover{box-shadow:0 20px 46px -18px rgba(0,0,0,.6);} }
+
   @media (prefers-reduced-motion:reduce){
     .q{opacity:1!important; transform:none!important; transition:none!important;}
     #done.on{animation:none;} .miss{animation:none;}
@@ -254,6 +268,17 @@
     <div class="kick" data-t="tykick"></div>
     <h2 data-t="tyh"></h2>
     <p data-t="typ"></p>
+
+    <a id="google" class="gbtn" href="https://g.page/r/CcFzI7SImRfdEBM/review" target="_blank" rel="noopener noreferrer" hidden>
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+        <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+        <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z"/>
+        <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+      </svg>
+      <span class="gtx"><b data-t="gtit"></b><span data-t="gsub"></span></span>
+    </a>
+
     <img src="../media/house_white.png" alt="House of AHC by Atlanta Home Concierge">
   </div>
 
@@ -301,7 +326,9 @@
       stars:{1:'Very Poor',2:'Poor',3:'Good',4:'Very Good',5:'Excellent'},
       tykick:'THANK YOU',
       tyh:'We appreciate your time.',
-      typ:'Thank you for taking the time to share your feedback. We truly appreciate the opportunity to be part of your special occasion and hope to welcome you back to House of AHC again soon.'
+      typ:'Thank you for taking the time to share your feedback. We truly appreciate the opportunity to be part of your special occasion and hope to welcome you back to House of AHC again soon.',
+      gtit:'Leave a Google review',
+      gsub:'It takes a minute and helps other people find us.'
     },
     pt:{
       title:'Experiência do Evento · House of AHC',
@@ -333,7 +360,9 @@
       stars:{1:'Muito ruim',2:'Ruim',3:'Bom',4:'Muito bom',5:'Excelente'},
       tykick:'OBRIGADO',
       tyh:'Agradecemos o seu tempo.',
-      typ:'Obrigado por dedicar um momento para compartilhar a sua opinião. Ficamos muito gratos pela oportunidade de fazer parte da sua ocasião especial e esperamos receber você novamente na House of AHC.'
+      typ:'Obrigado por dedicar um momento para compartilhar a sua opinião. Ficamos muito gratos pela oportunidade de fazer parte da sua ocasião especial e esperamos receber você novamente na House of AHC.',
+      gtit:'Avaliar no Google',
+      gsub:'Leva um minuto e ajuda outras pessoas a nos encontrar.'
     }
   };
 
@@ -525,6 +554,14 @@
       $('form').style.display = 'none';
       $('done').classList.add('on');
       $('prog').firstChild.style.width = '100%';
+
+      /* O convite para avaliar no Google so aparece para quem teve uma boa
+         experiencia (4 ou 5 no geral E 8 ou mais na recomendacao). Pedir
+         avaliacao publica a quem ficou insatisfeito derruba a nota do Google,
+         que e um ativo do negocio. Quem reclamou continua vendo so o
+         agradecimento, e a equipe recebe o alerta por email. */
+      if (answers.q1 >= 4 && answers.q7 >= 8) $('google').hidden = false;
+
       window.scrollTo({top:0, behavior:'smooth'});
     }
   });
