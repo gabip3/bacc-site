@@ -201,8 +201,15 @@
   footer{text-align:center; padding:52px 0 calc(var(--safe-b) + 42px); margin-top:44px; border-top:1px solid var(--line2);}
   footer .cl{font-size:9.5px; letter-spacing:.34em; color:var(--dim2); font-weight:800;}
   footer .duo{display:flex; align-items:center; justify-content:center; gap:20px; margin-top:16px; flex-wrap:wrap;}
-  footer .duo img{height:34px; width:auto; opacity:.9;}
-  footer .duo img.atl{height:59px;}
+  /* Alinhamento pelo NOME, nao pela caixa. Medido nos arquivos: o wordmark
+     "HOUSE OF AHC" fica a 27% da altura da imagem dele, e o "ATLANTA HOME
+     CONCIERGE" a 70,2% da altura da dele, porque o skyline ocupa a metade
+     de cima. Centralizar as caixas deixa os dois nomes em linhas diferentes.
+     As porcentagens abaixo poem os dois nomes na mesma linha e continuam
+     certas em qualquer tamanho, porque translateY(%) usa a propria altura. */
+  footer .duo{align-items:center;}
+  footer .duo img{height:34px; width:auto; opacity:.9; transform:translateY(23%);}
+  footer .duo img.atl{height:59px; transform:translateY(-20.2%);}
   footer .duo .sep{width:1px; height:26px; background:rgba(255,255,255,.2);}
   footer .fim{color:var(--dim2); font-size:12px; margin-top:26px;}
 
