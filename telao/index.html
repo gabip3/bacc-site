@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telão de chegada · BACCstage 2026</title>
+<meta name="description" content="Loop de boas-vindas do BACCstage para o telão de LED.">
+<meta name="theme-color" content="#060D1C">
+<style>
+  :root{
+    --navy:#0A1730; --navy2:#0C1E3E; --deep:#060D1C;
+    --gold:#C9A24B; --gold-l:#E6C579; --soft:#C9D5EA; --muted:#9DB0D2;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    --seg: 5s;            /* tempo de cada cartela */
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{height:100%; overflow:hidden;}
+  body{
+    background:var(--deep); color:#fff; font-family:var(--sans);
+    -webkit-font-smoothing:antialiased; cursor:none;
+  }
+
+  /* fundo: skyline com escurecimento forte, para o texto sempre vencer */
+  .fundo{position:fixed; inset:0; z-index:0;}
+  .fundo img{width:100%; height:100%; object-fit:cover; opacity:.34; transform:scale(1.04); animation:respira 40s ease-in-out infinite alternate;}
+  @keyframes respira{to{transform:scale(1.12);}}
+  .fundo::after{
+    content:""; position:absolute; inset:0;
+    background:
+      radial-gradient(1200px 800px at 50% 40%, rgba(10,23,48,.55), rgba(6,13,28,.93)),
+      linear-gradient(180deg, rgba(6,13,28,.75), rgba(6,13,28,.55) 45%, rgba(6,13,28,.92));
+  }
+
+  /* marca fixa no canto, presente o tempo todo */
+  .marca{position:fixed; z-index:5; left:3.2vw; top:3vh; height:clamp(34px,3.6vw,86px); width:auto; opacity:.9;}
+  .relogio{
+    position:fixed; z-index:5; right:3.2vw; top:3vh; text-align:right;
+    font-variant-numeric:tabular-nums; letter-spacing:.02em;
+  }
+  .relogio .hora{font-size:clamp(20px,2.2vw,52px); font-weight:300; line-height:1;}
+  .relogio .dia{font-size:clamp(9px,.78vw,17px); letter-spacing:.28em; color:var(--gold); font-weight:700; margin-top:.7vh;}
+
+  /* palco das cartelas */
+  .palco{position:fixed; inset:0; z-index:3; display:grid; place-items:center; padding:0 8vw;}
+  .cartela{
+    position:absolute; text-align:center; max-width:88vw;
+    opacity:0; transform:translateY(2.2vh); pointer-events:none;
+    transition:opacity 1s cubic-bezier(.16,.8,.3,1), transform 1s cubic-bezier(.16,.8,.3,1);
+  }
+  .cartela.on{opacity:1; transform:none;}
+
+  .eyebrow{
+    font-size:clamp(10px,.86vw,19px); font-weight:700; letter-spacing:.36em;
+    text-indent:.36em; text-transform:uppercase; color:var(--gold); margin-bottom:2.6vh;
+  }
+  .grande{font-size:clamp(2rem,6.4vw,9rem); font-weight:700; letter-spacing:-.03em; line-height:1.02;}
+  .media{font-size:clamp(1.5rem,4.2vw,6rem); font-weight:700; letter-spacing:-.025em; line-height:1.08;}
+  .serifa{font-family:var(--serif); font-style:italic; font-weight:400; letter-spacing:-.01em;}
+  .apoio{font-size:clamp(.95rem,1.5vw,2.1rem); color:var(--soft); margin-top:2.8vh; line-height:1.5; max-width:34ch; margin-left:auto; margin-right:auto;}
+  .dourado{color:var(--gold-l);}
+
+  /* lista de programas */
+  .programas{display:flex; flex-wrap:wrap; justify-content:center; gap:1vw 2.6vw; margin-top:1vh;}
+  .programas span{font-size:clamp(1rem,2.3vw,3.2rem); font-weight:700; letter-spacing:-.02em;}
+  .programas i{color:var(--gold); font-style:normal; opacity:.8;}
+
+  /* cartela do QR, a que faz o Conecte-SE ser usado */
+  .qr-linha{display:flex; align-items:center; justify-content:center; gap:clamp(20px,3vw,64px); flex-wrap:wrap;}
+  .qr-caixa{background:#fff; border-radius:clamp(10px,1vw,22px); padding:clamp(10px,1vw,22px); flex:none;}
+  .qr-caixa img{display:block; width:clamp(110px,13vw,300px); height:auto;}
+  .qr-txt{text-align:left; max-width:22ch;}
+  @media (max-width:820px){ .qr-txt{text-align:center;} }
+
+  /* barra de progresso da cartela atual */
+  .barra{position:fixed; left:0; bottom:0; height:.5vh; background:rgba(255,255,255,.12); width:100%; z-index:6;}
+  .barra i{display:block; height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-l)); width:0;}
+
+  /* painel de controle, some sozinho e some na tela cheia */
+  .ctrl{
+    position:fixed; z-index:20; left:50%; bottom:3vh; transform:translateX(-50%);
+    display:flex; gap:8px; align-items:center; padding:8px;
+    background:rgba(10,23,48,.9); border:1px solid rgba(255,255,255,.14); border-radius:999px;
+    backdrop-filter:blur(12px); transition:opacity .4s; font-family:var(--sans);
+  }
+  .ctrl.sumiu{opacity:0; pointer-events:none;}
+  .ctrl button{
+    background:none; border:none; color:#C3CCDD; font-size:13px; font-weight:700;
+    padding:9px 15px; border-radius:999px; cursor:pointer; letter-spacing:.04em;
+  }
+  .ctrl button:hover{background:rgba(255,255,255,.1); color:#fff;}
+  .ctrl .destaque{background:var(--gold); color:#0A1730;}
+  .ctrl .conta{font-size:12px; color:#8FA0BC; padding:0 10px; font-variant-numeric:tabular-nums;}
+
+  @media (prefers-reduced-motion:reduce){
+    .cartela{transition:opacity .3s;}
+    .fundo img{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="fundo"><img src="../media/deck/skyline.jpg" alt=""></div>
+
+  <img class="marca" src="../media/deck/bacc_white.png" alt="BACC-SE">
+  <div class="relogio"><div class="hora" id="hora">--:--</div><div class="dia">30 DE JULHO</div></div>
+
+  <div class="palco" id="palco"></div>
+
+  <div class="barra"><i id="barra"></i></div>
+
+  <div class="ctrl" id="ctrl">
+    <button id="voltar">Anterior</button>
+    <button class="destaque" id="pausar">Pausar</button>
+    <button id="seguir">Próxima</button>
+    <span class="conta" id="conta">1/13</span>
+    <button id="cheia">Tela cheia</button>
+  </div>
+
+<script>
+(function(){
+  'use strict';
+
+  /* ===================================================================
+     AS FRASES DO LOOP. Para editar, mexa so aqui.
+     tipo 'texto' : eyebrow opcional + linha principal + apoio opcional
+     tipo 'programas' : a lista dos cinco
+     tipo 'qr'    : a cartela que manda escanear o cracha
+     =================================================================== */
+  var CARTELAS = [
+    { tipo:'texto', classe:'grande', linha:'Bem-vindos ao BACCstage' },
+
+    { tipo:'texto', classe:'media serifa', linha:'Conectando pessoas, ideias e oportunidades' },
+
+    { tipo:'qr' },
+
+    { tipo:'texto', eyebrow:'Brazilian-American Chamber of Commerce Southeast',
+      classe:'media', linha:'Há 30 anos aproximando Brasil e Estados Unidos' },
+
+    { tipo:'texto', classe:'media serifa', linha:'Desde 1996, construindo pontes que viram negócios' },
+
+    { tipo:'texto', eyebrow:'Nossa convidada de hoje', classe:'grande', linha:'Carol Pepe',
+      apoio:'Importação e Exportação na Prática: oportunidades, desafios e estratégias para fazer negócios entre Brasil e EUA' },
+
+    { tipo:'qr' },
+
+    { tipo:'texto', eyebrow:'O que vem por aí', classe:'media', linha:'Cinco formas de conectar, aprender e crescer juntos' },
+
+    { tipo:'programas' },
+
+    { tipo:'texto', eyebrow:'Nossa fundadora', classe:'grande', linha:'Lucia Jennings',
+      apoio:'CEO &amp; Founder' },
+
+    { tipo:'texto', eyebrow:'Nossos anfitriões', classe:'media', linha:'House of AHC',
+      apoio:'Uma câmara de comércio precisa de uma casa' },
+
+    { tipo:'texto', classe:'media', linha:'Um novo capítulo nas relações comerciais entre Brasil e EUA' },
+
+    { tipo:'texto', classe:'media serifa dourado', linha:'Sejam muito bem-vindos' }
+  ];
+
+  var PROGRAMAS = ['BACC Academy','Entre Cafés','Leadership Exchange Series','BACCstage','Brazil Economic Outlook'];
+  var SEGUNDOS = 5;      /* tempo de cada cartela */
+
+  var palco = document.getElementById('palco');
+  var barra = document.getElementById('barra');
+  var conta = document.getElementById('conta');
+  var atual = -1, timer = null, inicio = 0, pausado = false, raf = null;
+
+  function esc(s){ return (s||''); }
+
+  function montar(c){
+    var d = document.createElement('div');
+    d.className = 'cartela';
+
+    if (c.tipo === 'qr'){
+      d.innerHTML =
+        '<div class="qr-linha">' +
+          '<div class="qr-caixa"><img src="../qr.png" alt="QR do Conecte-SE" onerror="this.parentNode.style.display=\'none\'"></div>' +
+          '<div class="qr-txt">' +
+            '<div class="eyebrow">Conecte-SE</div>' +
+            '<div class="media">Aponte a câmera para o QR do seu crachá</div>' +
+            '<div class="apoio" style="margin-left:0">Veja quem está aqui, com empresa, site e contato</div>' +
+          '</div>' +
+        '</div>';
+      return d;
+    }
+
+    if (c.tipo === 'programas'){
+      d.innerHTML =
+        '<div class="eyebrow">Temporada BACC-SE</div>' +
+        '<div class="programas">' +
+          PROGRAMAS.map(function(p, i){
+            return (i ? '<i>·</i>' : '') + '<span>' + esc(p) + '</span>';
+          }).join('') +
+        '</div>';
+      return d;
+    }
+
+    d.innerHTML =
+      (c.eyebrow ? '<div class="eyebrow">' + esc(c.eyebrow) + '</div>' : '') +
+      '<div class="' + (c.classe || 'media') + '">' + esc(c.linha) + '</div>' +
+      (c.apoio ? '<div class="apoio">' + esc(c.apoio) + '</div>' : '');
+    return d;
+  }
+
+  /* monta todas de uma vez: troca de cartela vira so opacidade, sem engasgo */
+  var nos = CARTELAS.map(function(c){ var n = montar(c); palco.appendChild(n); return n; });
+
+  function mostrar(i){
+    if (atual >= 0) nos[atual].classList.remove('on');
+    atual = (i + nos.length) % nos.length;
+    nos[atual].classList.add('on');
+    conta.textContent = (atual + 1) + '/' + nos.length;
+    inicio = performance.now();
+  }
+
+  function passo(agora){
+    if (!pausado){
+      var decorrido = agora - inicio;
+      var p = Math.min(1, decorrido / (SEGUNDOS * 1000));
+      barra.style.width = (p * 100) + '%';
+      if (p >= 1) mostrar(atual + 1);
+    }
+    raf = requestAnimationFrame(passo);
+  }
+
+  /* relogio ao vivo, dá sensação de tela viva mesmo parada */
+  function relogio(){
+    var d = new Date();
+    document.getElementById('hora').textContent =
+      ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+  }
+  relogio(); setInterval(relogio, 10000);
+
+  /* controles */
+  document.getElementById('seguir').onclick = function(){ mostrar(atual + 1); };
+  document.getElementById('voltar').onclick = function(){ mostrar(atual - 1); };
+  document.getElementById('pausar').onclick = function(){
+    pausado = !pausado;
+    this.textContent = pausado ? 'Continuar' : 'Pausar';
+    if (!pausado) inicio = performance.now();
+  };
+  document.getElementById('cheia').onclick = function(){
+    if (document.fullscreenElement) document.exitFullscreen();
+    else document.documentElement.requestFullscreen();
+  };
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight') mostrar(atual + 1);
+    if (e.key === 'ArrowLeft')  mostrar(atual - 1);
+    if (e.key === ' ') { e.preventDefault(); document.getElementById('pausar').click(); }
+    if (e.key.toLowerCase() === 'f') document.getElementById('cheia').click();
+  });
+
+  /* o painel some sozinho, para nao aparecer no telao */
+  var ctrl = document.getElementById('ctrl'), some = null;
+  function acordar(){
+    ctrl.classList.remove('sumiu');
+    document.body.style.cursor = 'default';
+    clearTimeout(some);
+    some = setTimeout(function(){
+      ctrl.classList.add('sumiu');
+      document.body.style.cursor = 'none';
+    }, 3500);
+  }
+  document.addEventListener('mousemove', acordar);
+  acordar();
+
+  mostrar(0);
+  raf = requestAnimationFrame(passo);
+})();
+</script>
+</body>
+</html>
