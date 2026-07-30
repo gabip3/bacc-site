@@ -7,7 +7,14 @@
 <meta name="description" content="A comunidade do BACCstage 2026: participantes, patrocinadores, próximos eventos e fotos.">
 <meta name="theme-color" content="#0B1B34">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="BACC-SE Connect">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BACC-SE">
+<meta name="format-detection" content="telephone=no">
+<link rel="apple-touch-icon" sizes="180x180" href="../media/appicon-180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="../media/appicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="../media/appicon-512.png">
+<link rel="manifest" href="manifest.webmanifest">
 <style>
   :root{
     --bg:#0B1B34; --bg2:#12294A; --deep:#081426;
@@ -25,10 +32,16 @@
     background:var(--bg); color:var(--ink); font-size:16px; line-height:1.5;
     font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
     -webkit-font-smoothing:antialiased;
-    background-image:
+    -webkit-text-size-adjust:100%;
+    overflow-x:hidden;
+  }
+  /* O degrade vive num elemento fixo em vez de background-attachment:fixed,
+     que no Safari do iPhone escala errado e treme ao rolar. */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
       radial-gradient(110% 55% at 50% 0%, rgba(201,162,75,.16) 0%, rgba(11,27,52,0) 58%),
       linear-gradient(180deg, #12294A 0%, #0B1B34 38%, #081426 100%);
-    background-repeat:no-repeat; background-attachment:fixed;
   }
   button,input{font-family:inherit; font-size:16px; color:inherit;}
   button{cursor:pointer; border:none; background:none; touch-action:manipulation;}
@@ -63,10 +76,18 @@
   .cab .n{font-size:12.5px; font-weight:800; color:var(--gold); background:rgba(201,162,75,.14); padding:3px 9px; border-radius:99px;}
 
   /* ---------- BUSCA ---------- */
-  .busca{position:relative; margin-bottom:14px;}
+  /* Fica colada no topo enquanto a lista rola: com 34 pessoas no celular,
+     ter de subir tudo para buscar de novo e irritante. */
+  .busca{
+    position:sticky; top:0; z-index:12; margin-bottom:14px;
+    padding:calc(var(--safe-t) + 10px) 0 10px;
+    background:linear-gradient(180deg, #0E2140 72%, rgba(14,33,64,0));
+  }
+  .busca .campo{position:relative;}
   .busca input{
-    width:100%; background:rgba(255,255,255,.055); border:1px solid var(--line); color:#fff;
+    width:100%; background:rgba(255,255,255,.075); border:1px solid var(--line); color:#fff;
     padding:14px 44px 14px 44px; border-radius:13px; outline:none;
+    -webkit-appearance:none; appearance:none;
   }
   .busca input::placeholder{color:var(--dim2);}
   .busca input:focus{border-color:rgba(201,162,75,.65); background:rgba(255,255,255,.085);}
@@ -102,6 +123,32 @@
   }
   .p{align-items:flex-start;}
   .p .ini{margin-top:1px;}
+
+  /* ---------- SELOS GOLD E SILVER ---------- */
+  /* A borda inteira do card recebe a cor da categoria, com um brilho
+     externo suave para destacar sem gritar. */
+  .p.t-gold, .p.t-silver{border-width:2px; border-style:solid; margin:3px 0;}
+  .p.t-gold{
+    border-color:#E4C87E; background:rgba(228,200,126,.09);
+    box-shadow:0 0 0 1px rgba(228,200,126,.18), 0 10px 26px -14px rgba(228,200,126,.45);
+  }
+  .p.t-silver{
+    border-color:#C8CFDA; background:rgba(200,207,218,.075);
+    box-shadow:0 0 0 1px rgba(200,207,218,.16), 0 10px 26px -14px rgba(200,207,218,.4);
+  }
+  .selo{
+    display:inline-block; vertical-align:2px; margin-left:8px;
+    font-size:9px; font-weight:800; letter-spacing:.16em;
+    padding:3px 7px; border-radius:99px; white-space:nowrap;
+  }
+  .selo.gold{background:linear-gradient(150deg,#F0DFAE,#C9A24B); color:#3A2C0A;}
+  .selo.silver{background:linear-gradient(150deg,#EDF1F6,#B9C2CF); color:#243247;}
+
+  .legenda{display:flex; flex-wrap:wrap; gap:16px; margin-bottom:14px; font-size:12.5px; color:var(--dim);}
+  .legenda span{display:inline-flex; align-items:center; gap:7px;}
+  .legenda i{width:12px; height:12px; border-radius:50%; display:inline-block;}
+  .legenda i.g{background:linear-gradient(150deg,#F0DFAE,#C9A24B);}
+  .legenda i.s{background:linear-gradient(150deg,#EDF1F6,#B9C2CF);}
   .vazio{text-align:center; color:var(--dim2); padding:34px 10px; font-size:15px; line-height:1.6;}
 
   /* ---------- PATROCINADORES ---------- */
@@ -203,6 +250,10 @@
   <!-- ================= PARTICIPANTES ================= -->
   <section id="participantes" class="anim">
     <div class="cab"><h2>Participantes</h2><span class="n" id="conta"></span></div>
+    <div class="legenda" id="legenda" hidden>
+      <span><i class="g"></i> Gold</span>
+      <span><i class="s"></i> Silver</span>
+    </div>
     <div class="busca">
       <svg class="ic" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       <input id="q" type="search" autocomplete="off" autocorrect="off" spellcheck="false" placeholder="Buscar nome ou empresa" aria-label="Buscar participante">
@@ -270,7 +321,6 @@
   var LISTA = `
 Annette Cornett, Copa Airlines
 Bruna Lopes, MJV Technology and Innovation
-Bruno Perez de Almeida Lopez, BRUNO LOPES LAW
 Caetano Nobre, Pagarva Inc.
 Carlos Ranzani, Drs. Quantum
 Carolina Marmo Pepe, Okahoma
@@ -297,7 +347,7 @@ Lucia Ranzani, Drs. Quantum
 Luiz G. Martins De Mattos, VOYCO
 Michely Pacheco, MK Atelier
 Milena Pazini, Top Notch Remodeling
-Nelson, Guaranha Assessoria Esportiva
+Nelson Guaranha, Guaranha Assessoria Esportiva
 Neomar Bassani, Razzo Tecnologia
 Renan Castello Miguel, Timenow
 Renata Lillywhite, Alliance Immigration Law
@@ -310,39 +360,48 @@ Rosana Lima, Minas Emporium
      pessoais e esta pagina e publica. Entradas invalidas na planilha
      ("#ERROR!" e "www.i7signs" sem dominio) foram omitidas. */
   var LINKS = {
-    'Annette Cornett':              { ig:'copaairlinesusa',          site:'www.copaair.com' },
-    'Bruno Perez de Almeida Lopez': { ig:'brunolopeslaw' },
-    'Caetano Nobre':                { ig:'pagarva_port',             site:'www.pagarva.com' },
-    'Carlos Ranzani':               { ig:'dr.ranzani',               site:'drsquantum.com' },
-    'Carolina Marmo Pepe':          { ig:'okahomaimport',            site:'www.okahoma.com.br' },
+    'Bruna Lopes':                  { mail:'bruna.lopes|mjvinnovation.com' },
+    'Lucia Ranzani':                { mail:'mluciaranzani|gmail.com' },
+    'Annette Cornett':              { ig:'copaairlinesusa',          site:'www.copaair.com',      mail:'acornett|copaair.com' },
+    'Caetano Nobre':                { ig:'pagarva_port',             site:'www.pagarva.com' , mail:'cn|pagarva.com' },
+    'Carlos Ranzani':               { ig:'dr.ranzani',               site:'drsquantum.com' , mail:'doutorranzani|gmail.com' },
+    'Carolina Marmo Pepe':          { ig:'okahomaimport',            site:'www.okahoma.com.br' , mail:'carolpepe|okahoma.com.br' },
     'Celso Pinho':                  { site:'bacc-se.org' },
     'Gisele Gofman':                { site:'bacc-se.org' },
-    'Julia Bandle':                 { site:'bacc-se.org' },
+    'Julia Bandle':                 { site:'bacc-se.org' , mail:'bandlejulia|gmail.com' },
     'Lucia Jennings':               { site:'bacc-se.org' },
-    'Cinthia Almeida':              { ig:'cinthiaalmeida.mktpessoal', site:'www.cinthiaalmeida.com' },
-    'Dallas Almeida':               { ig:'dellitech',                site:'dellitech.com' },
-    'Danielle R. Asis':             { ig:'dany_blessed',             site:'bwealthconsulting.com' },
-    'Danila Palmieri':              { ig:'connecttsolutions' },
-    'Ewerton Bordini':              { ig:'i7signs' },
-    'Fabrício Fernandes':           { site:'www.kpmg.com' },
-    'Guilherme Macedo':             { ig:'ademicon.atlanta',         site:'ademicon.com.br/licensed/959706/gmacedo' },
-    'Helmer Pacheco':               { ig:'shopmkatelier',            site:'www.shopmkatelier.com' },
-    'Hemelyh Lopes-DePaula':        { ig:'premiuminsurancegroup',    site:'pigagency.us' },
-    'Iuri Artiaga':                 { ig:'topnotch.remodeling',      site:'www.topnotch-remodeling.com' },
-    'Jordana Scussel':              { ig:'yuppiemag',                site:'yuppiemagazine.com' },
-    'Kamila Salkini':               { ig:'growvision.tax' },
-    'Karen Tosi':                   { ig:'karentosi.aesthetics',     site:'www.ktbrazilianaesthetic.com' },
-    'Karina Graham':                { ig:'karinagraham_realtor',     site:'www.karinagraham.com' },
-    'Leilane Costa Cavalcante':     { ig:'twosensephotography',      site:'www.twosensephoto.com' },
-    'Luiz G. Martins De Mattos':    { ig:'voyco.usa',                site:'voyco.co' },
-    'Michely Pacheco':              { ig:'shopmkatelier',            site:'www.shopmkatelier.com' },
-    'Milena Pazini':                { ig:'topnotch.remodeling',      site:'www.topnotch-remodeling.com' },
-    'Nelson':                       { ig:'guaranha' },
-    'Neomar Bassani':               { site:'razzo.tech' },
-    'Renan Castello Miguel':        { ig:'somostimenow',             site:'www.timenowglobal.com' },
-    'Renata Lillywhite':            { ig:'allianceimmigrationusa',   site:'www.alliancelawusa.com' },
-    'Rodrigo Souto Souza':          { ig:'businessbrazil.usa' },
-    'Rosana Lima':                  { ig:'minasgrillbrf',            site:'www.minasemporium.com' }
+    'Cinthia Almeida':              { ig:'cinthiaalmeida.mktpessoal', site:'www.cinthiaalmeida.com' , mail:'cinthia|cinthiaalmeida.com' },
+    'Dallas Almeida':               { ig:'dellitech',                site:'dellitech.com' , mail:'dallas.souza|gmail.com' },
+    'Danielle R. Asis':             { ig:'dany_blessed',             site:'bwealthconsulting.com' , mail:'bwealthconsult|gmail.com' },
+    'Danila Palmieri':              { ig:'connecttsolutions' , mail:'danila|connect-solutions.us' },
+    'Ewerton Bordini':              { ig:'i7signs' , mail:'info|i7signs.com' },
+    'Fabrício Fernandes':           { site:'www.kpmg.com' , mail:'fsilvafernandes|kpmg.com' },
+    'Guilherme Macedo':             { ig:'ademicon.atlanta',         site:'ademicon.com.br/licensed/959706/gmacedo' , mail:'gmacedo|ademiconusa.com' },
+    'Helmer Pacheco':               { ig:'shopmkatelier',            site:'www.shopmkatelier.com' , mail:'support|shopmkatelier.com' },
+    'Hemelyh Lopes-DePaula':        { ig:'premiuminsurancegroup',    site:'pigagency.us' , mail:'hld|pigagency.net' },
+    'Iuri Artiaga':                 { ig:'topnotch.remodeling',      site:'www.topnotch-remodeling.com' , mail:'topnotch.iuri|yahoo.com' },
+    'Jordana Scussel':              { ig:'yuppiemag',                site:'yuppiemagazine.com' , mail:'talkyuppie|gmail.com' },
+    'Kamila Salkini':               { ig:'growvision.tax' , mail:'kamila|growvisiontax.com' },
+    'Karen Tosi':                   { ig:'karentosi.aesthetics',     site:'www.ktbrazilianaesthetic.com' , mail:'support|ktbrazilianaesthetic.com' },
+    'Karina Graham':                { ig:'karinagraham_realtor',     site:'www.karinagraham.com' , mail:'grahamrealty1|gmail.com' },
+    'Leilane Costa Cavalcante':     { ig:'twosensephotography',      site:'www.twosensephoto.com' , mail:'laneangel|gmail.com' },
+    'Luiz G. Martins De Mattos':    { ig:'voyco.usa',                site:'voyco.co' , mail:'lguilhermemm48|gmail.com' },
+    'Michely Pacheco':              { ig:'shopmkatelier',            site:'www.shopmkatelier.com' , mail:'michely|shopmkatelier.com' },
+    'Milena Pazini':                { ig:'topnotch.remodeling',      site:'www.topnotch-remodeling.com' , mail:'milenapazini|yahoo.com' },
+    'Nelson Guaranha':              { ig:'guaranha' , mail:'nelsonguaranha|gmail.com' },
+    'Neomar Bassani':               { site:'razzo.tech' , mail:'neomar|razzo.tech' },
+    'Renan Castello Miguel':        { ig:'somostimenow',             site:'www.timenowglobal.com' , mail:'renan.castello|timenowglobal.com' },
+    'Renata Lillywhite':            { ig:'allianceimmigrationusa',   site:'www.alliancelawusa.com' , mail:'renata|alliancelawusa.com' },
+    'Rodrigo Souto Souza':          { ig:'businessbrazil.usa' , mail:'rsouza|greatstoriesfilms.com' },
+    'Rosana Lima':                  { ig:'minasgrillbrf',            site:'www.minasemporium.com' , mail:'rolima0909|gmail.com' }
+  };
+
+  /* Quem e Gold e quem e Silver. Basta escrever o nome exatamente como
+     esta na lista acima. O anel colorido em volta da inicial e o selo
+     ao lado do nome aparecem sozinhos. Deixe vazio para nao marcar ninguem. */
+  var TIERS = {
+    // 'Nome da Pessoa': 'gold',
+    // 'Outra Pessoa':   'silver'
   };
 
   /* Lista unica de patrocinadores, sem separacao por categoria.
@@ -380,9 +439,15 @@ Rosana Lima, Minas Emporium
       var lk = LINKS[nome] || {};
       return {
         nome: nome, empresa: p.slice(1).join(',').trim(), ini: ini.toUpperCase(),
-        site: lk.site || '', ig: lk.ig || ''
+        site: lk.site || '', ig: lk.ig || '', mail: lk.mail || '',
+        tier: TIERS[nome] || ''
       };
     });
+
+  /* O endereco fica guardado partido em duas partes e so e montado aqui,
+     no navegador. Assim ele nao aparece como email no codigo da pagina,
+     o que segura robo de spam simples. */
+  function juntaEmail(m){ var p = m.split('|'); return p[0] + '@' + p[1]; }
 
   function urlSite(s){ return /^https?:\/\//i.test(s) ? s : 'https://' + s; }
   function rotuloSite(s){ return s.replace(/^https?:\/\//i,'').replace(/^www\./i,'').replace(/\/$/,''); }
@@ -415,13 +480,26 @@ Rosana Lima, Minas Emporium
               +  '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg>'
               +  '<span>@' + esc(g.ig) + '</span></a>';
       }
-      return '<div class="p"><div class="ini">' + esc(g.ini) + '</div><div class="q">'
-           + '<div class="nm">' + esc(g.nome) + '</div>'
+      if (g.mail){
+        var e = juntaEmail(g.mail);
+        chips += '<a class="chip" href="mailto:' + esc(e) + '">'
+              +  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
+              +  '<rect x="2.8" y="5" width="18.4" height="14" rx="2.4"/><path d="m3.4 6.6 8.6 6 8.6-6"/></svg>'
+              +  '<span>' + esc(e) + '</span></a>';
+      }
+      var selo = g.tier
+        ? '<span class="selo ' + esc(g.tier) + '">' + (g.tier === 'gold' ? 'GOLD' : 'SILVER') + '</span>'
+        : '';
+      return '<div class="p' + (g.tier ? ' t-' + esc(g.tier) : '') + '"><div class="ini">' + esc(g.ini) + '</div><div class="q">'
+           + '<div class="nm">' + esc(g.nome) + selo + '</div>'
            + (g.empresa ? '<div class="co">' + esc(g.empresa) + '</div>' : '')
            + (chips ? '<div class="chips">' + chips + '</div>' : '')
            + '</div></div>';
     }).join('');
   }
+  /* legenda so aparece se existir alguem marcado como gold ou silver */
+  if (gente.some(function(g){ return g.tier; })) $('legenda').hidden = false;
+
   $('q').addEventListener('input', pintar);
   $('limpar').addEventListener('click', function(){ $('q').value = ''; pintar(); $('q').focus(); });
   pintar();
