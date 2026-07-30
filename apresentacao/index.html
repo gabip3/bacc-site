@@ -194,10 +194,16 @@
   .s-carol .ph video, .s-carol .ph img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top; z-index:0;}
   /* Duas marcas lado a lado, escalando junto com a tela para o telao de LED */
   .s-carol .brands{display:flex; align-items:center; gap:clamp(18px,2.2vw,42px); margin-top:clamp(30px,3vw,52px); flex-wrap:wrap;}
-  .s-carol .brands img{height:clamp(26px,2.9vw,64px); width:auto; opacity:.96;}
+  /* Alinhamento pelo NOME, nao pela caixa. Medido nos arquivos: o wordmark
+     "HOUSE OF AHC" fica a 27% da altura da imagem dele e o "ATLANTA HOME
+     CONCIERGE" a 70,2% da altura da dele, porque o skyline ocupa a metade
+     de cima. Centralizar as caixas deixa os dois nomes em linhas diferentes.
+     Os deslocamentos abaixo poem os dois na mesma linha e continuam certos
+     em qualquer tamanho, porque translateY(%) usa a propria altura. */
+  .s-carol .brands img{height:clamp(26px,2.9vw,64px); width:auto; opacity:.96; transform:translateY(23%);}
   /* Atlanta e um lockup empilhado (2,62:1) contra a House horizontal (4,57:1):
      1,74x de altura iguala a largura visivel das duas. */
-  .s-carol .brands img.atl{height:clamp(45px,5vw,111px);}
+  .s-carol .brands img.atl{height:clamp(45px,5vw,111px); transform:translateY(-20.2%);}
   .s-carol .brands .sep{width:1px; height:clamp(26px,2.5vw,54px); background:rgba(255,255,255,.26); flex:none;}
   .s-carol .ph::after{content:""; position:absolute; inset:0; z-index:1; background:linear-gradient(90deg, transparent 60%, rgba(19,30,51,.9));}
   .s-carol .txt{flex:1; display:flex; flex-direction:column; justify-content:center; padding:8vh 6vw;}
