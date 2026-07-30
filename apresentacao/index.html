@@ -205,6 +205,27 @@
   .s-end .sub{color:var(--soft); margin-top:20px; max-width:52ch; font-size:1.05rem; line-height:1.6;}
   .s-end .sign{font-family:var(--serif); font-style:italic; font-size:clamp(1.2rem,2.2vw,1.7rem); color:var(--gold-l); margin-top:30px;}
   .s-end .mk{height:56px; margin-top:30px; opacity:.9;}
+
+  /* Assinatura do fechamento: House of AHC e Atlanta Home Concierge.
+     A Atlanta e um lockup empilhado (2,62:1) contra a House horizontal
+     (4,57:1), por isso recebe 1,74x de altura, o que iguala a largura
+     visivel das duas. */
+  .s-end .credito{display:flex; flex-direction:column; align-items:center; gap:clamp(12px,1.1vw,20px); margin-top:clamp(28px,2.6vw,54px);}
+  .s-end .credito .cl{font-size:clamp(8.5px,.62vw,13px); letter-spacing:.36em; text-indent:.36em; color:rgba(255,255,255,.5); font-weight:800;}
+  .s-end .credito .duo{display:flex; align-items:center; gap:clamp(18px,2vw,40px);}
+  .s-end .credito .duo img{height:clamp(24px,2.2vw,48px); width:auto; opacity:.92;}
+  .s-end .credito .duo img.atl{height:clamp(42px,3.8vw,84px);}
+  .s-end .credito .duo .sep{width:1px; height:clamp(22px,2vw,44px); background:rgba(255,255,255,.24); flex:none;}
+  /* Em janela baixa o fechamento junta seis blocos e fica no limite.
+     Aqui os espacos encolhem para nada sair do slide. */
+  @media (max-height:760px){
+    .s-end .sub{margin-top:14px;}
+    .s-end .sign{margin-top:18px;}
+    .s-end .mk{height:42px; margin-top:18px;}
+    .s-end .credito{margin-top:18px; gap:8px;}
+    .s-end .credito .duo img{height:22px;}
+    .s-end .credito .duo img.atl{height:38px;}
+  }
 </style>
 </head>
 <body>
@@ -370,6 +391,14 @@
     <p class="sub anim" style="--d:480">Cada pin da BACC-SE representa a confiança e a credibilidade construídas ao longo do nosso trabalho.</p>
     <p class="sign anim" style="--d:640">Conectando pessoas, ideias e oportunidades.</p>
     <img class="mk anim" style="--d:760" src="../media/deck/bacc_white.png" alt="BACC-SE">
+    <div class="credito anim" style="--d:900">
+      <span class="cl">REALIZAÇÃO</span>
+      <div class="duo">
+        <img src="../media/deck/house.png" alt="House of AHC">
+        <span class="sep"></span>
+        <img class="atl" src="../media/deck/ahc_light.png" alt="Atlanta Home Concierge">
+      </div>
+    </div>
   </section>
 
 </main>
