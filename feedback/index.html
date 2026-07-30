@@ -579,6 +579,19 @@
   })();
 
   progress();
+
+  /* Pre-visualizacao da tela de agradecimento, para aprovacao interna:
+     /feedback/?ver=obrigado
+     Mostra a tela final sem enviar nada, sem gravar na planilha e sem
+     disparar email. Serve so para revisao. */
+  try{
+    if (new URLSearchParams(location.search).get('ver') === 'obrigado'){
+      $('form').style.display = 'none';
+      $('done').classList.add('on');
+      $('prog').firstChild.style.width = '100%';
+      $('google').hidden = false;
+    }
+  }catch(e){}
 })();
 </script>
 </body>
