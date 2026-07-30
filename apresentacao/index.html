@@ -231,14 +231,23 @@
   /* A Atlanta e um lockup empilhado (2,62:1) contra a House horizontal
      (4,57:1), por isso recebe 1,74x de altura: e isso que iguala a
      largura visivel das duas e faz o par parecer equilibrado. */
-  .s-cred{background:linear-gradient(160deg,#101F3C,#0A1730); color:#fff; align-items:center; justify-content:center; flex-direction:column; text-align:center;}
-  .s-cred .eyebrow{color:var(--gold-l); margin-bottom:clamp(34px,4vw,80px);}
-  .s-cred .cred-duo{display:flex; align-items:center; gap:clamp(34px,4.6vw,104px);}
+  .s-cred{background:linear-gradient(160deg,#101F3C,#0A1730); color:#fff; align-items:center; justify-content:center; flex-direction:column;}
+  /* Grade de tres colunas (1fr, divisor, 1fr) em vez de flex: assim o
+     divisor cai exatamente no centro horizontal do slide e cada logo
+     encosta nele de forma simetrica, independente das larguras. */
+  .s-cred .cred-duo{
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center;
+    gap:clamp(30px,4vw,92px); width:100%; max-width:1560px; padding:0 4vw;
+  }
   .s-cred .cred-duo img{height:clamp(46px,6.6vw,148px); width:auto;}
-  .s-cred .cred-duo img.atl{height:clamp(80px,11.5vw,258px);}
-  .s-cred .cred-duo .sep{width:1px; height:clamp(56px,6.4vw,144px); background:rgba(255,255,255,.22); flex:none;}
-  .s-cred .cred-sub{font-family:var(--serif); font-style:italic; color:var(--gold-l); margin-top:clamp(34px,4vw,80px); font-size:clamp(1.05rem,1.9vw,2.1rem);}
-  @media (max-width:700px){ .s-cred .cred-duo{flex-direction:column; gap:32px;} .s-cred .cred-duo .sep{width:64px; height:1px;} }
+  .s-cred .cred-duo img:first-of-type{justify-self:end;}
+  .s-cred .cred-duo img.atl{height:clamp(80px,11.5vw,258px); justify-self:start;}
+  .s-cred .cred-duo .sep{width:1px; height:clamp(56px,6.4vw,144px); background:rgba(255,255,255,.22); justify-self:center;}
+  @media (max-width:700px){
+    .s-cred .cred-duo{grid-template-columns:1fr; gap:30px; justify-items:center;}
+    .s-cred .cred-duo img:first-of-type, .s-cred .cred-duo img.atl{justify-self:center;}
+    .s-cred .cred-duo .sep{width:64px; height:1px;}
+  }
   @media (max-height:760px){ .s-end .sub{margin-top:14px;} .s-end .sign{margin-top:18px;} .s-end .mk{height:42px; margin-top:18px;} }
 </style>
 </head>
@@ -413,15 +422,13 @@
     <img class="mk anim" style="--d:760" src="../media/deck/bacc_white.png" alt="BACC-SE">
   </section>
 
-  <!-- 12 · REALIZAÇÃO -->
+  <!-- 12 · HOUSE OF AHC + ATLANTA HOME CONCIERGE -->
   <section class="slide s-cred" data-theme="dark">
-    <p class="eyebrow anim">Realização</p>
-    <div class="cred-duo anim" style="--d:220">
+    <div class="cred-duo anim" style="--d:180">
       <img src="../media/deck/house.png" alt="House of AHC">
       <span class="sep"></span>
       <img class="atl" src="../media/deck/ahc_light.png" alt="Atlanta Home Concierge">
     </div>
-    <p class="cred-sub anim" style="--d:460">Uma câmara de comércio precisa de uma casa.</p>
   </section>
 
 </main>
