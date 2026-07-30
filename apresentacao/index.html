@@ -240,12 +240,19 @@
     gap:clamp(30px,4vw,92px); width:100%; max-width:1560px; padding:0 4vw;
   }
   .s-cred .cred-duo img{height:clamp(46px,6.6vw,148px); width:auto;}
-  .s-cred .cred-duo img:first-of-type{justify-self:end;}
-  .s-cred .cred-duo img.atl{height:clamp(80px,11.5vw,258px); justify-self:start;}
+  /* Alinhamento pelo NOME, nao pela caixa. Medido nos arquivos: o wordmark
+     "HOUSE OF AHC" fica a 27% da altura da imagem dele, e o "ATLANTA HOME
+     CONCIERGE" a 70,2% da altura da dele, porque o skyline empurra o nome
+     para baixo. Centralizar as caixas deixa os dois nomes em alturas
+     diferentes, e e isso que o olho estranha. Os deslocamentos abaixo
+     colocam os dois nomes na mesma linha, e sao em porcentagem da propria
+     altura, entao continuam certos em qualquer tamanho de tela. */
+  .s-cred .cred-duo img:first-of-type{justify-self:end; transform:translateY(23%);}
+  .s-cred .cred-duo img.atl{height:clamp(80px,11.5vw,258px); justify-self:start; transform:translateY(-20.2%);}
   .s-cred .cred-duo .sep{width:1px; height:clamp(56px,6.4vw,144px); background:rgba(255,255,255,.22); justify-self:center;}
   @media (max-width:700px){
     .s-cred .cred-duo{grid-template-columns:1fr; gap:30px; justify-items:center;}
-    .s-cred .cred-duo img:first-of-type, .s-cred .cred-duo img.atl{justify-self:center;}
+    .s-cred .cred-duo img:first-of-type, .s-cred .cred-duo img.atl{justify-self:center; transform:none;}
     .s-cred .cred-duo .sep{width:64px; height:1px;}
   }
   @media (max-height:760px){ .s-end .sub{margin-top:14px;} .s-end .sign{margin-top:18px;} .s-end .mk{height:42px; margin-top:18px;} }
