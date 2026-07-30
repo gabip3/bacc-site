@@ -38,7 +38,7 @@
     font-variant-numeric:tabular-nums; letter-spacing:.02em;
   }
   .relogio .hora{font-size:clamp(20px,2.2vw,52px); font-weight:300; line-height:1;}
-  .relogio .dia{font-size:clamp(9px,.78vw,17px); letter-spacing:.28em; color:var(--gold); font-weight:700; margin-top:.7vh;}
+  .relogio .dia{font-size:clamp(11px,1vw,22px); letter-spacing:.28em; color:var(--gold); font-weight:700; margin-top:.7vh;}
 
   /* palco das cartelas */
   .palco{position:fixed; inset:0; z-index:3; display:grid; place-items:center; padding:0 8vw;}
@@ -59,7 +59,7 @@
   }
 
   .eyebrow{
-    font-size:clamp(10px,.86vw,19px); font-weight:700; letter-spacing:.36em;
+    font-size:clamp(13px,1.3vw,31px); font-weight:700; letter-spacing:.32em;
     text-indent:.36em; text-transform:uppercase; color:var(--gold); margin-bottom:2.6vh;
   }
   /* text-wrap:balance distribui as linhas por igual em vez de deixar uma
@@ -263,10 +263,16 @@
   }
 
   /* relogio ao vivo, dá sensação de tela viva mesmo parada */
+  /* O relogio fica preso no fuso de Atlanta. Sem isso ele mostraria a hora
+     do computador, e quem esta no Brasil veria 1 hora a mais no telao. */
   function relogio(){
-    var d = new Date();
-    document.getElementById('hora').textContent =
-      ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    var d = new Date(), txt;
+    try {
+      txt = d.toLocaleTimeString('pt-BR', { timeZone:'America/New_York', hour:'2-digit', minute:'2-digit' });
+    } catch(e) {
+      txt = ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2);
+    }
+    document.getElementById('hora').textContent = txt;
   }
   relogio(); setInterval(relogio, 10000);
 
