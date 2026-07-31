@@ -187,7 +187,7 @@
     transition:transform .16s;
   }
   .grade button:active{transform:scale(.97);}
-  .grade img{width:100%; height:100%; object-fit:cover; display:block;}
+  .grade img, .grade video{width:100%; height:100%; object-fit:cover; display:block; background:#0B1B34;}
 
   /* visor em tela cheia */
   #visor{
@@ -507,7 +507,20 @@ WEG
      {arq:'nome.mp4', capa:'nome.jpg', video:true}. Enquanto estiver vazio,
      a secao continua mostrando "Em breve". Os arquivos ficam em
      ../media/fotos/ */
-  var FOTOS = [];
+  var FOTOS = [
+    { arq:'01-foto.jpg' },
+    { arq:'02-foto.jpg' },
+    { arq:'03-video.mp4', video:true },
+    { arq:'04-video.mp4', video:true },
+    { arq:'05-foto.jpg' },
+    { arq:'06-video.mp4', video:true },
+    { arq:'07-video.mp4', video:true },
+    { arq:'08-video.mp4', video:true },
+    { arq:'09-foto.jpg' },
+    { arq:'10-video.mp4', video:true },
+    { arq:'11-video.mp4', video:true },
+    { arq:'12-video.mp4', video:true }
+  ];
 
   var EVENTOS = [
     {dia:'14', mes:'AGO', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empreendedores'},
@@ -622,12 +635,15 @@ WEG
     $('semFotos').hidden = true;
     $('grade').hidden = false;
 
+    /* Miniatura de video: o proprio arquivo com #t=0.5 no fim. Isso faz o
+       navegador buscar meio segundo e desenhar aquele quadro, o que evita
+       ter de gerar uma imagem de capa para cada video. */
     $('grade').innerHTML = FOTOS.map(function(f, i){
-      var capa = f.video ? f.capa : f.arq;
-      return '<button data-i="' + i + '" aria-label="Abrir ' + (f.video ? 'vídeo' : 'foto') + ' ' + (i+1) + '">'
-           + '<img src="../media/fotos/' + esc(capa) + '" alt="" loading="lazy" decoding="async">'
-           + (f.video ? '<span class="play"></span>' : '')
-           + '</button>';
+      var rot = (f.video ? 'vídeo' : 'foto') + ' ' + (i+1);
+      var miolo = f.video
+        ? '<video src="../media/fotos/' + esc(f.arq) + '#t=0.5" preload="metadata" muted playsinline></video><span class="play"></span>'
+        : '<img src="../media/fotos/' + esc(f.arq) + '" alt="" loading="lazy" decoding="async">';
+      return '<button data-i="' + i + '" aria-label="Abrir ' + rot + '">' + miolo + '</button>';
     }).join('');
 
     var visor = $('visor'), palco = $('visorPalco'), conta = $('visorConta');
@@ -637,7 +653,7 @@ WEG
       atual = (i + FOTOS.length) % FOTOS.length;
       var f = FOTOS[atual];
       palco.innerHTML = f.video
-        ? '<video src="../media/fotos/' + esc(f.arq) + '" controls autoplay playsinline poster="../media/fotos/' + esc(f.capa) + '"></video>'
+        ? '<video src="../media/fotos/' + esc(f.arq) + '" controls autoplay playsinline></video>'
         : '<img src="../media/fotos/' + esc(f.arq) + '" alt="">';
       conta.textContent = (atual + 1) + ' de ' + FOTOS.length;
       visor.classList.add('on');
