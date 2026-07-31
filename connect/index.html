@@ -179,6 +179,51 @@
   .ev .tag{flex:none; font-size:10px; font-weight:800; letter-spacing:.1em; color:var(--gold-l); border:1px solid rgba(201,162,75,.38); padding:4px 8px; border-radius:99px; align-self:center;}
 
   /* ---------- FOTOS ---------- */
+  .grade{display:grid; grid-template-columns:1fr 1fr; gap:8px;}
+  @media (min-width:560px){ .grade{grid-template-columns:repeat(3,1fr); gap:10px;} }
+  .grade button{
+    padding:0; border:1px solid var(--line2); border-radius:12px; overflow:hidden;
+    aspect-ratio:1; background:rgba(255,255,255,.05); display:block; width:100%;
+    transition:transform .16s;
+  }
+  .grade button:active{transform:scale(.97);}
+  .grade img{width:100%; height:100%; object-fit:cover; display:block;}
+
+  /* visor em tela cheia */
+  #visor{
+    position:fixed; inset:0; z-index:80; background:rgba(4,9,18,.96);
+    display:none; align-items:center; justify-content:center;
+    padding:calc(var(--safe-t) + 14px) 12px calc(var(--safe-b) + 14px);
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px);
+  }
+  #visor.on{display:flex;}
+  #visorPalco{max-width:100%; max-height:100%; display:flex; align-items:center; justify-content:center;}
+  #visor img, #visor video{max-width:100%; max-height:85vh; object-fit:contain; border-radius:10px; display:block;}
+  /* marca de play sobre a miniatura de video */
+  .grade button{position:relative;}
+  .grade .play{
+    position:absolute; inset:0; margin:auto; width:42px; height:42px; border-radius:50%;
+    background:rgba(11,27,52,.62); border:1.5px solid rgba(255,255,255,.75); pointer-events:none;
+  }
+  .grade .play::after{
+    content:""; position:absolute; top:50%; left:54%; transform:translate(-50%,-50%);
+    border-style:solid; border-width:8px 0 8px 13px; border-color:transparent transparent transparent #fff;
+  }
+  #visor .fechar{
+    position:absolute; top:calc(var(--safe-t) + 12px); right:12px;
+    width:44px; height:44px; border-radius:50%; background:rgba(255,255,255,.12);
+    border:1px solid var(--line); display:grid; place-items:center; color:#fff;
+  }
+  #visor .nav{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:46px; height:46px; border-radius:50%; background:rgba(255,255,255,.12);
+    border:1px solid var(--line); display:grid; place-items:center; color:#fff;
+  }
+  #visor .nav.ant{left:10px;} #visor .nav.prox{right:10px;}
+  #visor .conta{
+    position:absolute; bottom:calc(var(--safe-b) + 14px); left:50%; transform:translateX(-50%);
+    font-size:12.5px; color:var(--dim); letter-spacing:.08em; font-variant-numeric:tabular-nums;
+  }
   .fotos{background:var(--card); border:1px dashed var(--line); border-radius:16px; padding:34px 22px; text-align:center;}
   .fotos .em{width:40px; height:40px; margin:0 auto 14px; display:block; color:var(--gold); opacity:.85;}
   .fotos h3{font-size:16.5px; font-weight:700;}
@@ -249,7 +294,7 @@
       <a href="#fotos">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M3 8.8A2.4 2.4 0 0 1 5.4 6.4h1.5l1.3-2h7.6l1.3 2h1.5A2.4 2.4 0 0 1 21 8.8v8.8a2.4 2.4 0 0 1-2.4 2.4H5.4A2.4 2.4 0 0 1 3 17.6z"/><circle cx="12" cy="13" r="3.6"/>
-        </svg> Fotos
+        </svg> Fotos e vídeos
       </a>
       <a class="destaque" href="../feedback/?lang=pt">
         <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -292,13 +337,15 @@
 
   <!-- ================= FOTOS ================= -->
   <section id="fotos" class="anim">
-    <div class="cab"><h2>Fotos oficiais</h2></div>
-    <div class="fotos">
+    <div class="cab"><h2>Fotos e vídeos</h2></div>
+    <div class="grade" id="grade" hidden></div>
+
+    <div class="fotos" id="semFotos">
       <svg class="em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
         <path d="M3 8.8A2.4 2.4 0 0 1 5.4 6.4h1.5l1.3-2h7.6l1.3 2h1.5A2.4 2.4 0 0 1 21 8.8v8.8a2.4 2.4 0 0 1-2.4 2.4H5.4A2.4 2.4 0 0 1 3 17.6z"/><circle cx="12" cy="13" r="3.6"/>
       </svg>
       <h3>Em breve</h3>
-      <p>As fotos oficiais do BACCstage serão publicadas aqui poucos dias depois do evento. Guarde este link.</p>
+      <p>As fotos e os vídeos do BACCstage serão publicados aqui poucos dias depois do evento. Guarde este link.</p>
     </div>
   </section>
 
@@ -313,6 +360,20 @@
       <span class="seta">&rsaquo;</span>
     </a>
   </section>
+
+  <div id="visor">
+    <button class="fechar" id="visorFechar" aria-label="Fechar">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <button class="nav ant" id="visorAnt" aria-label="Anterior">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+    </button>
+    <button class="nav prox" id="visorProx" aria-label="Próxima">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+    </button>
+    <div id="visorPalco"></div>
+    <div class="conta" id="visorConta"></div>
+  </div>
 
   <footer>
     <div class="cl">REALIZAÇÃO</div>
@@ -442,16 +503,22 @@ WEG
     { nome:'Atlanta Home Concierge', logo:'../media/deck/ahc_light.png', classe:'atl' }
   ];
 
+  /* Fotos e videos do evento. Cada item: {arq:'nome.jpg'} ou, para video,
+     {arq:'nome.mp4', capa:'nome.jpg', video:true}. Enquanto estiver vazio,
+     a secao continua mostrando "Em breve". Os arquivos ficam em
+     ../media/fotos/ */
+  var FOTOS = [];
+
   var EVENTOS = [
-    {dia:'14', mes:'AGO', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empresários'},
+    {dia:'14', mes:'AGO', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empreendedores'},
     {dia:'27', mes:'AGO', titulo:'BACCstage',     nota:'O palco é dos nossos membros', tag:'On-line'},
-    {dia:'11', mes:'SET', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empresários'},
+    {dia:'11', mes:'SET', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empreendedores'},
     {dia:'19', mes:'SET', titulo:'Entre Cafés',   nota:'Networking próximo e informal'},
     {dia:'30', mes:'SET', titulo:'BACCstage',     nota:'O palco é dos nossos membros', tag:'Presencial'},
-    {dia:'09', mes:'OUT', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empresários'},
-    {dia:'29', mes:'OUT', titulo:'BACCstage',     nota:'O palco é dos nossos membros'},
+    {dia:'09', mes:'OUT', titulo:'BACC Academy',  nota:'Educação e desenvolvimento para empreendedores'},
+    {dia:'29', mes:'OUT', titulo:'BACCstage',     nota:'O palco é dos nossos membros', tag:'On-line'},
     {dia:'08', mes:'DEZ', titulo:'BACCstage',     nota:'Confraternização de fim de ano', tag:'Confraternização'},
-    {dia:'FEV', mes:'2027', titulo:'Brazil Economic Outlook', nota:'Perspectivas do cenário econômico entre Brasil e EUA', tag:'Tradicional'}
+    {dia:'FEV', mes:'2027', titulo:'Brazil Economic Outlook', nota:'Perspectivas do cenário econômico entre Brasil e EUA', tag:'Anual'}
   ];
 
   function $(id){ return document.getElementById(id); }
@@ -548,6 +615,65 @@ WEG
       ? '<a class="' + cls + '" href="' + esc(urlSite(m.site)) + '" target="_blank" rel="noopener noreferrer">' + dentro + '</a>'
       : '<div class="' + cls + '">' + dentro + '</div>';
   }).join('');
+
+  /* ---------- fotos e videos ---------- */
+  (function(){
+    if (!FOTOS.length) return;              /* sem arquivos, fica o "Em breve" */
+    $('semFotos').hidden = true;
+    $('grade').hidden = false;
+
+    $('grade').innerHTML = FOTOS.map(function(f, i){
+      var capa = f.video ? f.capa : f.arq;
+      return '<button data-i="' + i + '" aria-label="Abrir ' + (f.video ? 'vídeo' : 'foto') + ' ' + (i+1) + '">'
+           + '<img src="../media/fotos/' + esc(capa) + '" alt="" loading="lazy" decoding="async">'
+           + (f.video ? '<span class="play"></span>' : '')
+           + '</button>';
+    }).join('');
+
+    var visor = $('visor'), palco = $('visorPalco'), conta = $('visorConta');
+    var atual = 0;
+
+    function abrir(i){
+      atual = (i + FOTOS.length) % FOTOS.length;
+      var f = FOTOS[atual];
+      palco.innerHTML = f.video
+        ? '<video src="../media/fotos/' + esc(f.arq) + '" controls autoplay playsinline poster="../media/fotos/' + esc(f.capa) + '"></video>'
+        : '<img src="../media/fotos/' + esc(f.arq) + '" alt="">';
+      conta.textContent = (atual + 1) + ' de ' + FOTOS.length;
+      visor.classList.add('on');
+      document.body.style.overflow = 'hidden';
+    }
+    function fechar(){
+      visor.classList.remove('on');
+      palco.innerHTML = '';                 /* para o video parar de tocar */
+      document.body.style.overflow = '';
+    }
+
+    $('grade').addEventListener('click', function(e){
+      var b = e.target.closest('button');
+      if (b) abrir(parseInt(b.getAttribute('data-i'), 10));
+    });
+    $('visorFechar').addEventListener('click', fechar);
+    $('visorAnt').addEventListener('click', function(){ abrir(atual - 1); });
+    $('visorProx').addEventListener('click', function(){ abrir(atual + 1); });
+    visor.addEventListener('click', function(e){ if (e.target === visor) fechar(); });
+    document.addEventListener('keydown', function(e){
+      if (!visor.classList.contains('on')) return;
+      if (e.key === 'Escape') fechar();
+      if (e.key === 'ArrowRight') abrir(atual + 1);
+      if (e.key === 'ArrowLeft')  abrir(atual - 1);
+    });
+
+    /* arrastar para o lado troca de foto, como o povo espera no celular */
+    var x0 = null;
+    visor.addEventListener('touchstart', function(e){ x0 = e.changedTouches[0].clientX; }, {passive:true});
+    visor.addEventListener('touchend', function(e){
+      if (x0 === null) return;
+      var d = e.changedTouches[0].clientX - x0;
+      if (Math.abs(d) > 60) abrir(atual + (d < 0 ? 1 : -1));
+      x0 = null;
+    }, {passive:true});
+  })();
 
   /* ---------- eventos ---------- */
   $('listaEventos').innerHTML = EVENTOS.map(function(e){
