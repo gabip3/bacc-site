@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A Word From Our Founder · BACC-SE</title>
+<meta name="description" content="Mensagem da fundadora para os participantes do BACC Academy.">
+<meta name="theme-color" content="#0A1730">
+<meta property="og:title" content="A Word From Our Founder">
+<meta property="og:description" content="Brazilian-American Chamber of Commerce Southeast">
+<meta property="og:type" content="video.other">
+<style>
+  :root{
+    --navy:#0A1730; --deep:#060D1C;
+    --gold:#C9A24B; --gold-l:#E6C579;
+    --soft:#C9D5EA; --muted:#8FA0BC;
+    --verde:#1EA54B; --vermelho:#D71D32; --amarelo:#F2A900;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    min-height:100svh; background:var(--deep); color:#fff; font-family:var(--sans);
+    -webkit-font-smoothing:antialiased; display:flex; flex-direction:column;
+  }
+  /* o brilho de fundo fica num pseudo-elemento fixo, porque background-attachment
+     nao funciona no Safari do iPhone */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1;
+    background:radial-gradient(1100px 760px at 50% 26%, rgba(20,45,82,.62), rgba(6,13,28,.96));
+  }
+
+  .faixa{height:4px; flex:none;
+    background:linear-gradient(90deg,var(--verde) 0 25%,var(--amarelo) 25% 50%,var(--vermelho) 50% 75%,var(--navy) 75% 100%);}
+
+  .conteudo{
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:clamp(20px,3.4vh,38px); padding:clamp(24px,4vh,52px) 4vw;
+  }
+  @supports (padding:max(0px)){
+    .conteudo{ padding-bottom:max(clamp(24px,4vh,52px), env(safe-area-inset-bottom)); }
+  }
+
+  .topo{text-align:center;}
+  .topo img{height:clamp(38px,6.6vw,74px); width:auto; display:block; margin:0 auto clamp(16px,2.6vh,30px);}
+  .topo .eyebrow{
+    font-size:clamp(10px,2.5vw,13px); font-weight:700; letter-spacing:.3em; text-indent:.3em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:clamp(8px,1.4vh,14px);
+  }
+  .topo h1{
+    font-family:var(--serif); font-weight:400; letter-spacing:-.01em; line-height:1.12;
+    font-size:clamp(1.5rem,5.4vw,3.1rem); text-wrap:balance;
+  }
+
+  /* o quadro respeita a proporcao real do video, descoberta no loadedmetadata */
+  .quadro{
+    position:relative; width:100%; max-width:min(1060px,94vw); max-height:62svh;
+    aspect-ratio:var(--ar, 16 / 9); margin:0 auto;
+    border-radius:16px; overflow:hidden; background:#000;
+    border:1px solid rgba(201,162,75,.28);
+    box-shadow:0 40px 90px -50px rgba(0,0,0,.95), 0 0 0 1px rgba(255,255,255,.05) inset;
+  }
+  .quadro video{position:absolute; inset:0; width:100%; height:100%; object-fit:contain; background:#000; display:block;}
+
+  /* capa por cima, some no primeiro toque. Evita mostrar um primeiro quadro feio */
+  .capa{
+    position:absolute; inset:0; z-index:2; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:clamp(14px,2.6vh,26px);
+    background:linear-gradient(160deg, #0E2247, #071022 70%);
+    cursor:pointer; border:none; width:100%; font-family:inherit; color:#fff;
+    transition:opacity .45s ease, visibility 0s linear .45s;
+  }
+  .capa.foi{opacity:0; visibility:hidden; pointer-events:none;}
+  .botao{
+    width:clamp(64px,13vw,92px); height:clamp(64px,13vw,92px); border-radius:50%;
+    background:var(--gold); display:grid; place-items:center; flex:none;
+    box-shadow:0 16px 40px -16px rgba(201,162,75,.9);
+    transition:transform .25s ease, background .25s ease;
+  }
+  .capa:hover .botao{transform:scale(1.07); background:var(--gold-l);}
+  .botao svg{width:38%; height:38%; margin-left:9%; fill:var(--navy);}
+  .capa .rotulo{
+    font-size:clamp(11px,2.6vw,14px); font-weight:700; letter-spacing:.22em; text-indent:.22em;
+    text-transform:uppercase; color:var(--soft);
+  }
+
+  .nota{
+    text-align:center; color:var(--muted); font-size:clamp(12px,3vw,15px); line-height:1.6;
+    max-width:44ch; text-wrap:pretty;
+  }
+  .nota b{color:var(--soft); font-weight:600;}
+
+  .rodape{
+    flex:none; text-align:center; padding:0 4vw clamp(18px,3vh,30px);
+    color:#5F708E; font-size:clamp(10px,2.4vw,12px); letter-spacing:.16em; text-transform:uppercase;
+  }
+
+  @media (max-height:560px){
+    .topo img{height:clamp(30px,5vw,48px); margin-bottom:10px;}
+    .topo h1{font-size:clamp(1.2rem,4.4vw,1.9rem);}
+    .quadro{max-height:56svh;}
+    .nota{display:none;}
+  }
+</style>
+</head>
+<body>
+
+  <div class="faixa"></div>
+
+  <main class="conteudo">
+    <div class="topo">
+      <img src="../media/deck/bacc_white.png" alt="Brazilian-American Chamber of Commerce Southeast">
+      <div class="eyebrow">BACC Academy</div>
+      <h1>A Word From Our Founder</h1>
+    </div>
+
+    <div class="quadro" id="quadro">
+      <video id="video" playsinline preload="metadata" controls controlsList="nodownload"
+             src="../media/word-from-our-founder.mp4"></video>
+      <button class="capa" id="capa" type="button" aria-label="Reproduzir o vídeo">
+        <span class="botao"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l15-8.5z"/></svg></span>
+        <span class="rotulo">Toque para assistir</span>
+      </button>
+    </div>
+
+    <p class="nota">
+      Melhor com o som ligado. Se estiver usando dados móveis, o vídeo tem cerca de <b>23 MB</b>.
+    </p>
+  </main>
+
+  <div class="rodape">Brazilian-American Chamber of Commerce Southeast</div>
+  <div class="faixa"></div>
+
+<script>
+(function(){
+  'use strict';
+  var v = document.getElementById('video');
+  var capa = document.getElementById('capa');
+  var quadro = document.getElementById('quadro');
+
+  /* usa a proporcao real do arquivo, seja ele deitado ou em pe */
+  v.addEventListener('loadedmetadata', function(){
+    if (v.videoWidth && v.videoHeight){
+      quadro.style.setProperty('--ar', v.videoWidth + ' / ' + v.videoHeight);
+    }
+  });
+
+  capa.addEventListener('click', function(){
+    capa.classList.add('foi');
+    var p = v.play();
+    if (p && p.catch) p.catch(function(){ /* se o navegador barrar, os controles ficam a vista */ });
+  });
+
+  /* se a pessoa der play pelos controles nativos, a capa tambem sai */
+  v.addEventListener('play', function(){ capa.classList.add('foi'); });
+})();
+</script>
+</body>
+</html>
