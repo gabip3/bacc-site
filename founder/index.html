@@ -91,6 +91,18 @@
   }
   .nota b{color:var(--soft); font-weight:600;}
 
+  /* botao de tela cheia, para quando a pagina for aberta no telao */
+  .cheia{
+    background:none; border:1px solid rgba(201,162,75,.4); color:var(--gold-l);
+    font-family:inherit; font-size:clamp(11px,2.5vw,13px); font-weight:700;
+    letter-spacing:.2em; text-indent:.2em; text-transform:uppercase;
+    padding:11px 22px; border-radius:999px; cursor:pointer;
+    transition:background .25s ease, border-color .25s ease;
+  }
+  .cheia:hover{background:rgba(201,162,75,.14); border-color:var(--gold);}
+  .cheia small{display:block; font-size:9px; letter-spacing:.12em; color:var(--muted);
+               margin-top:3px; text-indent:0; font-weight:600;}
+
   .rodape{
     flex:none; text-align:center; padding:0 4vw clamp(18px,3vh,30px);
     color:#5F708E; font-size:clamp(10px,2.4vw,12px); letter-spacing:.16em; text-transform:uppercase;
@@ -124,6 +136,10 @@
       </button>
     </div>
 
+    <button class="cheia" id="cheia" type="button">
+      Tela cheia
+      <small>ou aperte a tecla F</small>
+    </button>
   </main>
 
   <div class="rodape">Brazilian-American Chamber of Commerce Southeast</div>
@@ -151,6 +167,25 @@
 
   /* se a pessoa der play pelos controles nativos, a capa tambem sai */
   v.addEventListener('play', function(){ capa.classList.add('foi'); });
+
+  /* tela cheia no proprio video, para o telao. No iPhone o video so
+     abre em tela cheia pelo metodo antigo da Apple. */
+  function telaCheia(){
+    capa.classList.add('foi');
+    if (document.fullscreenElement) { document.exitFullscreen(); return; }
+    if (v.requestFullscreen)            v.requestFullscreen();
+    else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen();
+    else if (v.webkitEnterFullscreen)   v.webkitEnterFullscreen();
+    var p = v.play(); if (p && p.catch) p.catch(function(){});
+  }
+  document.getElementById('cheia').addEventListener('click', telaCheia);
+  document.addEventListener('keydown', function(e){
+    if (e.key && e.key.toLowerCase() === 'f') telaCheia();
+    if (e.key === ' ' && capa.classList.contains('foi')){
+      e.preventDefault();
+      if (v.paused) v.play(); else v.pause();
+    }
+  });
 })();
 </script>
 </body>
