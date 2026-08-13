@@ -34,12 +34,14 @@
          background:linear-gradient(90deg,var(--verde) 0 25%,var(--amarelo) 25% 50%,var(--vermelho) 50% 75%,var(--navy) 75% 100%);}
   .faixa.topo{top:0;} .faixa.base{bottom:0;}
 
-  .relogio{position:fixed; z-index:5; right:3.2vw; top:3.4vh; text-align:right; font-variant-numeric:tabular-nums; transition:color .8s;}
+  .relogio{position:fixed; z-index:5; right:3.2vw; top:3.4vh; text-align:right; font-variant-numeric:tabular-nums; transition:color .8s, opacity .6s;}
+  /* na agenda o relogio sai, para a lista poder ocupar a tela toda */
+  body.semRelogio .relogio{opacity:0;}
   .relogio .hora{font-size:clamp(20px,2.1vw,50px); font-weight:300; line-height:1;}
   .relogio .dia{font-size:clamp(10px,.9vw,20px); letter-spacing:.26em; color:var(--gold); font-weight:700; margin-top:.7vh;}
   body.claro .relogio{color:var(--ink);}
 
-  .palco{position:fixed; inset:0; z-index:3; display:grid; place-items:center; padding:0 7vw;}
+  .palco{position:fixed; inset:0; z-index:3; display:grid; place-items:center; padding:0 2vw;}
   .cartela{
     position:absolute; text-align:center; max-width:90vw; visibility:hidden;
     opacity:0; transform:translateY(2vh);
@@ -66,24 +68,32 @@
   body.claro .eyebrow{color:var(--gold-d);}
 
   /* ---------- AGENDA ---------- */
-  .agenda{width:min(1500px,88vw); margin:0 auto;}
+  /* os tamanhos usam min(vw,vh) para a lista nunca estourar a altura da TV */
+  .agenda{width:min(1680px,100%); margin:0 auto;}
   .agenda .lin{
-    display:flex; align-items:center; gap:clamp(14px,2vw,44px);
-    padding:clamp(8px,1.35vh,20px) clamp(10px,1.4vw,26px);
-    border-bottom:1px solid rgba(255,255,255,.13); text-align:left;
+    display:flex; align-items:center; gap:clamp(14px,2vw,50px);
+    padding:clamp(5px,1.05vh,17px) clamp(10px,1.2vw,24px);
+    border-bottom:1px solid rgba(255,255,255,.14); text-align:left;
   }
   .agenda .lin:last-child{border-bottom:none;}
   .agenda .dt{
-    flex:none; width:clamp(96px,10vw,190px); font-weight:800;
-    font-size:clamp(1rem,1.9vw,2.6rem); letter-spacing:-.02em; color:var(--gold-l);
-    font-variant-numeric:tabular-nums;
+    flex:none; width:clamp(110px,13vw,290px); font-weight:800;
+    font-size:clamp(1.05rem,min(2.9vw,4.6vh),4rem); letter-spacing:-.025em; color:var(--gold-l);
+    font-variant-numeric:tabular-nums; line-height:1.18;
   }
-  .agenda .ev{flex:1; min-width:0; font-size:clamp(1rem,2vw,2.8rem); font-weight:700; letter-spacing:-.02em;}
+  .agenda .ev{
+    flex:1; min-width:0; font-weight:700; letter-spacing:-.025em; line-height:1.18;
+    font-size:clamp(1.05rem,min(3.4vw,5.4vh),4.8rem);
+  }
   .agenda .tag{
-    flex:none; font-size:clamp(.6rem,.85vw,1.15rem); letter-spacing:.14em; text-transform:uppercase;
+    flex:none; font-size:clamp(.62rem,min(1.05vw,1.7vh),1.5rem); letter-spacing:.14em;
+    text-transform:uppercase; white-space:nowrap;
     color:var(--gold-l); border:1px solid rgba(201,162,75,.45); border-radius:999px;
-    padding:.5vh 1.1vw; font-weight:700;
+    padding:.55vh 1.1vw; font-weight:700;
   }
+  /* a agenda pede mais largura que as cartelas de frase */
+  .cartela.larga{max-width:96vw; width:96vw;}
+  .cartela.larga .eyebrow{font-size:clamp(13px,min(1.45vw,2.3vh),34px); margin-bottom:2.2vh;}
 
   .barra{position:fixed; left:0; bottom:.55vh; height:.45vh; background:rgba(255,255,255,.14); width:100%; z-index:5;}
   .barra i{display:block; height:100%; background:linear-gradient(90deg,var(--gold),var(--gold-l)); width:0;}
@@ -174,6 +184,7 @@
     d.className = 'cartela';
 
     if (c.tipo === 'agenda'){
+      d.className = 'cartela larga';
       d.innerHTML =
         '<div class="eyebrow">Agenda BACC-SE</div>' +
         '<div class="agenda">' +
@@ -204,6 +215,7 @@
     var claro = !!CARTELAS[atual].claro;
     fundo.classList.toggle('claro', claro);
     document.body.classList.toggle('claro', claro);
+    document.body.classList.toggle('semRelogio', CARTELAS[atual].tipo === 'agenda');
 
     conta.textContent = (atual + 1) + '/' + nos.length;
     inicio = performance.now();
